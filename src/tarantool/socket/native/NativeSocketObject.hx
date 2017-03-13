@@ -45,6 +45,15 @@ extern class NativeSocketObject {
      *  @param limit - limit
      *  @param timeout - timeout of read
      *  @return String
+     */    
+    public function read (limit : haxe.extern.EitherType<Int,String>, ?timeout : Int) : String;
+
+    /**
+     *  Read string
+     *  @param limit - limit
+     *  @param timeout - timeout of read
+     *  @return String
      */
-    public function read (limit : Int, ?timeout : Int) : String;
+//    @:native ("read")
+//    public function readUntil (delimeter : String, ?timeout : Int) : String;
 }

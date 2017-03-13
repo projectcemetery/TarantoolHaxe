@@ -50,8 +50,7 @@ class HttpServer {
      *  @param channel - read write channel
      */
     function processClient (channel : TcpSocket) {        
-        try {            
-            // TODO: Keep-alive
+        try {
             while (true) {
                 var request = new HttpRequest (channel);
                 var response = new HttpResponse (channel);
@@ -59,9 +58,9 @@ class HttpServer {
                 _firstHandler.process (context);
             }
         } catch (e : SocketError) {
-            var host = channel.peer.host;
-            var port = channel.peer.port;
-            trace ('$host:$port disconnected');
+            //var host = channel.peer.host;
+            //var port = channel.peer.port;
+            //trace ('$host:$port disconnected');
         }        
         catch (e : Dynamic) {
             trace (e);

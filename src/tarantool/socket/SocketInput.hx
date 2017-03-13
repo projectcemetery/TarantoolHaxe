@@ -67,4 +67,14 @@ class SocketInput extends Input {
         s.blit (pos, b, 0, b.length);
         return dat.length;
     }
+
+    /**
+     *  Read line from socket
+     *  @return String
+     */
+    override public function readLine() : String {
+        var dat = sock.read ("\n");
+        if (dat == null || dat.length < 1) throw SocketError.Disconnect;
+        return dat;
+    }
 }

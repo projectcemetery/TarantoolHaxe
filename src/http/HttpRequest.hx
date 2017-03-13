@@ -67,7 +67,7 @@ class HttpRequest {
         if (parts.length != 3) throw HttpStatus.BadRequest;
         method = HttpMethod.createByName (parts[0].toLowerCase ());
         url = parts[1];
-        trace ('$method $url');
+        //trace ('$method $url');
 
         headers = new Map<String, String> ();
 
