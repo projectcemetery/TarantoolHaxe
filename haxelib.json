@@ -1,0 +1,14 @@
+{
+  "name": "TarantoolHaxe",
+  "url" : "https://github.com/RapidFingers/TarantoolHaxe",
+  "license": "MIT",
+  "tags": ["lua"],
+  "description": "Haxe bindings for Tarantool and more",
+  "version": "0.0.2",
+  "classPath": "src/",
+  "releasenote": "Initial release",
+  "contributors": ["Grabli66"],
+  "dependencies": {   
+    "tink_url" : ""     
+  }
+}

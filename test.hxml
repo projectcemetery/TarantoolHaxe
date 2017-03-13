@@ -1,0 +1,5 @@
+-cp src
+-main Test
+-D lua_jit
+-lib tink_url
+-lua out/main.lua
