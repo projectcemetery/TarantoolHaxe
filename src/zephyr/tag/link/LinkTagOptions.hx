@@ -19,38 +19,20 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr;
-
-import chocolate.response.AbstractResponse;
-import zephyr.tag.Tag;
+package zephyr.tag.link;
 
 /**
- *  zephyr view
+ *  Options for <link> tag
  */
-class View extends AbstractResponse {
+typedef LinkTagOptions = {
     
     /**
-     *  Constructor
+     *  Tag text
      */
-    public function new () {}
+    var rel : LinkRelType;
 
     /**
-     *  Render view. Virtual
-     *  @return Tag
+     *  Tag text
      */
-    public function render () : Tag {        
-        return null;
-    }
-
-    /**
-     *  Translate view to string
-     *  @return String
-     */
-    override public function toString () : String {
-        var tag = render ();
-        if (tag != null) {
-            return "<!DOCTYPE html>" + tag.toString ();
-        }
-        return "";
-    }
+    var href : String;
 }

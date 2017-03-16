@@ -32,4 +32,9 @@ typedef TagOptions = {
      *  Css classes
      */
     @:optional var css : String;
+
+    /**
+     *  Style
+     */
+    @:optional var style : String;
 }

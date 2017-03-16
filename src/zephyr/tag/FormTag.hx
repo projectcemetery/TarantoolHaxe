@@ -22,17 +22,19 @@
 package zephyr.tag;
 
 /**
- *  Options for text tag
+ *  <form> tag
  */
-typedef LinkTagOptions = {
+class FormTag extends Tag {
     
     /**
-     *  Tag text
+     *  Constructor
+     *  @param options - form tag options
+     *  @param tags - childs
      */
-    var rel : LinkRelType;
+    public function new (options : FormTagOptions, ?tags : Array<Tag>) {
+        super ("form", tags);
 
-    /**
-     *  Tag text
-     */
-    var href : String;
+        if (options.action != null) attributes["action"] = options.action;
+        if (options.method != null) attributes["method"] = options.method;
+    }
 }

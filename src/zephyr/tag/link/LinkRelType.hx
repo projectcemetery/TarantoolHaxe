@@ -19,14 +19,14 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.link;
 
 /**
  *  Link relation type
  */
  @:enum
 abstract LinkRelType(String) to String {
-    var Stylesheet = "stylesheet";
+    var stylesheet = "stylesheet";
 
     public function new (s : String) {
         this = s;

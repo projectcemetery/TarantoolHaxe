@@ -60,6 +60,7 @@ class Tag extends AbstractResponse {
         if (options != null) {
             if (options.css != null) attributes["class"] = options.css;
             if (options.id != null) attributes["id"] = options.id;
+            if (options.style != null) attributes["style"] = options.style;
         }        
     }
 

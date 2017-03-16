@@ -22,7 +22,7 @@
 package zephyr.tag;
 
 /**
- *  Text tag
+ *  <a> tag
  */
 class ATag extends TextTag {
 

@@ -19,38 +19,26 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr;
-
-import chocolate.response.AbstractResponse;
-import zephyr.tag.Tag;
+package zephyr.tag;
 
 /**
- *  zephyr view
+ *  Options for text tag
  */
-class View extends AbstractResponse {
-    
-    /**
-     *  Constructor
-     */
-    public function new () {}
+typedef InputTagOptions = {
+    > TagOptions,
 
     /**
-     *  Render view. Virtual
-     *  @return Tag
+     *  Input type
      */
-    public function render () : Tag {        
-        return null;
-    }
+    var type : InputType;
 
     /**
-     *  Translate view to string
-     *  @return String
+     *  Is required
      */
-    override public function toString () : String {
-        var tag = render ();
-        if (tag != null) {
-            return "<!DOCTYPE html>" + tag.toString ();
-        }
-        return "";
-    }
+    @:optional var required : Bool;
+
+    /**
+     *  Autocomplete on/off
+     */
+    @:optional var autocomplete : Bool;
 }

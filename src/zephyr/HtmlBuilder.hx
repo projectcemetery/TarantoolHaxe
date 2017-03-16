@@ -22,6 +22,9 @@
 package zephyr;
 
 import zephyr.tag.*;
+import zephyr.tag.link.*;
+import zephyr.tag.script.*;
+import zephyr.tag.button.*;
 
 
 /**
@@ -46,8 +49,22 @@ class HtmlBuilder {
         return new Tag ("head", options, tags);
     }
 
+    /**
+     *  Create <link> tag
+     *  @param options - 
+     *  @return Tag
+     */
     public static function link (?options : LinkTagOptions) : Tag {
         return new LinkTag (options);
+    }
+
+    /**
+     *  Create <script> tag
+     *  @param options - 
+     *  @return Tag
+     */
+    public static function script (?options : ScriptTagOptions) : Tag {
+        return new ScriptTag (options);
     }
 
     /**
@@ -67,6 +84,16 @@ class HtmlBuilder {
      */
     public static function div (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {        
         return new TextTag ("div", options, tags);
+    }
+
+    /**
+     *  Create <span> tag
+     *  @param text - 
+     *  @param tags -
+     *  @return Tag
+     */
+    public static function span (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {        
+        return new TextTag ("span", options, tags);
     }
 
     /**
@@ -107,6 +134,46 @@ class HtmlBuilder {
      */
     public static function a (?options : ATagOptions, ?tags : Array<Tag>) : Tag {
         return new ATag (options, tags);
+    }
+
+    /**
+     *  Create <form> tag
+     *  @param text - 
+     *  @param tags - 
+     *  @return Tag
+     */
+    public static function form (?options : FormTagOptions, ?tags : Array<Tag>) : Tag {
+        return new FormTag (options, tags);
+    }
+
+    /**
+     *  Create <input> tag
+     *  @param text - 
+     *  @param tags - 
+     *  @return Tag
+     */
+    public static function input (?options : InputTagOptions, ?tags : Array<Tag>) : Tag {
+        return new InputTag (options, tags);
+    }
+
+    /**
+     *  Create <button> tag
+     *  @param text - 
+     *  @param tags - 
+     *  @return Tag
+     */
+    public static function button (?options : ButtonTagOptions, ?tags : Array<Tag>) : Tag {
+        return new ButtonTag (options, tags);
+    }
+
+    /**
+     *  Create <label> tag
+     *  @param text - 
+     *  @param tags - 
+     *  @return Tag
+     */
+    public static function label (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {
+        return new TextTag ("label", options, tags);
     }
 
     /**

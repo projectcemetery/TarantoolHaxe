@@ -31,13 +31,13 @@ class StaticHandler extends Handler {
     /**
      *  Paths to process
      */
-    public var Paths : Map<String, String>;
+    public var paths : Map<String, String>;
 
     /**
      *  Constructor
      */
     public function new () {
-        Paths = new Map<String, String> ();
+        paths = new Map<String, String> ();
     }
     
     /**
@@ -48,8 +48,8 @@ class StaticHandler extends Handler {
         if (!Path.exists (path)) throw 'Directory ${path} not exists';
         var parts = path.split ("/");
         var parts = parts.filter (function (s : String) { return s != "" && s != "." && s != ".."; });
-        var newPath = parts.join ("/");        
-        Paths.set (newPath, newPath);
+        var newPath = parts.join ("/");
+        paths.set (newPath, newPath);        
     }
 
     /**
@@ -57,14 +57,15 @@ class StaticHandler extends Handler {
      *  @param context - Http context
      */
     public override function process (context : HttpContext) : Void {        
-        var path : String = context.request.url.path;
+        var path : String = context.request.url.path;        
         var parts = path.split ("/");
         var file = parts.pop ();
         var parts = parts.filter (function (s : String) { return s != "" && s != "." && s != ".."; });
-        var newPath = parts.join ("/");
+        var first = parts[0];
+        var newPath = parts.join ("/");        
         
-        if (Paths.exists (newPath)) {
-            var fl = './${newPath}/${file}';
+        if (paths.exists (first)) {            
+            var fl = './${newPath}/${file}';            
             if (Path.exists (fl)) {
                 var file = new File (fl);       
                 var data = file.readAllBytes (fl);
