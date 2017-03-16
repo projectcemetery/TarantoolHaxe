@@ -19,11 +19,36 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import chocolate.response.Response;
+package chocolate.response;
 
 /**
- *  Call to process request
+ *  Response on client request
  */
-typedef RequestCall = Request -> Response;
+@:forward
+abstract Response (AbstractResponse) {
+    
+    /**
+     *  Constructor
+     */
+    public function new (d : AbstractResponse) {
+        this = d;
+    }
+
+    /**
+     *  Convert String to Response
+     *  @param s - any string
+     *  @return Response
+     */
+    @:from public static inline function fromString (s : String) : Response {
+        return new Response (new StringResponse (s));
+    }
+
+    /**
+     *  Convert AbstractResponse to Response
+     *  @param s - 
+     *  @return Response
+     */
+    @:from public static inline function fromResponse (s : AbstractResponse) : Response {
+        return new Response (s);
+    }
+}

@@ -21,6 +21,9 @@
 
 package zephyr;
 
+import zephyr.tag.*;
+
+
 /**
  *  Html Builder
  */
@@ -31,7 +34,7 @@ class HtmlBuilder {
      *  @return Tag
      */
     public static function html (?options : TagOptions, ?tags : Array<Tag>) : Tag {        
-        return new TagInternal ("html", options, tags);
+        return new Tag ("html", options, tags);
     }
 
     /**
@@ -40,7 +43,11 @@ class HtmlBuilder {
      *  @return Tag
      */
     public static function head (?options : TagOptions, ?tags : Array<Tag>) : Tag {
-        return new TagInternal ("head", options, tags);
+        return new Tag ("head", options, tags);
+    }
+
+    public static function link (?options : LinkTagOptions) : Tag {
+        return new LinkTag (options);
     }
 
     /**
@@ -49,18 +56,37 @@ class HtmlBuilder {
      *  @return Tag
      */
     public static function body (?options : TagOptions, ?tags : Array<Tag>) : Tag {
-        return new TagInternal ("body", options, tags);
+        return new Tag ("body", options, tags);
     }
 
     /**
-     *  Create <body> div
+     *  Create <div> tag
      *  @param text - 
      *  @param tags -
      *  @return Tag
      */
-    public static function div (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {
-        var tag = new TextTag ("div", options, tags);
-        return tag;
+    public static function div (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {        
+        return new TextTag ("div", options, tags);
+    }
+
+    /**
+     *  Create <ul> tag
+     *  @param options - 
+     *  @param tags - 
+     *  @return Tag
+     */
+    public static function ul (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {        
+        return new TextTag ("ul", options, tags);
+    }
+
+    /**
+     *  Create <ul> tag
+     *  @param options - 
+     *  @param tags - 
+     *  @return Tag
+     */
+    public static function li (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {        
+        return new TextTag ("li", options, tags);
     }
 
     /**
@@ -71,6 +97,16 @@ class HtmlBuilder {
      */
     public static function p (?options : TextTagOptions, ?tags : Array<Tag>) : Tag {
         return new TextTag ("p", options, tags);
+    }
+
+    /**
+     *  Create <a> tag
+     *  @param text - 
+     *  @param tags - 
+     *  @return Tag
+     */
+    public static function a (?options : ATagOptions, ?tags : Array<Tag>) : Tag {
+        return new ATag (options, tags);
     }
 
     /**

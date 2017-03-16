@@ -28,6 +28,7 @@ import http.handlers.websocket.WebSocketHandler;
 import http.handlers.ErrorHandler;
 import http.handlers.HttpHandler;
 import http.handlers.StaticHandler;
+import chocolate.response.Response;
 
 /**
  *  Chocolate app
@@ -101,7 +102,7 @@ class Chocolate {
 
     /**
      *  Process http request
-     */
+     */     
     private function onHttpRequest (c : HttpContext) : Void {
         var found = false;
         for (kv in _routes) {

@@ -19,61 +19,38 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
+package zephyr;
+
+import chocolate.response.AbstractResponse;
+import zephyr.tag.Tag;
 
 /**
- *  Response on client request
+ *  zephyr view
  */
-abstract Response (AppResponse) {
-    /**
-     *  Converts string to Response
-     *  @param s - any string
-     *  @return Response
-     */
-    @:from public static inline function fromString (s : String) : Response {
-        return new Response (AppResponse.string (s));
-    }
-
-    /**
-     *  Converts from json response
-     *  @param s - json response
-     *  @return Response
-     */
-    @:from public static inline function fromJson (s : JsonResponse) : Response {
-        return new Response (AppResponse.json (s));
-    }
-
+class View extends AbstractResponse {
+    
     /**
      *  Constructor
      */
-    public function new (d : AppResponse) {
-        this = d;
+    public function new () {}
+
+    /**
+     *  Render view. Virtual
+     *  @return Tag
+     */
+    public function render () : Tag {        
+        return null;
     }
 
     /**
-     *  Translate response to string
+     *  Translate view to string
+     *  @return String
      */
-    public function toString () : String {
-        switch (this) {
-            case string (s): return s;
-            case json (s): return s.toString ();
+    override public function toString () : String {
+        var tag = render ();
+        if (tag != null) {
+            return tag.toString ();
         }
-
-        throw "Unknow response type";
+        return "";
     }
-}
-
-/**
- *  Response types
- */
-enum AppResponse {
-    /**
-     *  Response as string
-     */
-    string (s : String);
-
-    /**
-     *  Response as json
-     */
-    json (s : JsonResponse);
 }

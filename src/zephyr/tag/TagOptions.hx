@@ -19,11 +19,17 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
+package zephyr.tag;
 
-import chocolate.response.Response;
+typedef TagOptions = {
+    
+    /**
+     *  Tag id
+     */
+    @:optional var id : String;
 
-/**
- *  Call to process request
- */
-typedef RequestCall = Request -> Response;
+    /**
+     *  Css classes
+     */
+    @:optional var css : String;
+}

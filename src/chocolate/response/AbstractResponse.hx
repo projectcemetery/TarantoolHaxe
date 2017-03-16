@@ -19,11 +19,17 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr;
+package chocolate.response;
 
-typedef TagOptions = {
+/**
+ *  Some response
+ */
+class AbstractResponse {
+    
     /**
-     *  Css classes
+     *  Convert response to string. For override
      */
-    @:optional var css : String;
+    public function toString () : String {
+        return null;
+    }
 }

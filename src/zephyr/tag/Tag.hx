@@ -19,13 +19,15 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr;
+package zephyr.tag;
 
-class TagInternal {
+import chocolate.response.AbstractResponse;
+
+class Tag extends AbstractResponse {
     /**
      *  Child tags
      */
-    var tags : Array<Tag>;
+    var childs : Array<Tag>;
 
     /**
      *  Tag attributes
@@ -53,10 +55,11 @@ class TagInternal {
         attributes = new Map<String, String> ();
 
         Name = name;
-        tags = tags != null ? tags : new Array<Tag> ();            
-                
+        childs = tags != null ? tags : new Array<Tag> ();
+
         if (options != null) {
             if (options.css != null) attributes["class"] = options.css;
+            if (options.id != null) attributes["id"] = options.id;
         }        
     }
 
@@ -65,7 +68,7 @@ class TagInternal {
      *  @param tags - some tags
      */
     public function addTags (tags : Array<Tag>) {
-        this.tags = tags.concat (tags);
+        childs = childs.concat (tags);
     }    
 
     /**
@@ -87,8 +90,8 @@ class TagInternal {
      *  Append render tags to buffer
      *  @param s - 
      */
-    public function renderChilds (s : StringBuf) {
-        for (tag in tags) {
+    public function renderChilds (s : StringBuf) {        
+        for (tag in childs) {
             s.add (tag.toString ());
         }
     }
@@ -105,9 +108,9 @@ class TagInternal {
      *  Translate all tags to string
      *  @return String
      */
-    public function toString () : String {
-        var s = renderName ();
-        renderChilds (s);
+    override public function toString () : String {        
+        var s = renderName ();        
+        renderChilds (s);        
         closeTag (s);        
         return s.toString ();
     }

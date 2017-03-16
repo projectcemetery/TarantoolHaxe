@@ -19,12 +19,13 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
+package chocolate.response;
 
 /**
  *  Json response
  */
-class JsonResponse {    
+class JsonResponse extends AbstractResponse {
+
     /**
      *  Constructor
      *  @param s - Any object that can by translated to json

@@ -56,7 +56,7 @@ class StaticHandler extends Handler {
      *  Process request
      *  @param context - Http context
      */
-    public override function process (context : HttpContext) : Void {
+    public override function process (context : HttpContext) : Void {        
         var path : String = context.request.url.path;
         var parts = path.split ("/");
         var file = parts.pop ();
@@ -66,7 +66,7 @@ class StaticHandler extends Handler {
         if (Paths.exists (newPath)) {
             var fl = './${newPath}/${file}';
             if (Path.exists (fl)) {
-                var file = new File (fl);
+                var file = new File (fl);       
                 var data = file.readAllBytes (fl);
                 context.response.write (data);
                 context.response.close ();

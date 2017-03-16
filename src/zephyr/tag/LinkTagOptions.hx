@@ -19,41 +19,20 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr;
+package zephyr.tag;
 
 /**
- *  Text tag
+ *  Options for text tag
  */
-class TextTag extends TagInternal {
+typedef LinkTagOptions = {
+    
+    /**
+     *  Tag text
+     */
+    var rel : LinkRelType;
 
     /**
-     *  Tag inner text
+     *  Tag text
      */
-    public var text (default, null) : String;
-
-    /**
-     *  Constructor
-     *  @param name - 
-     *  @param text - 
-     *  @param tags - 
-     */
-    public function new (name : String, ?options : TextTagOptions, ?tags : Array<Tag>) {
-        super (name, options, tags);
-        text = "";
-        if (options != null) {
-            text = options.text != null ? options.text : "";
-        }
-    }
-
-    /**
-     *  Translate all tags to string
-     *  @return String
-     */
-    override public function toString () : String {
-        var s = renderName ();
-        if (text != "") s.add (text);
-        renderChilds (s);
-        closeTag (s);        
-        return s.toString ();
-    }
+    var href : String;
 }

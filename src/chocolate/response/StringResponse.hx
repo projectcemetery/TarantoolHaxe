@@ -19,15 +19,30 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr;
+package chocolate.response;
 
 /**
- *  Options for text tag
+ *  Response from string
  */
-typedef TextTagOptions = {
-    > TagOptions,
+class StringResponse extends AbstractResponse {
+
     /**
-     *  Tag text
+     *  String data
      */
-    @:optional var text : String;
+    private var data : String;
+
+    /**
+     *  Constructor
+     */
+    public function new (s : String) {
+        data = s;
+    }
+
+    /**
+     *  Translate view to string
+     *  @return String
+     */
+    override public function toString () : String {        
+        return data;
+    }
 }

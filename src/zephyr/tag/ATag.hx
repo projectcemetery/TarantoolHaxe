@@ -19,11 +19,19 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import chocolate.response.Response;
+package zephyr.tag;
 
 /**
- *  Call to process request
+ *  Text tag
  */
-typedef RequestCall = Request -> Response;
+class ATag extends TextTag {
+
+    /**
+     *  Constructor     
+     *  @param options - 
+     */
+    public function new (options : ATagOptions, ?tags : Array<Tag>) {
+        super ("a", options, tags);        
+        attributes["href"] = options.href;
+    }
+}

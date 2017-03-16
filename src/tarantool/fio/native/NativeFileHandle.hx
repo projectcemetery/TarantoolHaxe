@@ -33,4 +33,16 @@ extern class NativeFileHandle {
      *  @return Table<String, String>
      */
     public function stat () : Table<String, String>;
+
+    /**
+     *  Read data from file
+     *  @param count - number of bytes to read
+     *  @return String
+     */
+    public function read (count : Int) : String;
+
+    /**
+     *  Close file
+     */
+    public function close () : Void;
 }

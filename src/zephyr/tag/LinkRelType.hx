@@ -19,38 +19,20 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr;
-
-import chocolate.Response;
+package zephyr.tag;
 
 /**
- *  Tag that can be used like response
+ *  Link relation type
  */
- @:forward(toString)
-abstract Tag (TagInternal) {
-    /**
-     *  Constructor
-     *  @param tag -
-     */
-    public function new (tag : TagInternal) {
-        this = tag;
-    }
+ @:enum
+abstract LinkRelType(String) to String {
+    var Stylesheet = "stylesheet";
 
-    /**
-     *  Convert internal tag to tag response
-     *  @param tag - 
-     *  @return Tag
-     */
-    @:from public static function fromTag (tag : TagInternal) : Tag {
-        return new Tag (tag);
-    }
+    public function new (s : String) {
+        this = s;
+    }    
 
-    /**
-     *  Convert tag to string response
-     *  @param tag - tag to convert
-     *  @return Response
-     */
-    @:to public static function toResponse (tag : TagInternal) : Response {
-        return tag.toString ();
+    @:from public static inline function fromString (s : String) : LinkRelType {
+        return new LinkRelType (s);
     }
 }

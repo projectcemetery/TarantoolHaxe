@@ -48,11 +48,11 @@ class File {
      *  @param path - file path
      *  @return Bytes
      */
-    public function readAllBytes (path : String) : Bytes {        
+    public function readAllBytes (path : String) : Bytes {
         var s = file.stat ();
         var size = untyped s["size"];
-        var data = untyped d.read (size);
-        untyped d.close ();
+        var data = file.read (size);
+        file.close ();
         return Bytes.ofString (data);
     }
 }

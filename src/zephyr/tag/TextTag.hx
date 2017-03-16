@@ -19,11 +19,41 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import chocolate.response.Response;
+package zephyr.tag;
 
 /**
- *  Call to process request
+ *  Text tag
  */
-typedef RequestCall = Request -> Response;
+class TextTag extends Tag {
+
+    /**
+     *  Tag inner text
+     */
+    public var text (default, null) : String;
+
+    /**
+     *  Constructor
+     *  @param name - 
+     *  @param text - 
+     *  @param tags - 
+     */
+    public function new (name : String, ?options : TextTagOptions, ?tags : Array<Tag>) {
+        super (name, options, tags);
+        text = "";
+        if (options != null) {
+            text = options.text != null ? options.text : "";
+        }
+    }
+
+    /**
+     *  Translate all tags to string
+     *  @return String
+     */
+    override public function toString () : String {
+        var s = renderName ();
+        if (text != "") s.add (text);
+        renderChilds (s);
+        closeTag (s);        
+        return s.toString ();
+    }
+}

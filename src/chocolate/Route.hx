@@ -21,6 +21,8 @@
 
 package chocolate;
 
+import chocolate.response.Response;
+
 /**
  *  Request route
  */
