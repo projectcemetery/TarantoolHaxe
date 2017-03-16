@@ -19,9 +19,32 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import tarantool.fiber.Fiber;
+package tarantool.fiber;
 
-class Test {
-    static function main() {
-    }    
+import tarantool.fiber.native.FiberNative;
+import tarantool.fiber.native.FiberObjectNative;
+
+/**
+ *  Fiber for cooperative multitasking
+ */
+class Fiber {
+
+    /**
+     *  Native fiber object
+     */
+    var fiberObject : FiberObjectNative;
+
+    /**
+     *  Constructor
+     */
+    public function new (call : Void -> Void) {
+        fiberObject = FiberNative.create (call);
+    }
+
+    /**
+     *  Cancel fiber execution
+     */
+    public inline function cancel () {
+        fiberObject.cancel ();
+    }
 }

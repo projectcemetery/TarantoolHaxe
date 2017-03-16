@@ -19,9 +19,16 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import tarantool.fiber.Fiber;
+package tarantool.fiber.native;
 
-class Test {
-    static function main() {
-    }    
+/**
+ *  Extern for tarantool fiber
+ */
+ @:luaRequire("fiber")
+extern class FiberNative {
+
+    /**
+     *  Create new fiber
+     */
+    public static function create (call : Void -> Void) : FiberObjectNative;
 }

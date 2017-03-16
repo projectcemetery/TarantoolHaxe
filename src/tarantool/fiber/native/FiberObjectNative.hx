@@ -19,9 +19,21 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import tarantool.fiber.Fiber;
+package tarantool.fiber.native;
 
-class Test {
-    static function main() {
-    }    
+/**
+ *  Extern for tarantool fiber object
+ */
+extern class FiberObjectNative {
+
+    /**
+     *  Get fiber id
+     *  @return Int
+     */
+    public function id () : Int;
+
+    /**
+     *  Cancel fiber execution
+     */
+    public function cancel () : Void;
 }
