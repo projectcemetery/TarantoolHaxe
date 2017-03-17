@@ -42,7 +42,7 @@ class WebSocketHandler extends Handler {
      *  @param context - Http context
      */
     public override function process (context : HttpContext) : Void {
-        if (context.request.headers.exists ("Upgrade")) {
+        if (context.request.headers.exists (HttpHeaderType.Upgrade)) {
             var ih = new InternalHandler (context);
             ih.onConnect = _handler.onConnect;
             ih.onData = _handler.onData;

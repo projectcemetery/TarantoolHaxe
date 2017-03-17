@@ -36,6 +36,18 @@ class File {
     var file : NativeFileHandle;
 
     /**
+     *  Get file extension
+     *  @param path - 
+     *  @return String
+     */
+    public inline static function getExtension (path : String) : String {
+        var lind = path.lastIndexOf (".");
+        if (lind < 0) return "";
+        lind++;
+        return path.substr (lind, path.length - lind);
+    }
+
+    /**
      *  Constructor
      *  @param path - 
      */

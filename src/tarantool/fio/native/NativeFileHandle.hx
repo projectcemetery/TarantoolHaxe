@@ -32,7 +32,7 @@ extern class NativeFileHandle {
      *  @param name - file name
      *  @return Table<String, String>
      */
-    public function stat () : Table<String, String>;
+    public function stat () : Table<String, String>;    
 
     /**
      *  Read data from file

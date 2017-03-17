@@ -25,16 +25,8 @@ package zephyr.tag.button;
  *  Button type
  */
  @:enum
-abstract ButtonType(String) to String {
+abstract ButtonType(String) from String to String {
     var button = "button";
     var reset = "reset";
-    var submit = "submit";
-
-    public function new (s : String) {
-        this = s;
-    }    
-
-    @:from public static inline function fromString (s : String) : ButtonType {
-        return new ButtonType (s);
-    }
+    var submit = "submit";    
 }

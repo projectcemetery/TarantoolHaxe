@@ -25,14 +25,6 @@ package zephyr.tag.link;
  *  Link relation type
  */
  @:enum
-abstract LinkRelType(String) to String {
+abstract LinkRelType(String) from String to String {
     var stylesheet = "stylesheet";
-
-    public function new (s : String) {
-        this = s;
-    }    
-
-    @:from public static inline function fromString (s : String) : LinkRelType {
-        return new LinkRelType (s);
-    }
 }

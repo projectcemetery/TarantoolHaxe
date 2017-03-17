@@ -23,6 +23,8 @@ package http.handlers;
 
 import tarantool.fio.File;
 import tarantool.fio.Path;
+import http.HttpHeaderType;
+import mime.MimeTypes;
 
 /**
  *  Process static content
@@ -59,15 +61,18 @@ class StaticHandler extends Handler {
     public override function process (context : HttpContext) : Void {        
         var path : String = context.request.url.path;        
         var parts = path.split ("/");
-        var file = parts.pop ();
+        var fileName = parts.pop ();
         var parts = parts.filter (function (s : String) { return s != "" && s != "." && s != ".."; });
         var first = parts[0];
-        var newPath = parts.join ("/");        
+        var newPath = parts.join ("/");
         
         if (paths.exists (first)) {            
-            var fl = './${newPath}/${file}';            
-            if (Path.exists (fl)) {
-                var file = new File (fl);       
+            var fl = './${newPath}/${fileName}';            
+            if (Path.exists (fl)) {                
+                var mime = MimeTypes.getMimeType (fileName);
+                context.response.headers[HttpHeaderType.ContentType] = mime;
+
+                var file = new File (fl);
                 var data = file.readAllBytes (fl);
                 context.response.write (data);
                 context.response.close ();

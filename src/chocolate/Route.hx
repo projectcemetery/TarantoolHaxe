@@ -56,18 +56,21 @@ class Route {
      */
     public function isMatch (path : String) : Bool {
         // TODO: normal path match
-        
-        var items1 = path.split ("/");
+        var items1 = path.split ("/");        
         var items2 = _pattern.split ("/");
-        if (items1.length != items2.length) return false;
+        
+        if (items1.length != items2.length) return false;        
 
-        for (s2 in items2) {
-            for (s1 in items1) {
-                if (s2 != s1) return false;
+        for (i2 in 1...items2.length) {
+            var s2 = items2[i2];            
+            for (i1 in 1...items1.length) {
+                var s1 = items1[i1];                
+                if (s2 != s1) continue;                
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**

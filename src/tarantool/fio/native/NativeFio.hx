@@ -30,24 +30,30 @@ import lua.Table;
 extern class NativeFio {
     /**
      *  Get files in directory
-     *  @param name - directory name
+     *  @param path - directory name
      *  @return Table<Int, String>
      */
-    public static function glob (name : String) : Table<Int, String>;
+    public static function glob (path : String) : Table<Int, String>;
 
     /**
      *  Get file info
-     *  @param name - file name
+     *  @param path - file name
      *  @return Table<String, String>
      */
-    public static function stat (name : String) : Table<String, String>;
+    public static function stat (path : String) : Table<String, String>;
+
+    /**
+     *  Get file base name
+     *  @param path - file name
+     */
+    public static function basename (path : String) : String;
 
     /**
      *  Open file
-     *  @param name - file name
+     *  @param path - file name
      *  @param flags - 
      *  @param mode - 
      *  @return NativeFileHandle
      */
-    public static function open (name : String, ?flags : Dynamic, ?mode : Dynamic) : NativeFileHandle;
+    public static function open (path : String, ?flags : Dynamic, ?mode : Dynamic) : NativeFileHandle;
 }

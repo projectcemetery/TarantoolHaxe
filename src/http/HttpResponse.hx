@@ -4,6 +4,7 @@ import haxe.io.Output;
 import haxe.io.Bytes;
 import haxe.io.BytesBuffer;
 import tarantool.socket.TcpSocket;
+import http.HttpHeaderType;
 
 /**
     Response to client
@@ -33,8 +34,8 @@ class HttpResponse extends Output {
      *  Write headers to channel
      */
     private function writeHeaders () {
-        headers[HttpHeaders.ContentLength] = Std.string (buffer.length);
-        headers[HttpHeaders.Server] = "tyrant";
+        headers[HttpHeaderType.ContentLength] = Std.string (buffer.length);
+        headers[HttpHeaderType.Server] = "tyrant";
 
         for (k in headers.keys()) {
             var v = headers.get (k);
