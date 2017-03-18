@@ -19,26 +19,41 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.input;
 
 /**
- *  Options for text tag
+ *  Link relation type
  */
-typedef InputTagOptions = {
-    > TagOptions,
+ @:enum
+abstract InputType(String) to String {    
+    var button = "button";
+    var checkbox = "checkbox";
+    var color = "color";
+    var date = "date";
+    var datetimeLocal = "datetime-local";
+    var email = "email";
+    var file = "file";
+    var hidden = "hidden";    
+    var image = "image";
+    var month = "month";
+    var number = "number";
+    var password = "password";
+    var radio = "radio";
+    var range = "range";
+    var reset = "reset";
+    var search = "search";
+    var submit = "submit";
+    var tel = "tel";
+    var text = "text";
+    var time = "time";
+    var url = "url";
+    var week = "week";
 
-    /**
-     *  Input type
-     */
-    var type : InputType;
+    public function new (s : String) {
+        this = s;
+    }    
 
-    /**
-     *  Is required
-     */
-    @:optional var required : Bool;
-
-    /**
-     *  Autocomplete on/off
-     */
-    @:optional var autocomplete : Bool;
+    @:from public static inline function fromString (s : String) : InputType {
+        return new InputType (s);
+    }
 }

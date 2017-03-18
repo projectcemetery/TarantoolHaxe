@@ -22,21 +22,44 @@
 package chocolate;
 
 import http.HttpRequest;
+import http.HttpHeaderType;
+import mime.MimeTypes;
 
 /**
  *  Request from client
  */
 class Request {
+
     /**
      *  Request headers
      */
-    public var Headers (default, null) : Map <String, String>;
+    public var headers (default, null) : Map<String, String>;
+
+    /**
+     *  Query parameters
+     */
+    public var query (default, null) : Map<String, String>;
+
+    /**
+     *  Form parameters
+     */
+    public var form (default, null) : Map<String, String>;
 
     /**
      *  Constructor. Converts http request to app request
      *  @param request - Http request from http server
      */
-    public function new (request : HttpRequest) {        
-        Headers = request.headers;        
+    public function new (request : HttpRequest) {
+        headers = request.headers;
+        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
+
+        var contentType = request.headers[HttpHeaderType.ContentType];
+        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
+            if (request.body != null) {
+                var body = request.body.toString ();
+                var query : tink.url.Query = body;
+                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
+            }
+        }
     }
 }

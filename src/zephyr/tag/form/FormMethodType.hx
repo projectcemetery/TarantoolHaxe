@@ -19,16 +19,29 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.form;
 
 /**
- *  Options for <a> tag
+ *  Link relation type
  */
-typedef ATagOptions = {    
-    > TextTagOptions,
+ @:enum
+abstract FormMethodType(String) to String {
 
     /**
-     *  Tag text
+     *  Post method
      */
-    var href : String;
+    var post = "post";
+
+    /**
+     *  Post method
+     */
+    var get = "get";
+
+    public function new (s : String) {
+        this = s;
+    }    
+
+    @:from public static inline function fromString (s : String) : FormMethodType {
+        return new FormMethodType (s);
+    }
 }

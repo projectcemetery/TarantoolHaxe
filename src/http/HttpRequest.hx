@@ -89,8 +89,9 @@ class HttpRequest {
         if (method == HttpMethod.get) return;
 
         if (headers.exists ("Content-Length")) {
-            var len = Std.parseInt (headers ["Content-Length"]);            
-            body = Bytes.ofString (channel.input.readString (len));
+            var len = Std.parseInt (headers ["Content-Length"]);
+            if (len < 1) return;
+            body = channel.input.read (len);            
         } else if (headers["Transfer-Encoding"] == "chunked") {
             
         }

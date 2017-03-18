@@ -19,29 +19,27 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.input;
 
 /**
- *  Link relation type
+ *  <input> tag
  */
- @:enum
-abstract FormMethodType(String) to String {
-
+class InputTag extends Tag {
+    
     /**
-     *  Post method
+     *  Constructor
+     *  @param options - form tag options
+     *  @param tags - childs
      */
-    var post = "post";
+    public function new (options : InputTagOptions, ?tags : Array<Tag>) {
+        super ("input", tags);        
+        attributes["type"] = options.type;
+        attributes["name"] = options.name;
 
-    /**
-     *  Post method
-     */
-    var get = "get";
+        if (options.autocomplete != null) {
+            attributes["autocomplete"] = if (options.autocomplete) "on" else "off";            
+        }
 
-    public function new (s : String) {
-        this = s;
-    }    
-
-    @:from public static inline function fromString (s : String) : FormMethodType {
-        return new FormMethodType (s);
+        if (options.required) attributes["required"] = "";        
     }
 }

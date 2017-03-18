@@ -19,26 +19,22 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.form;
 
 /**
- *  <input> tag
+ *  <form> tag
  */
-class InputTag extends Tag {
+class FormTag extends Tag {
     
     /**
      *  Constructor
      *  @param options - form tag options
      *  @param tags - childs
      */
-    public function new (options : InputTagOptions, ?tags : Array<Tag>) {
-        super ("input", tags);        
-        attributes["type"] = options.type;
+    public function new (options : FormTagOptions, ?tags : Array<Tag>) {
+        super ("form", tags);
 
-        if (options.autocomplete != null) {
-            attributes["autocomplete"] = if (options.autocomplete) "on" else "off";            
-        }
-
-        if (options.required) attributes["required"] = "";        
+        if (options.action != null) attributes["action"] = options.action;
+        if (options.method != null) attributes["method"] = options.method;
     }
 }

@@ -106,7 +106,7 @@ class Chocolate {
     private function onHttpRequest (c : HttpContext) : Void {
         var found = false;        
         for (kv in _routes) {
-            if (kv.isMatch (c.request.url)) {
+            if (kv.isMatch (c.request.url.path)) {
                 var req = new Request (c.request);
                 var resp = kv.process (req);
                 writeResponse (c, resp);

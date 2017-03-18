@@ -19,21 +19,16 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.a;
 
 /**
- *  Options for text tag
+ *  Options for <a> tag
  */
-typedef FormTagOptions = {
-    > TagOptions,
+typedef ATagOptions = {    
+    > TextTagOptions,
 
     /**
-     *  Path for action. Example: "/", "/form"
+     *  Tag text
      */
-    var action : String;
-
-    /**
-     *  Form method
-     */
-    var method : FormMethodType;
+    var href : String;
 }

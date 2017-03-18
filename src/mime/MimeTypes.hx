@@ -24,9 +24,29 @@ package mime;
 import tarantool.fio.File;
 
 /**
+ *  MIME application base
+ */
+class ApplicationBase {
+    /**
+     *  Constructor
+     */
+    public inline function new () {}
+    
+    /**
+     *  Key/value data with url encoding
+     */
+    public var x_www_form_urlencoded (default, null) = "application/x-www-form-urlencoded"; 
+}
+
+/**
  *  MIME types
  */
 class MimeTypes {
+
+    /**
+     *  Application base
+     */
+    public static var application (default, null) : ApplicationBase = new ApplicationBase ();
 
     /**
      *  Dictionary of MIME types

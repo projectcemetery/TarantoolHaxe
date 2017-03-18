@@ -19,29 +19,21 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.form;
 
 /**
- *  Link relation type
+ *  Options for text tag
  */
- @:enum
-abstract InputType(String) to String {
-    var button = "button";
-    var file = "file";
-    var hidden = "hidden";
-    var checkbox = "checkbox";
-    var image = "image";
-    var password = "password";
-    var radio = "radio";
-    var reset = "reset";
-    var submit = "submit";
-    var text = "text";
+typedef FormTagOptions = {
+    > TagOptions,
 
-    public function new (s : String) {
-        this = s;
-    }    
+    /**
+     *  Path for action. Example: "/", "/form"
+     */
+    var action : String;
 
-    @:from public static inline function fromString (s : String) : InputType {
-        return new InputType (s);
-    }
+    /**
+     *  Form method
+     */
+    var method : FormMethodType;
 }

@@ -22,9 +22,12 @@
 package zephyr;
 
 import zephyr.tag.*;
+import zephyr.tag.a.*;
 import zephyr.tag.link.*;
 import zephyr.tag.script.*;
+import zephyr.tag.form.*;
 import zephyr.tag.button.*;
+import zephyr.tag.input.*;
 
 
 /**

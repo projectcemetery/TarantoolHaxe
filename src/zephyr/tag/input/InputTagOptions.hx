@@ -19,22 +19,31 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package zephyr.tag;
+package zephyr.tag.input;
 
 /**
- *  <form> tag
+ *  Options for text tag
  */
-class FormTag extends Tag {
-    
-    /**
-     *  Constructor
-     *  @param options - form tag options
-     *  @param tags - childs
-     */
-    public function new (options : FormTagOptions, ?tags : Array<Tag>) {
-        super ("form", tags);
+typedef InputTagOptions = {
+    > TagOptions,
 
-        if (options.action != null) attributes["action"] = options.action;
-        if (options.method != null) attributes["method"] = options.method;
-    }
+    /**
+     *  Specifies the name of an <input> element
+     */
+    var name : String;
+
+    /**
+     *  Specifies the type <input> element to display
+     */
+    var type : InputType;
+
+    /**
+     *  Specifies that an input field must be filled out before submitting the form
+     */
+    @:optional var required : Bool;
+
+    /**
+     *  Specifies whether an <input> element should have autocomplete enabled
+     */
+    @:optional var autocomplete : Bool;
 }
