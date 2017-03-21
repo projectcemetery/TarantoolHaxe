@@ -23,6 +23,7 @@ package tarantool.box;
 
 import lua.Table;
 import tarantool.box.native.BoxNative;
+import tarantool.util.Convert;
 
 /**
  *  Tarantool box
@@ -38,13 +39,7 @@ class Box {
      *  Start box
      */
     public static function cfg (config : BoxOptions) {
-        var options = AnyTable.create ();
-        var fields = Reflect.fields (config);
-        for (field in fields) {
-            var prop = Reflect.getProperty (config, field);
-            untyped options[field] = prop;
-        }
-                
+        var options = Convert.SerializeToLua (config);
         BoxNative.cfg (options);
     }
 }

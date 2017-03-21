@@ -19,39 +19,11 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.index;
-
-import tarantool.index.native.IndexNative;
+package tarantool.mapping;
 
 /**
- *  Tarantool index
+ *  Object for CRUD
  */
-class Index {
-
-    /**
-     *  Index name
-     */    
-    public var name (default, null) : String;
-
-    /**
-     *  Native index object
-     */    
-    private var indexObject : IndexNative;
-
-    /**
-     *  Create
-     *  @param name - index name
-     */
-    public static function create (name : String) : Index {        
-        return null;
-    }
-
-    /**
-     *  Constructor
-     */
-     @:allow(tarantool.space.Space)
-    private function new (indexObject : IndexNative, name : String) {
-        this.indexObject = indexObject;
-        this.name = name;
-    }    
+class MappedObject {
+    
 }

@@ -23,7 +23,12 @@ package tarantool.space;
 
 import tarantool.space.native.SpaceNative;
 import tarantool.space.native.SpaceObjectNative;
+import tarantool.index.native.IndexNative;
 import tarantool.index.Index;
+import tarantool.mapping.MappedObject;
+import tarantool.util.Convert;
+import tarantool.index.IndexOptions;
+import lua.Table;
 
 /**
  *  Tarantool space
@@ -43,10 +48,7 @@ class Space {
      */
     public inline static function create (name : String) : Space {
         var obj = SpaceNative.create (name);
-        var space = new Space ();
-        space.name = name;
-        space.spaceObject = obj;
-        return space;
+        return new Space (obj, name);
     }
 
     /**
@@ -55,24 +57,46 @@ class Space {
      *  @return Space
      */
     public inline static function get (name : String) : Space {
-        var space = new Space ();
-        space.name = name;
-        space.spaceObject = untyped box.space[name];
-        return space;
+        var obj = untyped box.space[name];
+        return new Space (obj, name);
     }
 
     /**
      *  Create index in space
      */
-    public inline function createIndex (name : String) : Index {
-        var obj = new Index ();
-        obj.name = name;
-        obj.indexObject = spaceObject.create_index (name);
-        return obj;
+    public function createIndex (name : String, ?options : IndexOptions) : Index {
+        var idx : IndexNative = null;
+
+        if (options != null) {
+            var table : Dynamic = Convert.SerializeToLua (options);
+            idx = spaceObject.create_index (name, table);
+        } else {
+            idx = spaceObject.create_index (name);
+        }
+                
+        return new Index (idx, name);
     }
 
     /**
-     *  Disable public constructor
+     *  Insert array of data in space
      */
-    private function new () {}    
+    public function insertArray (data : Array<Dynamic>) {        
+        var table = Convert.ArrayToTable (data);
+        spaceObject.auto_increment (table);
+    }
+
+    /**
+     *  Insert mapped object in space
+     */
+    public function insertObject (data : MappedObject) {
+        throw "Not implemented";
+    }
+
+    /**
+     *  Constructor
+     */
+    private function new (spaceObject : SpaceObjectNative, name : String) {
+        this.spaceObject = spaceObject;
+        this.name = name;
+    }    
 }

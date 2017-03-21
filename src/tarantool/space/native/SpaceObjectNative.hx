@@ -34,4 +34,18 @@ extern class SpaceObjectNative {
      *  @return Dynamic
      */
     public function create_index (name : String, ?options : AnyTable) : IndexNative;
+
+    /**
+     *  Insert data
+     *  @param data - some data
+     *  @return AnyTable
+     */
+    public function insert (data : AnyTable) : AnyTable;
+
+    /**
+     *  Insert a new tuple using an auto-increment primary key. 
+     *  @param data - some data
+     *  @return AnyTable
+     */
+    public function auto_increment (data : AnyTable) : AnyTable;
 }

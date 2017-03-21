@@ -21,37 +21,42 @@
 
 package tarantool.index;
 
-import tarantool.index.native.IndexNative;
-
 /**
- *  Tarantool index
+ *  Options for create index
  */
-class Index {
+typedef IndexOptions = {
+    /**
+     *  Type of index
+    **/
+    ?type : IndexType,
 
     /**
-     *  Index name
-     */    
-    public var name (default, null) : String;
+     *  Unique identifier
+    **/
+    ?id : Int,
 
     /**
-     *  Native index object
-     */    
-    private var indexObject : IndexNative;
+     *  Index is unique
+    **/
+    ?unique : Bool,
 
     /**
-     *  Create
-     *  @param name - index name
-     */
-    public static function create (name : String) : Index {        
-        return null;
-    }
+     *  No error if duplicate name
+    **/
+    ?if_not_exists : Bool,
 
     /**
-     *  Constructor
-     */
-     @:allow(tarantool.space.Space)
-    private function new (indexObject : IndexNative, name : String) {
-        this.indexObject = indexObject;
-        this.name = name;
-    }    
+     *  Fields
+    **/
+    ?parts : Array<IndexPart>,
+
+    /**
+     *  Affects RTREE only
+    **/
+    ?dimension : Int,
+
+    /**
+     *  Affects RTREE only
+    **/
+    ?distance : DistanceType
 }
