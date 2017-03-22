@@ -24,9 +24,13 @@ package tarantool.index;
 /**
  *  Index types
 **/
-enum IndexType {
-    hash;
-    tree;
-    bitset;
-    rtree;
+@:enum
+abstract IndexType(String) from String to String {
+    var Hash = "hash";
+
+    var Tree = "tree";
+
+    var bitset = "Bitset";
+
+    var Rtree = "rtree";
 }

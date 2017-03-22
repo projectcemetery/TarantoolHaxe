@@ -28,35 +28,35 @@ typedef IndexOptions = {
     /**
      *  Type of index
     **/
-    ?type : IndexType,
+    @:optional var type : IndexType,
 
     /**
      *  Unique identifier
     **/
-    ?id : Int,
+    @:optional var id : Int,
 
     /**
      *  Index is unique
     **/
-    ?unique : Bool,
+    @:optional var unique : Bool,
 
     /**
      *  No error if duplicate name
     **/
-    ?if_not_exists : Bool,
+    @:optional var if_not_exists : Bool,
 
     /**
      *  Fields
     **/
-    ?parts : Array<IndexPart>,
+    @:optional var parts : Array<IndexPart>,
 
     /**
      *  Affects RTREE only
     **/
-    ?dimension : Int,
+    @:optional var dimension : Int,
 
     /**
      *  Affects RTREE only
     **/
-    ?distance : DistanceType
+    @:optional var distance : DistanceType
 }

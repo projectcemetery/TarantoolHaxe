@@ -28,7 +28,7 @@ class ErrorHandler extends Handler {
     /**
      *  Callback to process error
      */
-    private var _onError : HttpContext -> HttpStatus -> Void;
+    private var onError : HttpContext -> HttpStatus -> Void;
 
     /**
      *  Process error
@@ -37,9 +37,9 @@ class ErrorHandler extends Handler {
         c.response.reset ();
         c.response.status = err;
 
-        if (_onError != null) {
+        if (onError != null) {
             try {                
-                _onError (c, err);
+                onError (c, err);
             } catch (e : Dynamic) {
                 c.response.reset ();
                 c.response.status = HttpStatus.Internal;
@@ -53,7 +53,7 @@ class ErrorHandler extends Handler {
      *  Constructor
      */
     public function new (call : HttpContext -> HttpStatus -> Void) {
-        _onError = call;
+        onError = call;
     }    
 
     /**

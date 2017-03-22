@@ -19,9 +19,15 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import tarantool.fiber.Fiber;
+import chocolate.Chocolate.App;
+import chocolate.Request;
+import chocolate.response.Response;
+import zephyr.HtmlBuilder.*;
 
 class Test {
     static function main() {
+        App.get ("/", function (r : Request) : Response {
+            return html ();
+        });
     }    
 }

@@ -1,5 +1,6 @@
 -cp src
 -main Test
+-dce full
 -D lua_jit
 -lib tink_url
 -lua out/main.lua

@@ -35,12 +35,12 @@ abstract Response (AbstractResponse) {
     }
 
     /**
-     *  Convert String to Response
+     *  Convert everything that have toString() to Response
      *  @param s - any string
      *  @return Response
      */
-    @:from public static inline function fromString (s : String) : Response {
-        return new Response (new StringResponse (s));
+    @:from public static inline function fromStringAble (s : { function toString () : String; }) : Response {
+        return new Response (new StringResponse (s.toString ()));
     }
 
     /**

@@ -21,9 +21,7 @@
 
 package zephyr.tag;
 
-import chocolate.response.AbstractResponse;
-
-class Tag extends AbstractResponse {
+class Tag {
     /**
      *  Child tags
      */
@@ -109,10 +107,10 @@ class Tag extends AbstractResponse {
      *  Translate all tags to string
      *  @return String
      */
-    override public function toString () : String {        
-        var s = renderName ();        
-        renderChilds (s);        
-        closeTag (s);        
+    public function toString () : String {        
+        var s = renderName ();
+        renderChilds (s);
+        closeTag (s);
         return s.toString ();
     }
 }

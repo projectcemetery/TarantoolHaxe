@@ -86,7 +86,7 @@ class HttpRequest {
      */
     private function readBody (channel : TcpSocket) : Void {
         body = null;
-        if (method == HttpMethod.get) return;
+        if (method == HttpMethod.Get) return;
 
         if (headers.exists ("Content-Length")) {
             var len = Std.parseInt (headers ["Content-Length"]);

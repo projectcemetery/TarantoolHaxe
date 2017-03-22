@@ -30,119 +30,119 @@ import tarantool.socket.Peer;
 import tarantool.socket.TcpSocket;
 
 /**
-    State of work
+ *  State of work
 **/
 enum WorkState {
     /**
-        Handshake with client
+     *  Handshake with client
     **/
-    HANDSHAKE;   
+    Handshake;   
 
     /**
-        Get frame type
+     *  Get frame type
     **/
-    FRAME_TYPE;
+    TypeFrame;
     /**
-        Get length
+     *  Get length
     **/
-    LENGTH;
+    Length;
     /**
-        Get data
+     *  Get data
     **/
-    DATA;
+    Data;
     /**
      *  Connection closed
      */
-    CLOSE;
+    Close;
 }
 
 /**
-    Handle websocket data
+ *  Handle websocket data
 **/
-class InternalHandler extends Output { 
+class InternalHandler extends Output {
 
     /**
-        Message mask size
+     *  Message mask size
     **/
     static inline var MASK_SIZE = 4;
 
     /**
-        One byte max body size
+     *  One byte max body size
     **/
     static inline var ONE_BYTE_MAX_BODY_SIZE = 125;
 
     /**
-        Two byte body size
+     *  Two byte body size
     **/
     static inline var TWO_BYTE_BODY_SIZE = 126;
 
     /**
-        Eight byte body size
+     *  Eight byte body size
     **/
     static inline var EIGHT_BYTE_BODY_SIZE = 127;
 
     /**
-        Sec-WebSocket-Key header name
+     *  Sec-WebSocket-Key header name
     **/
     static inline var SecWebSocketKey = "Sec-WebSocket-Key";
 
     /**
-        Web socket GUID
+     *  Web socket GUID
     **/
     static inline var WS_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
     /**
-        Client peer
+     *  Client peer
     **/
     var peer : Peer;
 
     /**
-        Channel for data IO
+     *  Channel for data IO
     **/
     var channel : TcpSocket;
 
     /**
-        State of handler
+     *  State of handler
     **/
     var state : WorkState;
 
     /**
-        Handshake headers
+     *  Handshake headers
     **/
     var headers : Map<String, String>;
 
     /**
-        Frame type
+     *  Frame type
     **/
     var frameType : Int;
 
     /**
-        Packet length
+     *  Packet length
     **/
     var packLen : Int;
 
     /**
-        On connect callback
+     *  On connect callback
     **/
     public var onConnect : OnWSConnect;
 
     /**
-        On normal web socket close
+     *  On normal web socket close
     **/
     public var onClose : OnWSClose;
 
     /**
-        On data callback
+     *  On data callback
     **/
     public var onData : OnWSData;
 
     /**
-        On error callback
+     *  On error callback
     **/
     public var onError : OnWSError;
 
     /**
-        Decode hex string to Bytes
+     *  Decode hex string to Bytes
     **/
     private function decode (str : String) {
         var base = Bytes.ofString("0123456789abcdef");
@@ -150,7 +150,7 @@ class InternalHandler extends Output {
     }
 
     /**
-        Send error through OnError
+     *  Send error through OnError
     **/
     private function pushError (e : Dynamic) {        
         if (onError != null) {
@@ -159,7 +159,7 @@ class InternalHandler extends Output {
     }
 
     /**
-        Process handshake from client
+     *  Process handshake from client
     **/
     private function processHandshake () : Void {        
         var key = headers[SecWebSocketKey] + WS_GUID;
@@ -172,12 +172,12 @@ class InternalHandler extends Output {
         stringBuffer.add ('Sec-WebSocket-Accept: ${shaKey}\r\n');
         stringBuffer.add ("\r\n");
         channel.output.writeString (stringBuffer.toString ());
-        state = WorkState.FRAME_TYPE;
+        state = WorkState.TypeFrame;
         onConnect (peer, this);        
     }
 
     /**
-        Process frame type, opcode, mask, len part
+     *  Process frame type, opcode, mask, len part
     **/
     private function processFrame () : Void {
         var binaryData = channel.input.read (2);
@@ -191,14 +191,14 @@ class InternalHandler extends Output {
         packLen += len ^ 0x80;
 
         if (packLen > ONE_BYTE_MAX_BODY_SIZE) {
-            state = WorkState.LENGTH;
+            state = WorkState.Length;
         } else {
-            state = WorkState.DATA;
+            state = WorkState.Data;
         }
     }
 
     /**
-        Process length
+     *  Process length
     **/
     private function processLength () : Void {
         if (packLen == TWO_BYTE_BODY_SIZE) {
@@ -210,23 +210,23 @@ class InternalHandler extends Output {
             throw "Wrong length type";
         }
 
-        state = WorkState.DATA;
+        state = WorkState.Data;
     }
 
     /**
-        Process data
+     *  Process data
     **/
     private function processData () : Void {
         var binaryData = channel.input.read (packLen + MASK_SIZE);
 
         switch (frameType) {
-            case FrameType.CLOSE: {
+            case FrameType.Close: {
                 onClose (null);
-                state = WorkState.CLOSE;
+                state = WorkState.Close;
                 Disconnect ();
             }
-            case FrameType.TEXT |
-                 FrameType.BINARY: 
+            case FrameType.Text |
+                 FrameType.Binary:
             {
                 var mask = binaryData.sub (0, MASK_SIZE);
                 var data = binaryData.sub (MASK_SIZE, binaryData.length - MASK_SIZE);                
@@ -241,14 +241,14 @@ class InternalHandler extends Output {
 
                 // On data
                 onData (peer, res, this);
-                state = WorkState.FRAME_TYPE;
+                state = WorkState.TypeFrame;
             }            
             default: throw "Unknown frame";
         }                  
     }
 
     /**
-        Disconnect connection
+     *  Disconnect connection
     **/
     private function Disconnect () {
         try {
@@ -265,21 +265,21 @@ class InternalHandler extends Output {
     public function new (context : HttpContext) {
         channel = context.response.channel;
         headers = context.request.headers;
-        state = WorkState.HANDSHAKE;
+        state = WorkState.Handshake;
     }
 
     /**
-        Start to process data from client
+     *  Start to process data from client
     **/
     public function start () : Void {
         try {
             while (true) {
                 switch (state) {
-                    case WorkState.HANDSHAKE: processHandshake ();
-                    case WorkState.FRAME_TYPE: processFrame ();
-                    case WorkState.LENGTH: processLength ();
-                    case WorkState.DATA: processData ();
-                    case WorkState.CLOSE: break;
+                    case WorkState.Handshake: processHandshake ();
+                    case WorkState.TypeFrame: processFrame ();
+                    case WorkState.Length: processLength ();
+                    case WorkState.Data: processData ();
+                    case WorkState.Close: break;
                 }
             }
         }
@@ -290,22 +290,22 @@ class InternalHandler extends Output {
     }    
 
     /**
-        Write bunary data
+     *  Write bunary data
     **/
     override public function write (data: Bytes) : Void {
          var frame = Bytes.alloc (2 + data.length);
-        frame.set (0, 0x80 + FrameType.BINARY);  // FIN, BINARY
+        frame.set (0, 0x80 + FrameType.Binary);  // FIN, BINARY
         frame.set (1, data.length);
         frame.blit (2, data, 0, data.length);
         channel.output.write (frame);
     }
 
     /**
-        Write string
+     *  Write string
     **/
     override public function writeString (data: String) : Void {
         var frame = Bytes.alloc (2 + data.length);
-        frame.set (0, 0x80 + FrameType.TEXT);  // FIN, BINARY
+        frame.set (0, 0x80 + FrameType.Text);  // FIN, BINARY
         frame.set (1, data.length);
         var dat = Bytes.ofString (data);        
         frame.blit (2, dat, 0, dat.length);
@@ -313,7 +313,7 @@ class InternalHandler extends Output {
     }
 
     /**
-        Close socket
+     *  Close socket
     **/
     override public function close () : Void {
         channel.output.close ();

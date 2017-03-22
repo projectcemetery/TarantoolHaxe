@@ -32,17 +32,17 @@ class HttpServer {
     /**
      *  Server socket
      */
-    var _socket : TcpSocket;
+    var socket : TcpSocket;
 
     /**
      *  First handler
      */
-    var _firstHandler : Handler;
+    var firstHandler : Handler;
 
     /**
      *  Last handler
      */
-    var _lastHandler : Handler;
+    var lastHandler : Handler;
 
     /**
      *  Process client requests
@@ -55,12 +55,10 @@ class HttpServer {
                 var request = new HttpRequest (channel);
                 var response = new HttpResponse (channel);
                 var context = new HttpContext (request, response);
-                _firstHandler.process (context);
+                firstHandler.process (context);
             }
         } catch (e : SocketError) {
-            //var host = channel.peer.host;
-            //var port = channel.peer.port;
-            //trace ('$host:$port disconnected');
+            // TODO: process error
         }        
         catch (e : Dynamic) {
             trace (e);
@@ -72,7 +70,7 @@ class HttpServer {
      *  Constructor
      */
     public function new () {
-        _socket = new TcpSocket ();        
+        socket = new TcpSocket ();        
     }
 
     /**
@@ -80,13 +78,13 @@ class HttpServer {
      *  @param handler - request handler
      */
     public function addHandler (handler : Handler) : Void {        
-        if (_firstHandler == null) {
-            _firstHandler = handler;
-            _lastHandler = handler;
+        if (firstHandler == null) {
+            firstHandler = handler;
+            lastHandler = handler;
         }
 
-        _lastHandler.Next = handler;
-        _lastHandler = handler;
+        lastHandler.Next = handler;
+        lastHandler = handler;
     }
 
     /**
@@ -95,9 +93,9 @@ class HttpServer {
      *  @param port - Example: 80, 8080
      */
     public function bind (host : String, port : Int) : Void {
-        if (_firstHandler == null) throw "No handlers";
+        if (firstHandler == null) throw "No handlers";
 
-        _socket.bind (host, port, function (c : TcpSocket) {
+        socket.bind (host, port, function (c : TcpSocket) {
             processClient (c);
         });
     }

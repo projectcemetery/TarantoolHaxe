@@ -30,14 +30,14 @@ class JsonResponse extends AbstractResponse {
      *  Constructor
      *  @param s - Any object that can by translated to json
      */
-    public function new (s : Any) {        
+    public function new (s : Any) {
     }
 
     /**
-     *  Serialize json
+     *  Serialize to string
      *  @return String
      */
-    public function toString () : String {
+    override public function toString () : String {
         return "";
     }
 }

@@ -24,40 +24,41 @@ package tarantool.index;
 /**
  *  Type of index field
 **/
-enum IndexFieldType {
+@:enum
+abstract IndexFieldType(String) from String to String {
     /**
      *  Unsigned integers between 0 and 18446744073709551615, about 18 quintillion.
      *  Legal in memtx TREE or HASH indexes, and in vinyl TREE indexes
     **/
-    unsigned;
+    var Unsigned = "unsigned";
 
     /**
      *  Any set of octets, up to the maximum length. May also be called ‘str’. 
      *  Legal in memtx TREE or HASH or BITSET indexes, and in vinyl TREE indexes
     **/
-    string;
+    var String = "string";
 
     /**
      *  Integers between -9223372036854775808 and 18446744073709551615. May also be called ‘int’.
      *  Legal in memtx TREE or HASH indexes, and in vinyl TREE indexes.
     **/
-    integer;
+    var Integer = "integer";
 
     /**
      *  Integers between -9223372036854775808 and 18446744073709551615, single-precision floating point numbers, or double-precision floating point numbers. 
      *  Legal in memtx TREE or HASH indexes, and in vinyl TREE indexes.
     **/    
-    number;
+    var Number = "number";
 
     /**
      *  Array of integers between -9223372036854775808 and 9223372036854775807. Legal in memtx RTREE indexes
     **/
-    array;
+    var Array = "array";
 
     /**
      *  Booleans (true or false), or integers between -9223372036854775808 and 18446744073709551615, or single-precision floating point numbers, or double-precison floating-point numbers, or strings. 
      *  When there is a mix of types, the key order is: booleans, then numbers, then strings. 
      *  Legal in memtx TREE or HASH indexes, and in vinyl TREE indexes
     **/
-    scalar;
+    var Scalar = "scalar";
 }

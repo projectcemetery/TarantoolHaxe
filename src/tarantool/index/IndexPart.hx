@@ -28,10 +28,10 @@ typedef IndexPart = {
     /**
         Number of field for index
     **/    
-    field_no : Int,
+    var field_no : Int,
 
     /**
         Type of field
     **/
-    type : IndexFieldType
+    var type : IndexFieldType
 }

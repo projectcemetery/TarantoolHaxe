@@ -24,12 +24,10 @@ package tarantool.index;
 /**
  *  Distance types
 **/
-enum DistanceType {
-    EUCLID;
-    MANHATTAN;
+@:enum
+abstract DistanceType(String) from String to String {
+    
+    var Euclid = "EUCLID";
 
-/**
- *  euclid;
-    manhattan;
- */
+    var Manhattan = "MANHATTAN";
 }

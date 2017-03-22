@@ -25,10 +25,8 @@ import tarantool.space.native.SpaceNative;
 import tarantool.space.native.SpaceObjectNative;
 import tarantool.index.native.IndexNative;
 import tarantool.index.Index;
-import tarantool.mapping.MappedObject;
 import tarantool.util.Convert;
 import tarantool.index.IndexOptions;
-import lua.Table;
 
 /**
  *  Tarantool space
@@ -80,16 +78,17 @@ class Space {
     /**
      *  Insert array of data in space
      */
-    public function insertArray (data : Array<Dynamic>) {        
+    public function insert (data : Array<Dynamic>) {
         var table = Convert.ArrayToTable (data);
-        spaceObject.auto_increment (table);
+        spaceObject.insert (table);
     }
 
     /**
-     *  Insert mapped object in space
+     *  Insert array of data in space with autoincrement of primary key
      */
-    public function insertObject (data : MappedObject) {
-        throw "Not implemented";
+    public function auto_increment (data : Array<Dynamic>) {
+        var table = Convert.ArrayToTable (data);
+        spaceObject.auto_increment (table);
     }
 
     /**

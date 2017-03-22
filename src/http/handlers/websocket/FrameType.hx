@@ -24,12 +24,13 @@ package http.handlers.websocket;
 /**
  *  Web socket frame types
  */
-@:final
-class FrameType {
-    public static inline var CONTINUE = 0x00;
-    public static inline var TEXT = 0x01;
-    public static inline var BINARY = 0x02;
-    public static inline var CLOSE = 0x08;
-    public static inline var PING = 0x09;
-    public static inline var PONG = 0x0A;
+@:enum
+@:native("t.FrameType")
+abstract FrameType(Int) from Int to Int {
+    var Continue = 0x00;
+    var Text = 0x01;
+    var Binary = 0x02;
+    var Close = 0x08;
+    var Ping = 0x09;
+    var Pong = 0x0A;
 }

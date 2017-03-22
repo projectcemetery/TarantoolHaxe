@@ -28,13 +28,13 @@ class WebSocketHandler extends Handler {
     /**
      *  Callbacks
      */
-    private var _handler : IWSHandler;
+    private var handler : IWSHandler;
     
     /**
      *  Constructor
      */
     public function new (handler : IWSHandler) {
-        _handler = handler;   
+        this.handler = handler;   
     }
 
     /**
@@ -44,10 +44,10 @@ class WebSocketHandler extends Handler {
     public override function process (context : HttpContext) : Void {
         if (context.request.headers.exists (HttpHeaderType.Upgrade)) {
             var ih = new InternalHandler (context);
-            ih.onConnect = _handler.onConnect;
-            ih.onData = _handler.onData;
-            ih.onClose = _handler.onClose;
-            ih.onError = _handler.onError;
+            ih.onConnect = handler.onConnect;
+            ih.onData = handler.onData;
+            ih.onClose = handler.onClose;
+            ih.onError = handler.onError;
             ih.start ();            
         } else {            
             callNext (context);
