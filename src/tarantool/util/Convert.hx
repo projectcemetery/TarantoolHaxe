@@ -78,4 +78,21 @@ class Convert {
         }
         return tbl;
     }
+
+    /**
+     *  Convert lua table to dynamic
+    **/
+    public static function FromTable (table : AnyTable) : Array<Dynamic> {
+        var res = new Array<Dynamic> ();
+        Table.foreach (table, function (i, it) {
+            var typ = untyped type (it);
+            if (typ == 'cdata') {
+                var tab = untyped it.totable ();
+                res.push (FromTable (tab));
+            } else {                
+                res.push (it);
+            }
+        });
+        return res;
+    }
 }

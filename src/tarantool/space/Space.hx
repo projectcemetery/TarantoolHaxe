@@ -31,6 +31,7 @@ import tarantool.index.IndexOptions;
 /**
  *  Tarantool space
  */
+@:native("t.space")
 class Space {
     private var spaceObject : SpaceObjectNative;
 
@@ -54,10 +55,18 @@ class Space {
      *  @param name - name of space
      *  @return Space
      */
-    public inline static function get (name : String) : Space {
+    public inline static function getByName (name : String) : Space {
         var obj = untyped box.space[name];
         return new Space (obj, name);
     }
+
+    /**
+     *  Constructor
+     */
+    private function new (spaceObject : SpaceObjectNative, name : String) {
+        this.spaceObject = spaceObject;
+        this.name = name;
+    }    
 
     /**
      *  Create index in space
@@ -92,10 +101,45 @@ class Space {
     }
 
     /**
-     *  Constructor
+     *  Select data by key
+     *  @param key - array of some key
+     *  @return Array<Dynamic>
      */
-    private function new (spaceObject : SpaceObjectNative, name : String) {
-        this.spaceObject = spaceObject;
+    public function select (?key : Array<Dynamic>) : Array<Dynamic> {
+        return {
+            if (key != null) {
+                var table = Convert.ArrayToTable (key);
+                Convert.FromTable (spaceObject.select (table));
+            } else {
+                Convert.FromTable (spaceObject.select ());
+            }
+        }        
+    }
+
+    /**
+     *  Get one record
+     *  @param key - some key
+     *  @return Array<Dynamic>
+     */
+    public function get (key : Array<Dynamic>) : Array<Dynamic> {
+        return {
+            var table = Convert.ArrayToTable (key);
+            Convert.FromTable (spaceObject.get (table));            
+        }        
+    }
+
+    /**
+     *  Drop space
+     */
+    public inline function drop ()  {
+        spaceObject.drop ();
+    }
+
+    /**
+     *  Rename space
+     */
+    public inline function rename (name : String)  {
+        spaceObject.rename (name);
         this.name = name;
-    }    
+    }
 }
