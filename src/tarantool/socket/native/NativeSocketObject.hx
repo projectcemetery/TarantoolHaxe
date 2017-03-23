@@ -27,6 +27,7 @@ import lua.Table;
  *  Native tarantool socket object
  */
 extern class NativeSocketObject {
+    
     /**
      *  Get socket name
      *  @return String

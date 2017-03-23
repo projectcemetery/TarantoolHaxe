@@ -96,6 +96,7 @@ class Space {
 
         if (options != null) {
             var table : Dynamic = Convert.SerializeToLua (options);
+            trace (table);
             idx = spaceObject.create_index (name, table);
         } else {
             idx = spaceObject.create_index (name);
@@ -111,7 +112,17 @@ class Space {
      */
     public inline function insert (tuple : Tuple) : Tuple {
         return spaceObject.insert (tuple);
-    }    
+    }
+
+    /**
+     *  Insert some object
+     *  @param obj - object
+     *  @return Dynamic
+     */
+    public function insertObject (obj : Dynamic) {
+        var object = Convert.SerializeToLua (obj);
+        spaceObject.insert (object);
+    }
 
     /**
      *  Select tuples by key

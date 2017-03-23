@@ -22,16 +22,17 @@
 package tarantool.index;
 
 /**
-    field-number + type
+ *  field-number + type
 **/
-typedef IndexPart = {
+@:structInit
+class IndexPart {
     /**
         Number of field for index
     **/    
-    var field_no : Int;
+    public var field_no : Int;
 
     /**
         Type of field
     **/
-    var type : IndexFieldType;
+    public var type : IndexFieldType;    
 }

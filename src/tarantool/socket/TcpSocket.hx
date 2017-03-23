@@ -64,10 +64,10 @@ class TcpSocket {
         sock = s;
         var nameTable = sock.name ();
         var host = untyped nameTable["host"];
-        var port = untyped nameTable["port"];
+        var port = untyped nameTable["port"];        
         peer = new Peer (host, port);
         input = new SocketInput (sock);
-        output = new SocketOutput (sock);
+        output = new SocketOutput (sock);        
     }
 
     /**

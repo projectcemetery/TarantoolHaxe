@@ -60,14 +60,14 @@ class HttpRequest {
         Read all headers
     **/
     private function readHeaders (channel : TcpSocket) : Void {
+
         var text = channel.input.readLine ();
         if (text == null) throw "Connection closed";    // TODO: create internal error class to catch them
         var line = text.trim ();
         var parts = line.split (" ");
         if (parts.length != 3) throw HttpStatus.BadRequest;
-        method = HttpMethod.createByName (parts[0].toLowerCase ());
+        method = parts[0].toUpperCase ();
         url = parts[1];
-        //trace ('$method $url');
 
         headers = new Map<String, String> ();
 
@@ -101,8 +101,8 @@ class HttpRequest {
      *  Constructor
      *  @param channel - 
      */
-    public function new (channel : TcpSocket) {                
-        readHeaders (channel);
-        readBody (channel);
+    public function new (channel : TcpSocket) {        
+        readHeaders (channel);        
+        readBody (channel);        
     }
 }

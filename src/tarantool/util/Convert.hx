@@ -71,6 +71,7 @@ class Convert {
         else if (Reflect.isObject (object)) {
             var table = AnyTable.create ();
             var fields = Reflect.fields (object);
+            trace (fields);
             for (field in fields) {
                 var prop = Reflect.getProperty (object, field);
                 var obj = SerializeToLua (prop);

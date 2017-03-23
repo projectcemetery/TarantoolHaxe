@@ -51,7 +51,7 @@ class HttpServer {
      */
     function processClient (channel : TcpSocket) {        
         try {
-            while (true) {
+            while (true) {                
                 var request = new HttpRequest (channel);
                 var response = new HttpResponse (channel);
                 var context = new HttpContext (request, response);
@@ -59,8 +59,9 @@ class HttpServer {
             }
         } catch (e : SocketError) {
             // TODO: process error
+            trace (e);
         }        
-        catch (e : Dynamic) {
+        catch (e : Dynamic) {            
             trace (e);
             channel.output.close ();
         }

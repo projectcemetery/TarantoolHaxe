@@ -21,7 +21,6 @@
 
 package tarantool.box;
 
-import lua.Table;
 import tarantool.box.native.BoxNative;
 import tarantool.util.Convert;
 
@@ -38,8 +37,16 @@ class Box {
     /**
      *  Start box
      */
-    public static function cfg (config : BoxOptions) {
+    public inline static function cfg (config : BoxOptions) {
         var options = Convert.SerializeToLua (config);
         BoxNative.cfg (options);
+    }
+
+    /**
+     *  Call once
+     *  @param call - callback
+     */
+    public inline static function once (name : String, call : Void -> Void) {
+        BoxNative.once (name, call);
     }
 }

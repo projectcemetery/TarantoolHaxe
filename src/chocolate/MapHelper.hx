@@ -19,24 +19,23 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.box.native;
+package chocolate;
 
-import lua.Table;
-
- /**
-  *  Extern for tarantool box
-  */
- @:luaRequire("box")
- extern class BoxNative {
+/**
+ *  Static extensions for map
+ */
+class MapHelper {
 
     /**
-     *  Start box with configuration
+     *  Convert map to object
+     *  @param sender - 
      */
-    public static function cfg (config : AnyTable) : Void;
-
-    /**
-     *  Run once
-     *  @param call - function to call
-     */
-    public static function once (name : String, call : Void -> Void) : Void;
+    public static function as<T> (sender : Map<String, Dynamic>, cls : Class<T>) : T {
+        var inst = Type.createEmptyInstance (cls);
+        for (k in sender.keys()) {
+             var val = sender[k];
+             Reflect.setField (inst, k, val);
+        }
+    	return inst;
+    }
 }
