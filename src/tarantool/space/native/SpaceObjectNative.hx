@@ -74,14 +74,14 @@ extern class SpaceObjectNative {
 
     /**
      *  Replace tuple
-     *  @param data - tuple
+     *  @param tuple - tuple
      *  @return AnyTable
      */
     public function replace (tuple : AnyTable) : AnyTable;
 
     /**
      *  Replace tuple
-     *  @param data - tuple
+     *  @param tuple - tuple
      *  @return AnyTable
      */
     public function put (tuple : AnyTable) : AnyTable;

@@ -19,45 +19,11 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.index;
+package tarantool.box;
+
+import haxe.extern.EitherType;
 
 /**
- *  Options for create index
+ *  Data for key
  */
-typedef IndexOptions = {
-    
-    /**
-     *  Type of index
-    **/
-    @:optional var type : IndexType;
-
-    /**
-     *  Unique identifier
-    **/
-    @:optional var id : Int;
-
-    /**
-     *  Index is unique
-    **/
-    @:optional var unique : Bool;
-
-    /**
-     *  No error if duplicate name
-    **/
-    @:optional var if_not_exists : Bool;
-
-    /**
-     *  Fields
-    **/
-    @:optional var parts : Array<IndexPart>;
-
-    /**
-     *  Affects RTREE only
-    **/
-    @:optional var dimension : Int;
-
-    /**
-     *  Affects RTREE only
-    **/
-    @:optional var distance : DistanceType;
-}
+typedef KeyType = EitherType<ScalarType, Tuple>;

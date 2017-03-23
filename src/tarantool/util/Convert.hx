@@ -22,11 +22,25 @@
 package tarantool.util;
 
 import lua.Table;
+import tarantool.box.Tuple;
 
 /**
  *  Convert haxe data to lua
  */
 class Convert {
+
+    /**
+     *  Convert Array<Dynamic> to lua.Table
+    **/
+    private static function ArrayToTable (data : Array<Dynamic>) : AnyTable {
+        var tbl : Table<Dynamic, Dynamic> = Table.create ();
+        for (i in 1...data.length + 1) {
+            var d = data[i - 1];
+            tbl[i] = SerializeToLua (d);
+        }
+        return tbl;
+    }
+
     /**
      *  Check type is simple
     **/
@@ -35,7 +49,7 @@ class Convert {
             return true;
         }
         return false;
-    }
+    }    
 
     /**
      *  Serialize object to lua types
@@ -65,30 +79,18 @@ class Convert {
             return table;
         }
         throw "Unsupported type";
-    }
-
-    /**
-     *  Convert Array<Dynamic> to lua.Table
-    **/
-    public static function ArrayToTable (data : Array<Dynamic>) : AnyTable {
-        var tbl : Table<Dynamic, Dynamic> = Table.create ();
-        for (i in 1...data.length + 1) {
-            var d = data[i - 1];
-            tbl[i] = SerializeToLua (d);
-        }
-        return tbl;
-    }
+    }    
 
     /**
      *  Convert lua table to dynamic
     **/
-    public static function FromTable (table : AnyTable) : Array<Dynamic> {
+    public static function TableToTuple (table : AnyTable) : Tuple {
         var res = new Array<Dynamic> ();
         Table.foreach (table, function (i, it) {
             var typ = untyped type (it);
             if (typ == 'cdata') {
                 var tab = untyped it.totable ();
-                res.push (FromTable (tab));
+                res.push (TableToTuple (tab));
             } else {                
                 res.push (it);
             }

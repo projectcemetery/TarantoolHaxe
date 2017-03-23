@@ -19,45 +19,22 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.index;
+package tarantool.space;
 
-/**
- *  Options for create index
- */
-typedef IndexOptions = {
-    
-    /**
-     *  Type of index
-    **/
-    @:optional var type : IndexType;
+typedef UpdateQuery = {
 
     /**
-     *  Unique identifier
-    **/
-    @:optional var id : Int;
+     *  Operation type 
+     */
+    var operator : OperatorType;
 
     /**
-     *  Index is unique
-    **/
-    @:optional var unique : Bool;
+     *  Field number
+     */
+    var fieldNum : Int;
 
     /**
-     *  No error if duplicate name
-    **/
-    @:optional var if_not_exists : Bool;
-
-    /**
-     *  Fields
-    **/
-    @:optional var parts : Array<IndexPart>;
-
-    /**
-     *  Affects RTREE only
-    **/
-    @:optional var dimension : Int;
-
-    /**
-     *  Affects RTREE only
-    **/
-    @:optional var distance : DistanceType;
+     *  Some value
+     */
+    var value : Dynamic;
 }

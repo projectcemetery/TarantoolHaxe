@@ -24,10 +24,22 @@ import chocolate.Request;
 import chocolate.response.Response;
 import zephyr.HtmlBuilder.*;
 
+import tarantool.box.Box;
+import tarantool.box.Tuple;
+import tarantool.box.ScalarType;
+import tarantool.space.Space;
+import lua.Table;
+
 class Test {
     static function main() {
-        App.get ("/", function (r : Request) : Response {
-            return html ();
+        Box.cfg({
+            listen : 65301
         });
+
+        var space = Space.getByName ("good");        
+        //space.createIndex ("some");
+        //space.auto_increment ([1,2,3, "33"]);
+        var res = space.select(3);
+        trace (space.id);
     }    
 }
