@@ -19,10 +19,9 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.box;
+package tarantool.util;
 
 import lua.Table;
-import tarantool.util.Convert;
 
 /**
  *  Immutable tuple of any data
@@ -88,5 +87,14 @@ abstract Tuple(Array<Dynamic>) from Array<Dynamic> to Array<Dynamic> {
      */
     @:from public static inline function fromTable (table : AnyTable) : Tuple {
        return Convert.TableToTuple (table);
+    }
+
+    /**
+     *  Convert tuple object to tuple
+     *  @param table - 
+     *  @return Tuple
+     */
+    @:from public static inline function fromTupleObject (table : ITupleObject) : Tuple {
+       return Convert.tupleObjectToArray (table);
     }
 }

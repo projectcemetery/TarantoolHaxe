@@ -19,11 +19,12 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.box;
-
-import haxe.extern.EitherType;
+package tarantool.util;
 
 /**
- *  Simple tipes
+ *  Object that converts to tuple
  */
-typedef ScalarType = EitherType<Int, EitherType<Float, EitherType<String, Bool>>>;
+@:autoBuild(tarantool.util.TupleObjectHelper.map())
+interface ITupleObject {
+    public function getFields () : Array<String>;
+}

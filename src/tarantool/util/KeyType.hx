@@ -19,23 +19,11 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.index;
+package tarantool.util;
 
-import tarantool.util.ITupleObject;
+import haxe.extern.EitherType;
 
 /**
- *  field-number + type
-**/
-@:structInit
-class IndexPart implements ITupleObject {
-
-    /**
-     *  Number of field for index
-    **/    
-    public var field_no : Int;
-
-    /**
-     *  Type of field
-    **/
-    public var type : IndexFieldType;    
-}
+ *  Data for key
+ */
+typedef KeyType = EitherType<ScalarType, Tuple>;

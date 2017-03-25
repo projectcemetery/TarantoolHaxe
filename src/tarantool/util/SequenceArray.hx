@@ -19,11 +19,37 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.box;
-
-import haxe.extern.EitherType;
+package tarantool.util;
 
 /**
- *  Data for key
+ *  Join all data in one array
  */
-typedef KeyType = EitherType<ScalarType, Tuple>;
+@:forward
+abstract SequenceArray<T> (SequenceArrayInternal<T>) {
+
+    /**
+     *  Constructor
+     */
+    public function new (arr : SequenceArrayInternal<T>) {
+        this = arr;
+    }
+
+    @:from public static function fromArray<T> (arr : Array<T>) {
+        return new SequenceArray<T> (new SequenceArrayInternal(arr));
+    }
+
+    @:to public function toArray<T> () : Array<T> {
+        return this.array;
+    }
+}
+
+/**
+ *  
+ */
+class SequenceArrayInternal<T> {
+    public var array(default, null) :  Array<T>;
+
+    public function new (arr : Array<T>) {
+        array = arr;
+    }
+}

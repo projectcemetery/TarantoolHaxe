@@ -21,6 +21,8 @@
 
 package tarantool.index;
 
+import tarantool.util.SequenceArray;
+
 /**
  *  Options for create index
  */
@@ -49,7 +51,7 @@ typedef IndexOptions = {
     /**
      *  Fields
     **/
-    @:optional var parts : Array<IndexPart>;
+    @:optional var parts : SequenceArray<IndexPart>;
 
     /**
      *  Affects RTREE only

@@ -59,7 +59,7 @@ class HttpServer {
             }
         } catch (e : SocketError) {
             // TODO: process error
-            trace (e);
+            //trace (e);
         }        
         catch (e : Dynamic) {            
             trace (e);

@@ -24,11 +24,11 @@ package tarantool.space;
 import tarantool.space.native.SpaceNative;
 import tarantool.space.native.SpaceObjectNative;
 import tarantool.index.native.IndexNative;
-import tarantool.box.KeyType;
 import tarantool.index.Index;
-import tarantool.util.Convert;
 import tarantool.index.IndexOptions;
-import tarantool.box.Tuple;
+import tarantool.util.KeyType;
+import tarantool.util.Convert;
+import tarantool.util.Tuple;
 import lua.Table;
 
 /**
@@ -66,12 +66,24 @@ class Space {
     }
 
     /**
+     *  Create new space if not exists
+     *  @param name - space name
+     *  @return Space
+     */
+    public inline static function getOrCreate (name : String) : Space {
+        var obj = untyped box.space[name];
+        if (obj == null) obj = SpaceNative.create (name);                        
+        return new Space (obj, name);                        
+    }
+
+    /**
      *  Get space by name
      *  @param name - name of space
      *  @return Space
      */
     public inline static function getByName (name : String) : Space {
         var obj = untyped box.space[name];
+        if (obj == null) throw 'Space ${name} not exist';
         return new Space (obj, name);
     }
 
@@ -95,8 +107,7 @@ class Space {
         var idx : IndexNative = null;
 
         if (options != null) {
-            var table : Dynamic = Convert.SerializeToLua (options);
-            trace (table);
+            var table = Convert.SerializeToLua (options);            
             idx = spaceObject.create_index (name, table);
         } else {
             idx = spaceObject.create_index (name);
@@ -111,18 +122,9 @@ class Space {
      *  @return replaced Tuple    
      */
     public inline function insert (tuple : Tuple) : Tuple {
-        return spaceObject.insert (tuple);
-    }
-
-    /**
-     *  Insert some object
-     *  @param obj - object
-     *  @return Dynamic
-     */
-    public function insertObject (obj : Dynamic) {
-        var object = Convert.SerializeToLua (obj);
-        spaceObject.insert (object);
-    }
+        var res = spaceObject.insert (tuple);
+        return if (res != null) res.totable () else res;
+    }    
 
     /**
      *  Select tuples by key
@@ -155,15 +157,9 @@ class Space {
      *  @return Array<Dynamic>
      */
     public function get (key : KeyType) : Tuple {
-        return {
-            var table = Convert.SerializeToLua (key);
-            var tup = spaceObject.get (table);
-            if (tup != null) {
-                tup;
-            } else {
-                null;
-            }            
-        }        
+        var table = Convert.SerializeToLua (key);
+        var tup = spaceObject.get (table);
+        return if (tup != null) tup.totable () else null;
     }
 
     /**
