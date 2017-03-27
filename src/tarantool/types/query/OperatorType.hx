@@ -19,22 +19,57 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.space;
+package tarantool.types.query;
 
-typedef UpdateQuery = {
-
-    /**
-     *  Operation type 
-     */
-    var operator : OperatorType;
-
-    /**
-     *  Field number
-     */
-    var fieldNum : Int;
+/**
+ *  Operations
+ */
+@:native("t.OperatorType")
+@:enum
+abstract OperatorType(String) from String to String {
 
     /**
-     *  Some value
+     *   For addition (values must be numeric)
      */
-    var value : Dynamic;
+    var Add = "+";
+
+    /**
+     *  For subtraction (values must be numeric)
+     */
+    var Substract = "-";
+
+    /**
+     *  For bitwise AND (values must be unsigned numeric)
+     */
+    var And = "&";
+
+    /**
+     *  For bitwise OR (values must be unsigned numeric)
+     */
+    var Or = "|";
+
+    /**
+     *  For bitwise XOR (values must be unsigned numeric)
+     */
+    var Xor = "^";
+
+    /**
+     *  For string splice
+     */
+    var Splice = ":";
+
+    /**
+     *  For insertion
+     */
+    var Insert = "!";
+
+    /**
+     *  For deletion
+     */
+    var Delete = "#";
+    
+    /**
+     *  For assignment
+     */
+    var Assign = "=";
 }

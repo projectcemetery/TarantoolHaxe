@@ -19,50 +19,15 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.util;
-
-#if macro
-import haxe.macro.Context;
-import haxe.macro.Expr;
-using haxe.macro.ExprTools;
-using haxe.macro.TypeTools;
-#end
+package tarantool.types.collections;
 
 /**
- *  Macro helper for tuple object
+ *  Object that converts to tuple.
+ *  Example: { 1 : field1, 2 : field2, 3 : field3 }
+ *  DON'T USE reflection for delete field or app will not work properly
  */
-class TupleObjectHelper {
-    #if macro
-    /**
-     *  Create mapping for tuple objects
-     */
-    public macro static function map () : Array<Field> {        
-        var fields = Context.getBuildFields();
-        var block = [];
-        for (field in fields) {
-            block.push (field.name);
-        }
-
-        var pos = Context.currentPos();
-
-        var toDataFunc:Function = {
-            expr: macro {
-                return $v{block};
-            },
-            ret: (macro:Array<String>),
-            args:[]
-        }
-
-        var toDataField:Field = {
-            name: 'getFields',
-            access: [Access.APublic],
-            kind: FieldType.FFun(toDataFunc),
-            pos: pos
-        };   
-
-        fields.push(toDataField);
-        
-        return fields;
-    }
-    #end
+@:native("t.ITupleObject")
+@:autoBuild(tarantool.types.collections.TupleObjectHelper.map())
+interface ITupleObject {
+    public function getFields () : Array<String>;
 }

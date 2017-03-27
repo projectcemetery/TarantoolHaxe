@@ -19,37 +19,29 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.util;
+package tarantool.types.query;
+
+import tarantool.types.collections.ITupleObject;
 
 /**
- *  Join all data in one array
+ *  Query for update
  */
-@:forward
-abstract SequenceArray<T> (SequenceArrayInternal<T>) {
+@:native("t.UpdateQueryRaw")
+@:structInit
+class UpdateQueryRaw implements ITupleObject {
 
     /**
-     *  Constructor
+     *  Operation type 
      */
-    public function new (arr : SequenceArrayInternal<T>) {
-        this = arr;
-    }
+    var operator : OperatorType;
 
-    @:from public static function fromArray<T> (arr : Array<T>) {
-        return new SequenceArray<T> (new SequenceArrayInternal(arr));
-    }
+    /**
+     *  Field number
+     */
+    var fieldNum : Int;
 
-    @:to public function toArray<T> () : Array<T> {
-        return this.array;
-    }
-}
-
-/**
- *  
- */
-class SequenceArrayInternal<T> {
-    public var array(default, null) :  Array<T>;
-
-    public function new (arr : Array<T>) {
-        array = arr;
-    }
+    /**
+     *  Some value
+     */
+    var value : Dynamic;
 }

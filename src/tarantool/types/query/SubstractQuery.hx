@@ -19,23 +19,19 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.index;
-
-import tarantool.types.collections.ITupleObject;
+package tarantool.types.query;
 
 /**
- *  field-number + type
-**/
-@:structInit
-class IndexPart implements ITupleObject {
+ *  Query for addition
+ */
+@:native("t.SubstractQuery")
+class SubstractQuery extends UpdateQuery<Int> {
 
     /**
-     *  Number of field for index
-    **/    
-    public var field_no : Int;
-
-    /**
-     *  Type of field
-    **/
-    public var type : IndexFieldType;    
+     *  Get operator type     
+     *  @return OperatorType
+     */
+    override function getOperator () : OperatorType {
+        return OperatorType.Substract;
+    }
 }

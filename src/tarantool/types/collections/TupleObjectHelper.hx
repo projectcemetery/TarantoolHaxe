@@ -19,23 +19,50 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.index;
+package tarantool.types.collections;
 
-import tarantool.types.collections.ITupleObject;
+#if macro
+import haxe.macro.Context;
+import haxe.macro.Expr;
+using haxe.macro.ExprTools;
+using haxe.macro.TypeTools;
+#end
 
 /**
- *  field-number + type
-**/
-@:structInit
-class IndexPart implements ITupleObject {
-
+ *  Macro helper for tuple object
+ */
+class TupleObjectHelper {
+    #if macro
     /**
-     *  Number of field for index
-    **/    
-    public var field_no : Int;
+     *  Create mapping for tuple objects
+     */
+    public macro static function map () : Array<Field> {        
+        var fields = Context.getBuildFields();
+        var block = [];
+        for (field in fields) {
+            block.push (field.name);
+        }
 
-    /**
-     *  Type of field
-    **/
-    public var type : IndexFieldType;    
+        var pos = Context.currentPos();
+
+        var toDataFunc:Function = {
+            expr: macro {
+                return $v{block};
+            },
+            ret: (macro:Array<String>),
+            args:[]
+        }
+
+        var toDataField:Field = {
+            name: 'getFields',
+            access: [Access.APublic],
+            kind: FieldType.FFun(toDataFunc),
+            pos: pos
+        };   
+
+        fields.push(toDataField);
+        
+        return fields;
+    }
+    #end
 }

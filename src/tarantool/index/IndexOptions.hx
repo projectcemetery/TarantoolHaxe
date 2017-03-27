@@ -21,7 +21,7 @@
 
 package tarantool.index;
 
-import tarantool.util.SequenceArray;
+import tarantool.types.collections.SequenceArray;
 
 /**
  *  Options for create index

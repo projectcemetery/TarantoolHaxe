@@ -19,13 +19,15 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.util;
+package tarantool.types.collections;
 
 import lua.Table;
+import tarantool.util.Convert;
 
 /**
  *  Immutable tuple of any data
  */
+@:native("t.Tuple")
 @:forward(toString)
 abstract Tuple(Array<Dynamic>) from Array<Dynamic> to Array<Dynamic> {
     

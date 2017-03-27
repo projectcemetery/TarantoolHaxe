@@ -28,7 +28,8 @@ import tarantool.index.Index;
 import tarantool.index.IndexOptions;
 import tarantool.util.KeyType;
 import tarantool.util.Convert;
-import tarantool.util.Tuple;
+import tarantool.types.collections.Tuple;
+import tarantool.types.query.UpdateQuery;
 import lua.Table;
 
 /**
@@ -201,7 +202,7 @@ class Space {
      *  @param query - array of query for update    
      *  @return updated Tuple 
      */
-    public inline function update (key : KeyType, query : Array<UpdateQuery>) : Tuple {
+    public inline function update (key : KeyType, query : Array<UpdateQuery<Dynamic>>) : Tuple {
         var keyTable = Convert.SerializeToLua (key);
         var table = Convert.SerializeToLua (query);
         return spaceObject.update (keyTable, table);
@@ -213,7 +214,7 @@ class Space {
      *  @param query - array of query for update
      *  @return inserted Tuple
      */    
-    public function upsert (tuple : Tuple, query : Array<UpdateQuery>) : Tuple {        
+    public function upsert (tuple : Tuple, query : Array<UpdateQuery<Dynamic>>) : Tuple {
         var table = Convert.SerializeToLua (query);
         return spaceObject.upsert (tuple, table);
     }

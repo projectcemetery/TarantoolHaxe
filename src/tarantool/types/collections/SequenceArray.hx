@@ -19,28 +19,39 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.space;
+package tarantool.types.collections;
 
 /**
- *  Operations
+ *  Join all data in one array
  */
-@:enum
-abstract OperatorType(String) from String to String {
-    var Add = "+";
+@:native("t.SequenceArray")
+@:forward
+abstract SequenceArray<T> (SequenceArrayInternal<T>) {
 
-    var Substract = "-";
+    /**
+     *  Constructor
+     */
+    public function new (arr : SequenceArrayInternal<T>) {
+        this = arr;
+    }
 
-    var And = "&";
+    @:from public static function fromArray<T> (arr : Array<T>) {
+        return new SequenceArray<T> (new SequenceArrayInternal(arr));
+    }
 
-    var Or = "|";
+    @:to public function toArray<T> () : Array<T> {
+        return this.array;
+    }
+}
 
-    var Xor = "^";
+/**
+ *  Internal SequenceArray for type checking
+ */
+@:native("t.SequenceArrayInternal")
+class SequenceArrayInternal<T> {
+    public var array(default, null) :  Array<T>;
 
-    var Splice = ":";
-
-    var Insert = "!";
-
-    var Delete = "#";
-    
-    var Assign = "=";
+    public function new (arr : Array<T>) {
+        array = arr;
+    }
 }

@@ -22,6 +22,7 @@
 package tarantool.util;
 
 import haxe.extern.EitherType;
+import tarantool.types.collections.Tuple;
 
 /**
  *  Data for key

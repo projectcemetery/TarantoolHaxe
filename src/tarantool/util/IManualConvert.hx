@@ -21,10 +21,16 @@
 
 package tarantool.util;
 
+import lua.Table;
+
 /**
- *  Object that converts to tuple
+ *  For manual convert object to table
  */
-@:autoBuild(tarantool.util.TupleObjectHelper.map())
-interface ITupleObject {
-    public function getFields () : Array<String>;
+interface IManualConvert {
+    /**
+     *  Calls from Convert to serialize to table. 
+     *  For manual convert to table
+     *  @return AnyTable
+     */
+    public function toTable () : AnyTable;    
 }

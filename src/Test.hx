@@ -25,21 +25,20 @@ import chocolate.response.Response;
 import zephyr.HtmlBuilder.*;
 
 import tarantool.box.Box;
-import tarantool.box.Tuple;
-import tarantool.box.ScalarType;
-import tarantool.space.Space;
 import lua.Table;
+import tarantool.util.Convert;
+import tarantool.types.query.UpdateQuery;
+import tarantool.types.query.UpdateQueryBuilder;
 
 class Test {
     static function main() {
-        Box.cfg({
-            listen : 65301
-        });
-
-        var space = Space.getByName ("good");        
-        //space.createIndex ("some");
-        //space.auto_increment ([1,2,3, "33"]);
-        var res = space.select(3);
-        trace (space.id);
+        var query = UpdateQueryBuilder.start()
+                    .add (1, 65)
+                    .add (2, 34)
+                    .add (3, 87)
+                    .substract (4, 55)
+                    .end ();
+        var table = Convert.SerializeToLua (query);
+        trace (table);
     }    
 }

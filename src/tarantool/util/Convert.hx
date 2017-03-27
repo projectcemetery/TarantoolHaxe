@@ -22,9 +22,10 @@
 package tarantool.util;
 
 import lua.Table;
-import tarantool.util.Tuple;
-import tarantool.util.ITupleObject;
-import tarantool.util.SequenceArray;
+import tarantool.util.IManualConvert;
+import tarantool.types.collections.Tuple;
+import tarantool.types.collections.ITupleObject;
+import tarantool.types.collections.SequenceArray;
 
 /**
  *  Convert haxe data to lua
@@ -85,6 +86,19 @@ class Convert {
     }
 
     /**
+     *  Cast manual convert object to table
+     *  @return AnyTable
+     */
+    public static function castToManualConvert (object : Dynamic) : AnyTable {
+        var isManual = Std.is (object, IManualConvert);
+        if (isManual) {
+            var manual =  cast (object, IManualConvert);
+            return manual.toTable ();
+        }
+        return null;
+    }    
+
+    /**
      *  Convert tuple object to array. Not convert to lua
      *  @param tupleObject - 
      */
@@ -105,7 +119,10 @@ class Convert {
      *  @return AnyTable
      */
     public static function objectToTable (object : Dynamic) : AnyTable {
-        var table = AnyTable.create ();        
+        var table = AnyTable.create ();
+
+        var manual = castToManualConvert (object);
+        if (manual != null) return manual;
 
         var tupleObject = castToTupleObject (object);
         if (tupleObject != null) {
