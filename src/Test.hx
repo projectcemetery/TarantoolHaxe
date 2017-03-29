@@ -29,16 +29,11 @@ import lua.Table;
 import tarantool.util.Convert;
 import tarantool.types.query.UpdateQuery;
 import tarantool.types.query.UpdateQueryBuilder;
+import tarantool.crypto.Digest;
 
 class Test {
     static function main() {
-        var query = UpdateQueryBuilder.start()
-                    .add (1, 65)
-                    .add (2, 34)
-                    .add (3, 87)
-                    .substract (4, 55)
-                    .end ();
-        var table = Convert.SerializeToLua (query);
-        trace (table);
+        var d = Digest.md5 ("SHIT");
+        trace (d);
     }    
 }
