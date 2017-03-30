@@ -28,9 +28,9 @@ import tarantool.util.Convert;
  *  Immutable tuple of any data
  */
 @:native("t.Tuple")
-@:forward(toString)
+@:forward(toString, length)
 abstract Tuple(Array<Dynamic>) from Array<Dynamic> to Array<Dynamic> {
-    
+
     /**
      *  Constructor
      *  @param data - 
@@ -39,6 +39,19 @@ abstract Tuple(Array<Dynamic>) from Array<Dynamic> to Array<Dynamic> {
         this = data;
     }
 
+    /**
+     *  Convert tuple to ITupleObject
+     *  @return AnyTable
+     */
+    public function as<T> (cls : Class<T>) : T {
+        if (this == null) return null;        
+        return Convert.tupleToTupleObject (this, cls);
+    }
+
+    /**
+     *  Array access to Tuple
+     *  @param key - 
+     */
     @:arrayAccess
     public inline function get(key:Int) {
         return this[key];
@@ -79,16 +92,16 @@ abstract Tuple(Array<Dynamic>) from Array<Dynamic> to Array<Dynamic> {
      *  @return AnyTable
      */
     @:to public inline function toTable () : AnyTable {        
-        return Convert.SerializeToLua (this);
-    }
+        return Convert.serializeToLua (this);
+    }    
 
     /**
      *  Convert table to tuple
      *  @param table - 
      *  @return Tuple
      */
-    @:from public static inline function fromTable (table : AnyTable) : Tuple {
-       return Convert.TableToTuple (table);
+    @:from public static inline function fromTable (table : AnyTable) : Tuple {        
+        return Convert.tableToTuple (table);
     }
 
     /**

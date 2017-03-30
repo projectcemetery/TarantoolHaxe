@@ -108,7 +108,7 @@ class Space {
         var idx : IndexNative = null;
 
         if (options != null) {
-            var table = Convert.SerializeToLua (options);            
+            var table = Convert.serializeToLua (options);            
             idx = spaceObject.create_index (name, table);
         } else {
             idx = spaceObject.create_index (name);
@@ -123,8 +123,9 @@ class Space {
      *  @return replaced Tuple    
      */
     public inline function insert (tuple : Tuple) : Tuple {
-        var res = spaceObject.insert (tuple);
-        return if (res != null) res.totable () else res;
+        var tup = spaceObject.insert (tuple);
+        if (tup == null) return null;        
+        return cast (tup.totable (), AnyTable);        
     }    
 
     /**
@@ -135,7 +136,7 @@ class Space {
     public function select (?key : KeyType) : Array<Tuple> {
         var tables = {
             if (key != null) {
-                var table = Convert.SerializeToLua (key);
+                var table = Convert.serializeToLua (key);
                 spaceObject.select (table);
             } else {
                 spaceObject.select ();
@@ -145,7 +146,7 @@ class Space {
         return {
             var res = new Array<Tuple> ();
             AnyTable.foreachi (tables, function(i,val,e) {
-                var tab = val.totable ();                
+                var tab = cast (val.totable (), AnyTable);
                 res.push (tab);
             });
             res;           
@@ -158,9 +159,10 @@ class Space {
      *  @return Array<Dynamic>
      */
     public function get (key : KeyType) : Tuple {
-        var table = Convert.SerializeToLua (key);
+        var table = Convert.serializeToLua (key);
         var tup = spaceObject.get (table);
-        return if (tup != null) tup.totable () else null;
+        if (tup == null) return null;        
+        return cast (tup.totable (), AnyTable);
     }
 
     /**
@@ -203,8 +205,8 @@ class Space {
      *  @return updated Tuple 
      */
     public inline function update (key : KeyType, query : Array<UpdateQuery<Dynamic>>) : Tuple {
-        var keyTable = Convert.SerializeToLua (key);
-        var table = Convert.SerializeToLua (query);
+        var keyTable = Convert.serializeToLua (key);
+        var table = Convert.serializeToLua (query);
         return spaceObject.update (keyTable, table);
     }
 
@@ -215,7 +217,7 @@ class Space {
      *  @return inserted Tuple
      */    
     public function upsert (tuple : Tuple, query : Array<UpdateQuery<Dynamic>>) : Tuple {
-        var table = Convert.SerializeToLua (query);
+        var table = Convert.serializeToLua (query);
         return spaceObject.upsert (tuple, table);
     }
 
@@ -225,7 +227,7 @@ class Space {
      *  @return Tuple
      */
     public function delete (key : KeyType) : Tuple {
-        var table = Convert.SerializeToLua (key);
+        var table = Convert.serializeToLua (key);
         return spaceObject.delete (table);
     }
 

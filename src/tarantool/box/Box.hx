@@ -38,7 +38,7 @@ class Box {
      *  Start box
      */
     public inline static function cfg (config : BoxOptions) {
-        var options = Convert.SerializeToLua (config);
+        var options = Convert.serializeToLua (config);
         BoxNative.cfg (options);
     }
 

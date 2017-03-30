@@ -40,7 +40,7 @@ class Convert {
         var tbl : Table<Dynamic, Dynamic> = Table.create ();
         for (i in 1...data.length + 1) {
             var d = data[i - 1];
-            tbl[i] = SerializeToLua (d);
+            tbl[i] = serializeToLua (d);
         }
         return tbl;
     }
@@ -49,7 +49,7 @@ class Convert {
      *  Convert SequenceArray to lua.Table
      *  @return AnyTable
      */
-    private static function SequenceArrayToTable (data : SequenceArrayInternal<Dynamic>) : AnyTable {
+    private static function sequenceArrayToTable (data : SequenceArrayInternal<Dynamic>) : AnyTable {
         var res = new Array<Dynamic> ();
         var array = data.array;
         for (it in array) {
@@ -66,7 +66,7 @@ class Convert {
     /**
      *  Check type is simple
     **/
-    public static inline function IsSimpleType (data : Dynamic) : Bool {
+    public static inline function isSimpleType (data : Dynamic) : Bool {
         if (Std.is (data, Int) || Std.is (data, Float) || Std.is (data, String)) {
             return true;
         }
@@ -114,6 +114,26 @@ class Convert {
     }
 
     /**
+     *  Convert tuple to ITupleObject
+     *  @param tuple - 
+     *  @return ITupleObject
+     */
+    public static function tupleToTupleObject<T> (tuple : Tuple, cls : Class<T>) : T {
+        var func = Reflect.field (cls, "getFieldsStatic");
+        if (func == null) return null;
+        var fields : Array<String> = func ();        
+        if (fields.length != tuple.length) return null;
+        
+        var newInst = Type.createEmptyInstance (cls);         
+        for (i in 0...fields.length) {
+            var field = fields[i];
+            Reflect.setField (newInst, field, tuple[i]);
+        }
+    
+        return newInst;
+    }
+
+    /**
      *  Convert class instance fields, or anonymous struct to AnyTable, recursive for all fields
      *  @param object - 
      *  @return AnyTable
@@ -130,14 +150,14 @@ class Convert {
             for (i in 0...fields.length) {
                 var field = fields[i];
                 var prop = Reflect.getProperty (object, field);
-                var obj = SerializeToLua (prop);
+                var obj = serializeToLua (prop);
                 table[i+1] = obj;
             }
         } else {
             var fields = Reflect.fields (object);
             for (field in fields) {
                 var prop = Reflect.getProperty (object, field);
-                var obj = SerializeToLua (prop);
+                var obj = serializeToLua (prop);
                 untyped table[field] = obj;
             }
         }
@@ -154,15 +174,15 @@ class Convert {
      *  @param object - some object
      *  @return Dynamic
      */
-    public static function SerializeToLua (object : Dynamic) : Dynamic {
-        if (IsSimpleType (object)) {
+    public static function serializeToLua (object : Dynamic) : Dynamic {
+        if (isSimpleType (object)) {
             return object;
         } else if (Reflect.isEnumValue (object)) {
             var res : EnumValue = cast object;
             return res.getName ();
         }
         else if (Std.is (object, SequenceArrayInternal)) {
-            return SequenceArrayToTable (cast (object, SequenceArrayInternal<Dynamic>));
+            return sequenceArrayToTable (cast (object, SequenceArrayInternal<Dynamic>));
         }
         else if (Std.is (object, Array)) {            
             return arrayToTable (cast (object, Array<Dynamic>));
@@ -176,13 +196,13 @@ class Convert {
     /**
      *  Convert lua table to dynamic
     **/
-    public static function TableToTuple (table : AnyTable) : Tuple {
+    public static function tableToTuple (table : AnyTable) : Tuple {        
         var res = new Array<Dynamic> ();
         Table.foreach (table, function (i, it) {
             var typ = untyped type (it);
             if (typ == 'cdata') {
                 var tab = untyped it.totable ();
-                res.push (TableToTuple (tab));
+                res.push (tableToTuple (tab));
             } else {                
                 res.push (it);
             }

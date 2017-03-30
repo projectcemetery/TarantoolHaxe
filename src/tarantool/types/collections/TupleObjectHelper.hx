@@ -40,8 +40,15 @@ class TupleObjectHelper {
         var fields = Context.getBuildFields();
         var block = [];
         for (field in fields) {
-            block.push (field.name);
-        }
+            switch (field.kind) {
+                case FieldType.FVar (e): {
+                    block.push (field.name);
+                }
+                default: {}
+            }            
+        }               
+
+        // TODO: better SCHEME
 
         var pos = Context.currentPos();
 
@@ -56,6 +63,23 @@ class TupleObjectHelper {
         var toDataField:Field = {
             name: 'getFields',
             access: [Access.APublic],
+            kind: FieldType.FFun(toDataFunc),
+            pos: pos
+        };   
+
+        fields.push(toDataField);
+
+        var toDataFunc:Function = {
+            expr: macro {
+                return $v{block};
+            },
+            ret: (macro:Array<String>),
+            args:[]
+        }
+
+        var toDataField:Field = {
+            name: 'getFieldsStatic',
+            access: [Access.APublic, Access.AStatic],
             kind: FieldType.FFun(toDataFunc),
             pos: pos
         };   
