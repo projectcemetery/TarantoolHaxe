@@ -1,17 +1,16 @@
 # TarantoolHaxe
 Haxe bindings for tarantool and more
 
-# WARNING. WORK IN PROGRESS. A lot of things may not working.
+# WARNING. WORK IN PROGRESS. A lot of things may not work.
 
 # Install. WORKS ONLY IN LINUX OR MAC OS X
 1. Install tarantool https://tarantool.org/en/download.html
 2. Install haxe http://haxe.org/download/
-3. Install haxe packages: tink_url
-4. Install TarantoolHaxe: haxelib git TarantoolHaxe https://github.com/RapidFingers/TarantoolHaxe
-5. Install luarocks with linux or mac osx packet manager
-6. Install luarocks packages: bit32, lrexlib-pcre
-7. Install VSCode https://code.visualstudio.com
-8. In VSCode install Haxe Extension Pack
+3. Install haxe packages: tink_url, TarantoolHaxe
+4. Install luarocks with linux or mac osx packet manager
+5. Install luarocks packages: bit32, lrexlib-pcre
+6. Install VSCode https://code.visualstudio.com
+7. In VSCode install Haxe Extension Pack
 
 # Usage
 
