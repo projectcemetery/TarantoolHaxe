@@ -1,9 +1,7 @@
 # TarantoolHaxe
 Haxe bindings for tarantool and more
 
-# WARNING. WORK IN PROGRESS. 
-# A lot of things may not work.
-# No documentation
+# WARNING. WORK IN PROGRESS. A lot of things may not work. No documentation
 
 # Install. WORKS ONLY IN LINUX OR MAC OS X
 1. Install tarantool https://tarantool.org/en/download.html
