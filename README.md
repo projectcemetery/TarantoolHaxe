@@ -23,6 +23,8 @@ Haxe bindings for tarantool and more
 -main YourMainClass  
 -lua out/main.lua  
 4. Write code
+5. Launch: tarantool ./out/main.lua
+6. Write issue :)
 
 # Examples
 
