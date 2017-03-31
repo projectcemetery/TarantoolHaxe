@@ -1,6 +1,8 @@
 # TarantoolHaxe
 Haxe bindings for tarantool and more
 
+# WARNING. WORK IN PROGRESS. A lot of things may not working.
+
 # Install. WORKS ONLY IN LINUX OR MAC OS X
 1. Install tarantool https://tarantool.org/en/download.html
 2. Install haxe http://haxe.org/download/
@@ -15,12 +17,12 @@ Haxe bindings for tarantool and more
 
 1. Launch VSCode
 2. Initialize haxe project
-3. Fix build.hx in that way:
--cp src
--lib TarantoolHaxe
--dce full
--main <YourMainClass>
--lua out/main.lua
+3. Fix build.hx in that way:  
+-cp src  
+-lib TarantoolHaxe  
+-dce full  
+-main YourMainClass  
+-lua out/main.lua  
 4. Write code
 
 # Examples
