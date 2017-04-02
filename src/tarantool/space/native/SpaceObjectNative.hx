@@ -21,8 +21,10 @@
 
 package tarantool.space.native;
 
+import tarantool.util.ScalarType;
 import tarantool.index.native.IndexNative;
 import lua.Table;
+import lua.Lua;
 
 @:native("t.SpaceObjectNative")
 /**
@@ -36,10 +38,65 @@ extern class SpaceObjectNative {
     public var id : Int;
 
     /**
+     *  Is space enabled or disabled
+     */
+    public var enabled : Bool;
+
+    /**
+     *  Required number of fields
+     */
+    public var field_count : Int;
+
+    /**
+     *  All indexes
+     */
+    public var index : AnyTable;
+
+    /**
+     *  Insert a new tuple using an auto-increment primary key. 
+     *  @param data - some data
+     *  @return AnyTable
+     */
+    public function auto_increment (tuple : AnyTable) : AnyTable;
+
+    /**
+     *  Number of bytes in the space
+     *  @return Int
+     */
+    public function bsize () : Int;
+
+    /**
+     *  Count tuples
+     *  @param key - one or more key
+     *  @param iterator - comparison method
+     *  @return tuple count
+     */
+    public function count (?key : AnyTable, ?iterator : AnyTable) : Int;
+
+    /**
      *  Create index object
      *  @return Dynamic
      */
-    public function create_index (name : String, ?options : AnyTable) : IndexNative;
+    public function create_index (name : String, ?options : AnyTable) : IndexNative;    
+
+    /**
+     *  Delete tuple
+     *  @param key - 
+     *  @return deleted tuple
+     */
+    public function delete (key : AnyTable) : AnyTable;
+
+    /**
+     *  Drop space
+     */
+    public function drop () : Void;
+
+    /**
+     *  Get data by one or more key
+     *  @param key - array of keys
+     *  @return one tuple
+     */
+    public function get (key : AnyTable) : AnyTable;    
 
     /**
      *  Insert data
@@ -49,23 +106,30 @@ extern class SpaceObjectNative {
     public function insert (tuple : AnyTable) : AnyTable;
     
     /**
-     *  Select data by one or more key
-     *  @param key - array of keys
-     *  @return array of tuples
+     *  Total tuple count
+     *  @return Int
      */
-    public function select (?key : AnyTable) : AnyTable;
+    public function len () : Int;
 
     /**
-     *  Get data by one or more key
-     *  @param key - array of keys
-     *  @return one tuple
+     *  Trigger on replace data
+     *  The trigger-function will be executed whenever a replace or insert or update or upsert or delete
+     *  onReplace = function (old : AnyTable, new : AnyTable)
      */
-    public function get (key : AnyTable) : AnyTable;
+    public function on_replace (call : AnyTable -> AnyTable -> Void) : Void;
 
     /**
-     *  Drop space
+     *  Search for a tuple or a set of tuples in the given space, and allow iterating over one tuple at a time.
+     *  @return iterator
      */
-    public function drop () : Void;
+    public function pairs (?key : AnyTable, ?iterator : AnyTable) : PairsResult<ScalarType, Dynamic>;
+
+    /**
+     *  Replace tuple
+     *  @param tuple - tuple
+     *  @return AnyTable
+     */
+    public function put (tuple : AnyTable) : AnyTable;
 
     /**
      *  Rename space
@@ -78,13 +142,23 @@ extern class SpaceObjectNative {
      *  @return AnyTable
      */
     public function replace (tuple : AnyTable) : AnyTable;
+    
+    /**
+     *  Turn on/off replace trigger
+    */
+    public function run_triggers (value : Bool) : Void
 
     /**
-     *  Replace tuple
-     *  @param tuple - tuple
-     *  @return AnyTable
+     *  Select data by one or more key
+     *  @param key - array of keys
+     *  @return array of tuples
      */
-    public function put (tuple : AnyTable) : AnyTable;
+    public function select (?key : AnyTable) : AnyTable;                
+
+    /**
+     *  Delete all tuples in space
+     */
+    public function truncate () : Void;    
 
     /**
      *  Update tuple
@@ -100,38 +174,5 @@ extern class SpaceObjectNative {
      *  @param query - {{operator, field_no, value}, ...}
      *  @return updated/inserted tuple
      */
-    public function upsert (tuple : AnyTable, query : AnyTable) : AnyTable;
-
-    /**
-     *  Delete tuple
-     *  @param key - 
-     *  @return deleted tuple
-     */
-    public function delete (key : AnyTable) : AnyTable;
-
-    /**
-     *  Count tuples
-     *  @param key - one or more key
-     *  @param iterator - comparison method
-     *  @return tuple count
-     */
-    public function count (?key : AnyTable, ?iterator : AnyTable) : Int;
-
-    /**
-     *  Total tuple count
-     *  @return Int
-     */
-    public function len () : Int;
-
-    /**
-     *  Delete all tuples in space
-     */
-    public function truncate () : Void;
-
-    /**
-     *  Insert a new tuple using an auto-increment primary key. 
-     *  @param data - some data
-     *  @return AnyTable
-     */
-    public function auto_increment (tuple : AnyTable) : AnyTable;
+    public function upsert (tuple : AnyTable, query : AnyTable) : AnyTable;            
 }
