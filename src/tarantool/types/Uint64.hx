@@ -19,28 +19,30 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import chocolate.Chocolate.App;
-import chocolate.Request;
-import chocolate.response.Response;
-import zephyr.HtmlBuilder.*;
+package tarantool.types;
 
-import tarantool.box.Box;
-import lua.Table;
-import tarantool.util.Convert;
-import tarantool.types.query.UpdateQuery;
-import tarantool.types.query.UpdateQueryBuilder;
-import tarantool.crypto.Digest;
-import tarantool.clock.Clock;
+/**
+ *  Type for uint64_t
+ */
+abstract UInt64(Int) {
 
-class Test {
-    static function main() {
-        var d = Clock.realtime64 ();
-        trace (d);
-        /*trace (Clock.realtime ());
-        trace (Clock.realtime64 ());
-        trace (Clock.monotonic ());
-        trace (Clock.monotonic64 ());
-        trace (Clock.proc ());
-        trace (Clock.proc64 ());*/
-    }    
+    /**
+     *  Constructor
+     *  @param data - 
+     */
+    public function new (data : Any) {        
+        this = data;        
+    }
+
+    @:from public static function fromAny (data : Any) : UInt64 {        
+        return new UInt64 (data);
+    }
+
+    /**
+     *  Convert UInt64 to string
+     *  @return String
+     */
+    public function toString () : String {
+        return untyped tostring (this);
+    }
 }
