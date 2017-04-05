@@ -24,7 +24,7 @@ package tarantool.crypto;
 /**
  *  Digest algorothms
  */
-@:native("t.digest")
+@:native("t.Digest")
 class Digest {
 
     /**

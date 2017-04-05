@@ -19,16 +19,15 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.clock;
+package tarantool.clock.native;
 
-import tarantool.clock.native.ClockNative;
 import tarantool.types.Uint64;
 
 /**
  *  The clock module returns time values derived from the Posix / C CLOCK_GETTIME function or equivalent
  */
-@:native("t.Clock")
-class Clock {
+@:luaRequire("clock")
+extern class ClockNative {
 
     /**
      *  System-wide clock that measures real (i.e., wall-clock) time.
@@ -38,16 +37,55 @@ class Clock {
      *  clock), and by the incremental adjustments performed by adjtime(3) and NTP.
      *  @return Seconds
      */    
-    public inline static function realtime () : Int {
-        return ClockNative.realtime ();
-    }
+    public static function realtime () : Int;
 
     /**
      *  64 bit version of realtime
      *  @return Nanoseconds
      */
-    public inline static function realtime64 () : UInt64 {
-        var dat = ClockNative.realtime64 ();
-        return UInt64.fromLua (dat);
-    }
+    public static function realtime64 () : Dynamic;
+
+    /**
+     *  Clock that cannot be set and represents monotonic time since
+     *  some unspecified starting point.  This clock is not affected
+     *  by discontinuous jumps in the system time (e.g., if the system
+     *  administrator manually changes the clock), but is affected by
+     *  the incremental adjustments performed by adjtime(3) and NTP.
+     *  @return Seconds
+     */
+    public static function monotonic () : Int;    
+
+    /**
+     *  64 bit version of monotonic
+     *  @return Nanoseconds
+     */
+    public static function monotonic64 () : Dynamic;    
+
+    /**
+     *  he processor time. Derived from C function clock_gettime(CLOCK_PROCESS_CPUTIME_ID). 
+     *  This is the best function to use with benchmarks that need to calculate how much 
+     *  time has been spent within a CPU.
+     *  @return Seconds
+     */
+    public static function proc () : Int;
+
+    /**
+     *  64 bit version of proc
+     *  @return Nanoseconds
+     */
+    public static function proc64 () : Dynamic;
+
+    /**
+     *  The thread time. Derived from C function clock_gettime(CLOCK_THREAD_CPUTIME_ID). 
+     *  This is the best function to use with benchmarks that need to calculate how much 
+     *  time has been spent within a thread within a CPU.
+     *  @return Int
+     */
+    public static function thread () : Int;
+
+    /**
+     *  64 bit version of thread
+     *  @return Nanoseconds
+     */
+    public static function thread64 () : Dynamic;
 }

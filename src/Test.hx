@@ -31,11 +31,15 @@ import tarantool.types.query.UpdateQuery;
 import tarantool.types.query.UpdateQueryBuilder;
 import tarantool.crypto.Digest;
 import tarantool.clock.Clock;
+import tarantool.types.Uint64;
 
 class Test {
-    static function main() {
+    static function main() {           
         var d = Clock.realtime64 ();
+        var t = d * 3;
         trace (d);
+        trace (t);
+        //trace (d);        
         /*trace (Clock.realtime ());
         trace (Clock.realtime64 ());
         trace (Clock.monotonic ());

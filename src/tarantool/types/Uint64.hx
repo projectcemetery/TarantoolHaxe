@@ -22,27 +22,90 @@
 package tarantool.types;
 
 /**
- *  Type for uint64_t
+ *  Internal Type for uint64_t
  */
-abstract UInt64(Int) {
+class UInt64Internal {
+
+    public var data : Any;
+
+    public function new (data : Any) {
+        this.data = data;
+    }
+}
+
+/**
+ *  Type for uint64_t
+ *  Slow cause of class creation on every operation
+ *  TODO : make fast
+ */
+abstract UInt64(UInt64Internal) from UInt64Internal to UInt64Internal {
+
+    /**
+     *  Wrap lua type
+     *  @param dat - 
+     *  @return UInt64
+     */
+    public static function fromLua (dat : Any) : UInt64 {        
+        return new UInt64 (new UInt64Internal (dat));
+    }
 
     /**
      *  Constructor
-     *  @param data - 
+     *  @param dat - 
      */
-    public function new (data : Any) {        
-        this = data;        
-    }
-
-    @:from public static function fromAny (data : Any) : UInt64 {        
-        return new UInt64 (data);
+    public function new (dat : UInt64Internal) {
+        this = dat;
     }
 
     /**
-     *  Convert UInt64 to string
+     *  Add int
+     *  @param dat - 
+     *  @return UInt64
+     */
+    @:op(A + B)
+    public function addInt ( dat : Int) : UInt64 {                
+        var res = untyped (this.data + dat);
+        return fromLua (res);
+    }
+
+    /**
+     *  Substract int
+     *  @param dat - 
+     *  @return UInt64
+     */
+    @:op(A - B)
+    public function substractInt ( dat : Int) : UInt64 {                
+        var res = untyped (this.data - dat);
+        return fromLua (res);
+    }
+
+    /**
+     *  Mupltyply int
+     *  @param dat - 
+     *  @return UInt64
+     */
+    @:op(A * B)
+    public function multInt ( dat : Int) : UInt64 {                
+        var res = untyped (this.data * dat);
+        return fromLua (res);
+    }
+
+    /**
+     *  Div int
+     *  @param dat - 
+     *  @return UInt64
+     */
+    @:op(A / B)
+    public function divInt ( dat : Int) : UInt64 {                
+        var res = untyped (this.data / dat);
+        return fromLua (res);
+    }
+
+    /**
+     *  Convert to string
      *  @return String
      */
     public function toString () : String {
-        return untyped tostring (this);
+        return untyped tostring (this.data);
     }
 }
