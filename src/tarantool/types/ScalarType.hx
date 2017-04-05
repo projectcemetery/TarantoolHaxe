@@ -19,7 +19,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.util;
+package tarantool.types;
 
 import haxe.extern.EitherType;
 

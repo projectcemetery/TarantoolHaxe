@@ -26,7 +26,7 @@ import tarantool.space.native.SpaceObjectNative;
 import tarantool.index.native.IndexNative;
 import tarantool.index.Index;
 import tarantool.index.IndexOptions;
-import tarantool.util.KeyType;
+import tarantool.types.KeyType;
 import tarantool.util.Convert;
 import tarantool.types.collections.Tuple;
 import tarantool.types.query.UpdateQuery;

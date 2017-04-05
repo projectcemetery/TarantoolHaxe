@@ -21,16 +21,10 @@
 
 package tarantool.types;
 
-/**
- *  Extern for ffi
- */
-@:luaRequire("ffi")
-extern class Ffi {
+import haxe.extern.EitherType;
+import tarantool.types.collections.Tuple;
 
-    /**
-     *  Get type
-     *  @param object - 
-     *  @return Dynamic
-     */
-    public static function typeof (object : Dynamic) : Dynamic;
-}
+/**
+ *  Data for key
+ */
+typedef KeyType = EitherType<ScalarType, Tuple>;

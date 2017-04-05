@@ -21,7 +21,7 @@
 
 package tarantool.space.native;
 
-import tarantool.util.ScalarType;
+import tarantool.types.ScalarType;
 import tarantool.index.native.IndexNative;
 import lua.Table;
 import lua.Lua;

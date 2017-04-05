@@ -19,12 +19,19 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.util;
-
-import haxe.extern.EitherType;
-import tarantool.types.collections.Tuple;
+package tarantool.fiber.native;
 
 /**
- *  Data for key
+ *  Bindings to fiber chanel
  */
-typedef KeyType = EitherType<ScalarType, Tuple>;
+@:luaRequire("fiber")
+@:native("fiber")
+extern class ChannelNative {
+    
+    /**
+     *  Create new fiber channel
+     *  @param capacity - 
+     *  @return FiberChannelObjectNative
+     */
+    public static function channel (?capacity : Int) : ChannelObjectNative;
+}
