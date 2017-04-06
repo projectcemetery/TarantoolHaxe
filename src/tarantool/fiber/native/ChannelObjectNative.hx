@@ -42,11 +42,11 @@ extern class ChannelObjectNative {
      *  All following channel:get() operations will return nil, 
      *  and all following channel:put() operations will return false.
      */
-    public function close () : Null<Bool>;
+    public function close () : Void;
 
     /**
      *  [Description]
-     *  @param timeout - 
+     *  @param timeout - maximum number of seconds to wait for a message
      *  @return If timeout is specified, and there is no message in the channel 
      *  for the duration of the timeout, then the return value is nil. 
      *  If the channel is closed, then the return value is nil. Otherwise, 

@@ -30,7 +30,7 @@ extern class ChannelNative {
     
     /**
      *  Create new fiber channel
-     *  @param capacity - 
+     *  @param capacity - the maximum number of slots (spaces for channel:put messages) that can be in use at once. The default is 0.
      *  @return FiberChannelObjectNative
      */
     public static function channel (?capacity : Int) : ChannelObjectNative;

@@ -21,7 +21,7 @@
 
 package tarantool.clock.native;
 
-import tarantool.types.Uint64;
+import tarantool.types.UInt64;
 
 /**
  *  The clock module returns time values derived from the Posix / C CLOCK_GETTIME function or equivalent
@@ -43,7 +43,7 @@ extern class ClockNative {
      *  64 bit version of realtime
      *  @return Nanoseconds
      */
-    public static function realtime64 () : Dynamic;
+    public static function realtime64 () : UInt64;
 
     /**
      *  Clock that cannot be set and represents monotonic time since

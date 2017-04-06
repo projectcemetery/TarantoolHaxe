@@ -31,12 +31,15 @@ import tarantool.types.query.UpdateQuery;
 import tarantool.types.query.UpdateQueryBuilder;
 import tarantool.crypto.Digest;
 import tarantool.clock.Clock;
-import tarantool.types.Uint64;
+import tarantool.clock.native.ClockNative;
+import tarantool.types.UInt64;
 import tarantool.fiber.native.ChannelNative;
 
 class Test {
     static function main() {           
-        var d = ChannelNative.channel ();
+        var d = ClockNative.realtime64 ();
+        var t : UInt64 = 33.3;
         trace (d);
+        trace (t);
     }    
 }
