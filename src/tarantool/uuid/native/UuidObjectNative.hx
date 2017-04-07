@@ -19,26 +19,22 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import chocolate.Chocolate.App;
-import chocolate.Request;
-import chocolate.response.Response;
-import zephyr.HtmlBuilder.*;
+package tarantool.uuid.native;
 
-import tarantool.box.Box;
-import lua.Table;
-import tarantool.util.Convert;
-import tarantool.types.query.UpdateQuery;
-import tarantool.types.query.UpdateQueryBuilder;
-import tarantool.crypto.Digest;
-import tarantool.clock.Clock;
-import tarantool.clock.native.ClockNative;
-import tarantool.types.UInt64;
-import tarantool.fiber.native.ChannelNative;
-import tarantool.uuid.Uuid;
+/**
+ *  Extern for uuid_object
+ */
+extern class UuidObjectNative {
 
-class Test {
-    static function main() {           
-        var d = new Uuid ();
-        trace (d);
-    }    
+    /**
+     *  Convert uuid to 16-byte string
+     *  @return String
+     */
+    public function bin () : String;
+
+    /**
+     *  Convert uuid to 36-byte string
+     *  @return String
+     */
+    public function str () : String;
 }
