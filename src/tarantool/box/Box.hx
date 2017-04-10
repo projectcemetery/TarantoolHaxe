@@ -27,6 +27,7 @@ import tarantool.util.Convert;
 /**
  *  Tarantool box
  */
+@:native("t.Box")
 class Box {
 
     /**
@@ -48,5 +49,31 @@ class Box {
      */
     public inline static function once (name : String, call : Void -> Void) {
         BoxNative.once (name, call);
+    }
+
+    /**
+     *  Begin the transaction. Disable implicit yields until the transaction ends. 
+     *  Signal that writes to the write-ahead log will be deferred until the transaction ends. 
+     *  In effect the fiber which executes box.begin() is starting an “active multi-request transaction”, 
+     *  blocking all other fibers.
+     */
+    public inline static function begin () : Void {
+        BoxNative.begin ();
+    }
+
+    /**
+     *  End the transaction, and make all its data-change operations permanent.
+     */
+    public inline static function commit () : Void {
+        BoxNative.commit ();
+    }
+
+    /**
+     *  End the transaction, but cancel all its data-change operations. 
+     *  An explicit call to functions outside box.space that always yield, 
+     *  such as fiber.sleep() or fiber.yield(), will have the same effect.
+     */
+    public inline static function rollback () : Void {
+        BoxNative.rollback ();
     }
 }

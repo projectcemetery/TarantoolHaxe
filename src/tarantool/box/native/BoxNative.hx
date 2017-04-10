@@ -39,4 +39,24 @@ import lua.Table;
      *  @param call - function to call
      */
     public static function once (name : String, call : Void -> Void) : Void;
+
+    /**
+     *  Begin the transaction. Disable implicit yields until the transaction ends. 
+     *  Signal that writes to the write-ahead log will be deferred until the transaction ends. 
+     *  In effect the fiber which executes box.begin() is starting an “active multi-request transaction”, 
+     *  blocking all other fibers.
+     */
+    public static function begin () : Void;
+
+    /**
+     *  End the transaction, and make all its data-change operations permanent.
+     */
+    public static function commit () : Void;
+
+    /**
+     *  End the transaction, but cancel all its data-change operations. 
+     *  An explicit call to functions outside box.space that always yield, 
+     *  such as fiber.sleep() or fiber.yield(), will have the same effect.
+     */
+    public static function rollback () : Void;
 }
