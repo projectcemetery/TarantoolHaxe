@@ -59,10 +59,10 @@ extern class ClockNative {
      *  64 bit version of monotonic
      *  @return Nanoseconds
      */
-    public static function monotonic64 () : Dynamic;    
+    public static function monotonic64 () : UInt64;    
 
     /**
-     *  he processor time. Derived from C function clock_gettime(CLOCK_PROCESS_CPUTIME_ID). 
+     *  The processor time. Derived from C function clock_gettime(CLOCK_PROCESS_CPUTIME_ID). 
      *  This is the best function to use with benchmarks that need to calculate how much 
      *  time has been spent within a CPU.
      *  @return Seconds
@@ -73,7 +73,7 @@ extern class ClockNative {
      *  64 bit version of proc
      *  @return Nanoseconds
      */
-    public static function proc64 () : Dynamic;
+    public static function proc64 () : UInt64;
 
     /**
      *  The thread time. Derived from C function clock_gettime(CLOCK_THREAD_CPUTIME_ID). 
@@ -87,5 +87,5 @@ extern class ClockNative {
      *  64 bit version of thread
      *  @return Nanoseconds
      */
-    public static function thread64 () : Dynamic;
+    public static function thread64 () : UInt64;
 }

@@ -46,8 +46,63 @@ class Clock {
      *  64 bit version of realtime
      *  @return Nanoseconds
      */
-    /*public inline static function realtime64 () : UInt64 {
-        var dat = ClockNative.realtime64 ();
-        return UInt64.fromLua (dat);
-    }*/
+    public inline static function realtime64 () : UInt64 {        
+        return ClockNative.realtime64 ();
+    }
+
+    /**
+     *  Clock that cannot be set and represents monotonic time since
+     *  some unspecified starting point.  This clock is not affected
+     *  by discontinuous jumps in the system time (e.g., if the system
+     *  administrator manually changes the clock), but is affected by
+     *  the incremental adjustments performed by adjtime(3) and NTP.
+     *  @return Seconds
+     */
+    public inline static function monotonic () : Int {
+        return ClockNative.monotonic ();
+    }
+
+    /**
+     *  64 bit version of monotonic
+     *  @return Nanoseconds
+     */
+    public inline static function monotonic64 () : UInt64 {
+        return ClockNative.monotonic64 ();
+    }
+
+    /**
+     *  The processor time. Derived from C function clock_gettime(CLOCK_PROCESS_CPUTIME_ID). 
+     *  This is the best function to use with benchmarks that need to calculate how much 
+     *  time has been spent within a CPU.
+     *  @return Seconds
+     */
+    public inline static function proc () : Int {
+        return ClockNative.proc ();
+    }
+
+    /**
+     *  64 bit version of proc
+     *  @return Nanoseconds
+     */
+    public inline static function proc64 () : UInt64 {
+        return ClockNative.proc64 ();
+    }
+
+    /**
+     *  The thread time. Derived from C function clock_gettime(CLOCK_THREAD_CPUTIME_ID). 
+     *  This is the best function to use with benchmarks that need to calculate how much 
+     *  time has been spent within a thread within a CPU.
+     *  @return Int
+     */
+    public inline static function thread () : Int {
+        return ClockNative.thread ();
+    }
+
+    /**
+     *  64 bit version of thread
+     *  @return Nanoseconds
+     */
+    public inline static function thread64 () : UInt64 {
+        return ClockNative.thread64 ();
+    }
 }
