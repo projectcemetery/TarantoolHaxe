@@ -197,7 +197,7 @@ class Space {
      *  Add trigger on replace
      *  @param call - 
      */
-    public function onReplace (call : Tuple -> Tuple - Void) {
+    public function onReplace (call : Tuple -> Tuple -> Void) {
         // TODO 
     }
 

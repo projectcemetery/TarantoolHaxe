@@ -146,7 +146,7 @@ extern class SpaceObjectNative {
     /**
      *  Turn on/off replace trigger
     */
-    public function run_triggers (value : Bool) : Void
+    public function run_triggers (value : Bool) : Void;
 
     /**
      *  Select data by one or more key
