@@ -135,14 +135,8 @@ class UInt8Array {
     public function concat (array : UInt8Array) : UInt8Array {
         var len = length + array.length;
         var arr = new UInt8Array (len);
-        
         lua.Ffi.copy (arr.data, data, length);
-
-        // TODO: make better
-        var pos = length;
-        for (i in 0...array.length) {
-            arr.set (pos + i, array.get (i));
-        }
+        lua.Ffi.copy (arr.data + length, array.data, array.length);
         return arr;
     }
 }
