@@ -23,12 +23,12 @@ package chocolate;
 
 import haxe.io.Output;
 import haxe.io.Bytes;
-import tarantool.socket.Peer;
-import http.handlers.websocket.OnWSConnect;
-import http.handlers.websocket.OnWSData;
-import http.handlers.websocket.OnWSClose;
-import http.handlers.websocket.OnWSError;
-import http.handlers.websocket.IWSHandler;
+import platform.net.Peer;
+import platform.http.handlers.websocket.OnWSConnect;
+import platform.http.handlers.websocket.OnWSData;
+import platform.http.handlers.websocket.OnWSClose;
+import platform.http.handlers.websocket.OnWSError;
+import platform.http.handlers.websocket.IWSHandler;
 
 /**
  *  Web socket handler with callbacks

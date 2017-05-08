@@ -19,47 +19,27 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.net;
 
 /**
- *  Request from client
+ *  Client peer
  */
-class Request {
+class Peer {
+    /**
+     *  Peer host
+     */
+    public var host (default, null) : String;
 
     /**
-     *  Request headers
+     *  Peer port
      */
-    public var headers (default, null) : Map<String, String>;
+    public var port (default, null) : Int;
 
     /**
-     *  Query parameters
+     *  Constructor
      */
-    public var query (default, null) : Map<String, String>;
-
-    /**
-     *  Form parameters
-     */
-    public var form (default, null) : Map<String, String>;
-
-    /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
-     */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
-        }
+    public function new (host : String, port : Int) {
+        this.host = host;
+        this.port = port;
     }
 }

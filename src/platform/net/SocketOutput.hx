@@ -19,47 +19,55 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
+package platform.net;
 
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+import haxe.io.Output;
+import haxe.io.Bytes;
+import tarantool.socket.native.NativeSocketObject;
 
 /**
- *  Request from client
+ *  Output for socket
  */
-class Request {
+class SocketOutput extends Output {
+    /**
+     *  Native socket object
+     */
+    private var _sock : NativeSocketObject;
 
     /**
-     *  Request headers
+     *  Constructor
+     *  @param s - native socket object
      */
-    public var headers (default, null) : Map<String, String>;
+    public function new (s : NativeSocketObject) {
+        _sock = s;
+    }
 
     /**
-     *  Query parameters
+     *  Write one byte
+     *  @param c - 
      */
-    public var query (default, null) : Map<String, String>;
+    public override function writeByte(c : Int) : Void {
+        var s = haxe.Utf8.char (c);
+        _sock.write (s);
+    }
 
     /**
-     *  Form parameters
+     *  Write string
+     *  @param s - string to write
      */
-    public var form (default, null) : Map<String, String>;
+    public override function writeString( s : String ) {
+        _sock.write (s);
+    }
 
     /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
+     *  Write bytes
+     *  @param s - bytes to write
+     *  @param pos - position
+     *  @param len - length
+     *  @return Int
      */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
-        }
+    public override function writeBytes( s : Bytes, pos : Int, len : Int ) : Int {
+        var str = s.getString(pos, len);
+        return _sock.write (str);
     }
 }

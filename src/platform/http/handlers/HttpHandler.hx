@@ -19,47 +19,33 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.http.handlers;
 
 /**
- *  Request from client
+ *  Process http request
  */
-class Request {
+class HttpHandler extends Handler {
+    /**
+     *  On request callback
+     */
+    private var onRequest : HttpContext -> Void;
 
     /**
-     *  Request headers
+     *  Constructor
+     *  @param call - callback on request
      */
-    public var headers (default, null) : Map<String, String>;
+    public function new (call : HttpContext -> Void) {
+        onRequest = call;
+    }
 
     /**
-     *  Query parameters
+     *  Process request
+     *  @param context - Http context
      */
-    public var query (default, null) : Map<String, String>;
-
-    /**
-     *  Form parameters
-     */
-    public var form (default, null) : Map<String, String>;
-
-    /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
-     */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
+    public override function process (context : HttpContext) : Void {
+        if (onRequest != null) {
+            onRequest (context);
+            context.response.close ();
         }
     }
 }

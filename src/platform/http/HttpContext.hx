@@ -19,47 +19,30 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.http;
 
 /**
- *  Request from client
+ *  Context for request and response
  */
-class Request {
+@:final
+class HttpContext {
+    /**
+     *  Request
+     */
+    public var request (default, null) : HttpRequest;
 
     /**
-     *  Request headers
+     *  Response
      */
-    public var headers (default, null) : Map<String, String>;
+    public var response (default, null) : HttpResponse;
 
     /**
-     *  Query parameters
+     *  Constructor
+     *  @param request - http request
+     *  @param response - http response
      */
-    public var query (default, null) : Map<String, String>;
-
-    /**
-     *  Form parameters
-     */
-    public var form (default, null) : Map<String, String>;
-
-    /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
-     */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
-        }
+    public function new (request : HttpRequest, response : HttpResponse) {
+        this.request = request;
+        this.response = response;
     }
 }

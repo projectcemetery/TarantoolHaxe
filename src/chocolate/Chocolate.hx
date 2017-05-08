@@ -21,13 +21,13 @@
 
 package chocolate;
 
-import http.HttpContext;
-import http.HttpServer;
-import http.HttpStatus;
-import http.handlers.websocket.WebSocketHandler;
-import http.handlers.ErrorHandler;
-import http.handlers.HttpHandler;
-import http.handlers.StaticHandler;
+import platform.http.HttpContext;
+import platform.http.HttpServer;
+import platform.http.HttpStatus;
+import platform.http.handlers.websocket.WebSocketHandler;
+import platform.http.handlers.ErrorHandler;
+import platform.http.handlers.HttpHandler;
+import platform.http.handlers.StaticHandler;
 import chocolate.response.Response;
 
 /**

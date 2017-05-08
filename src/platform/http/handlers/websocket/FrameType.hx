@@ -19,33 +19,18 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import chocolate.Chocolate.App;
-import chocolate.Request;
-import chocolate.response.Response;
-import zephyr.HtmlBuilder.*;
+package platform.http.handlers.websocket;
 
-import tarantool.box.Box;
-import lua.Table;
-import tarantool.util.Convert;
-import tarantool.types.query.UpdateQuery;
-import tarantool.types.query.UpdateQueryBuilder;
-import tarantool.crypto.Digest;
-import tarantool.clock.Clock;
-import tarantool.clock.native.ClockNative;
-import tarantool.types.UInt64;
-import tarantool.fiber.native.ChannelNative;
-import tarantool.uuid.Uuid;
-import platform.io.UInt8Array;
-
-class Test {
-    static function main() {
-        var arr = UInt8Array.fromString ("Good");
-        var arr2 = UInt8Array.fromString ("shit");
-        var arr = arr.concat (arr2);
-
-        for (b in arr) {
-            trace (b);
-        }
-        Sys.stdin().read (1);        
-    }    
+/**
+ *  Web socket frame types
+ */
+@:enum
+@:native("t.FrameType")
+abstract FrameType(Int) from Int to Int {
+    var Continue = 0x00;
+    var Text = 0x01;
+    var Binary = 0x02;
+    var Close = 0x08;
+    var Ping = 0x09;
+    var Pong = 0x0A;
 }

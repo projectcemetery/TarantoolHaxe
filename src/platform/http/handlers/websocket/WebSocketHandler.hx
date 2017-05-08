@@ -19,47 +19,38 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.http.handlers.websocket;
 
 /**
- *  Request from client
+ *  Web socket handler for http server
  */
-class Request {
+class WebSocketHandler extends Handler {    
+    /**
+     *  Callbacks
+     */
+    private var handler : IWSHandler;
+    
+    /**
+     *  Constructor
+     */
+    public function new (handler : IWSHandler) {
+        this.handler = handler;   
+    }
 
     /**
-     *  Request headers
+     *  Process request
+     *  @param context - Http context
      */
-    public var headers (default, null) : Map<String, String>;
-
-    /**
-     *  Query parameters
-     */
-    public var query (default, null) : Map<String, String>;
-
-    /**
-     *  Form parameters
-     */
-    public var form (default, null) : Map<String, String>;
-
-    /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
-     */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
+    public override function process (context : HttpContext) : Void {
+        if (context.request.headers.exists (HttpHeaderType.Upgrade)) {
+            var ih = new InternalHandler (context);
+            ih.onConnect = handler.onConnect;
+            ih.onData = handler.onData;
+            ih.onClose = handler.onClose;
+            ih.onError = handler.onError;
+            ih.start ();            
+        } else {            
+            callNext (context);
         }
     }
 }

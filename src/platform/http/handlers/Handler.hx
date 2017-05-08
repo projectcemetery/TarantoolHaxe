@@ -19,47 +19,32 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.http.handlers;
 
 /**
- *  Request from client
+ *  Handler for request
  */
-class Request {
+class Handler {
+    /**
+     *  Next handler
+     */
+    public var Next : Handler;
 
     /**
-     *  Request headers
+     *  Process request, for override
+     *  @param context - 
+     *  @return Bool
      */
-    public var headers (default, null) : Map<String, String>;
+    public function process (context : HttpContext) : Void {}
 
     /**
-     *  Query parameters
+     *  Call next handler
      */
-    public var query (default, null) : Map<String, String>;
-
-    /**
-     *  Form parameters
-     */
-    public var form (default, null) : Map<String, String>;
-
-    /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
-     */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
+    public function callNext (context : HttpContext) {
+        if (Next != null) {
+            Next.process (context);
+        } else {
+            // Not found
         }
     }
 }

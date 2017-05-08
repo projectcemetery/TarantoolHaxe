@@ -19,33 +19,11 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import chocolate.Chocolate.App;
-import chocolate.Request;
-import chocolate.response.Response;
-import zephyr.HtmlBuilder.*;
+package platform.http.handlers.websocket;
 
-import tarantool.box.Box;
-import lua.Table;
-import tarantool.util.Convert;
-import tarantool.types.query.UpdateQuery;
-import tarantool.types.query.UpdateQueryBuilder;
-import tarantool.crypto.Digest;
-import tarantool.clock.Clock;
-import tarantool.clock.native.ClockNative;
-import tarantool.types.UInt64;
-import tarantool.fiber.native.ChannelNative;
-import tarantool.uuid.Uuid;
-import platform.io.UInt8Array;
+import platform.net.Peer;
 
-class Test {
-    static function main() {
-        var arr = UInt8Array.fromString ("Good");
-        var arr2 = UInt8Array.fromString ("shit");
-        var arr = arr.concat (arr2);
-
-        for (b in arr) {
-            trace (b);
-        }
-        Sys.stdin().read (1);        
-    }    
-}
+/**
+ *  Callback for websocket close
+ */
+typedef OnWSClose = Peer -> Void;

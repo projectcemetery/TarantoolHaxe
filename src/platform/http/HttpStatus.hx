@@ -19,47 +19,45 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.http;
 
 /**
- *  Request from client
+ *  Http status for response
  */
-class Request {
+ @:enum
+abstract HttpStatus(Int) {
+    /**
+     *  Normal response
+     */
+    var Ok = 200;
 
     /**
-     *  Request headers
+     *  Server internal error
      */
-    public var headers (default, null) : Map<String, String>;
+    var Internal = 500;
 
     /**
-     *  Query parameters
+     *  Bad request
      */
-    public var query (default, null) : Map<String, String>;
+     var BadRequest = 400;
 
     /**
-     *  Form parameters
+     *  Resource not found
      */
-    public var form (default, null) : Map<String, String>;
+    var NotFound = 404;
 
     /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
+     *  Get string description of error
+     *  @return String
      */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
+    public function getDescription () : String {
+        switch (this) {
+            case Ok: return "OK";
+            case Internal: return "Internal error";
+            case BadRequest: return "Bad request";
+            case NotFound: return "Not found";
         }
+
+        return "Unknown";
     }
 }

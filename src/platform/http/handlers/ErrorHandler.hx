@@ -19,47 +19,54 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.http.handlers;
 
 /**
- *  Request from client
+ *  Handle errors
  */
-class Request {
+class ErrorHandler extends Handler {
+    /**
+     *  Callback to process error
+     */
+    private var onError : HttpContext -> HttpStatus -> Void;
 
     /**
-     *  Request headers
+     *  Process error
      */
-    public var headers (default, null) : Map<String, String>;
+    private function processError (c : HttpContext, err : HttpStatus) {
+        c.response.reset ();
+        c.response.status = err;
 
-    /**
-     *  Query parameters
-     */
-    public var query (default, null) : Map<String, String>;
-
-    /**
-     *  Form parameters
-     */
-    public var form (default, null) : Map<String, String>;
-
-    /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
-     */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var body = request.body.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
+        if (onError != null) {
+            try {                
+                onError (c, err);
+            } catch (e : Dynamic) {
+                c.response.reset ();
+                c.response.status = HttpStatus.Internal;
             }
+        }            
+
+        c.response.close ();
+    }
+
+    /**
+     *  Constructor
+     */
+    public function new (call : HttpContext -> HttpStatus -> Void) {
+        onError = call;
+    }    
+
+    /**
+     *  Process request
+     *  @param context - Http context
+     */
+    public override function process (context : HttpContext) : Void {
+        try {
+            callNext (context);
+        } catch (e : HttpStatus) {
+            processError (context, e);
+        } catch (e : Dynamic) {
+            processError (context, HttpStatus.Internal);
         }
     }
 }

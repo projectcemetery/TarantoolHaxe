@@ -121,7 +121,7 @@ class Space {
      *  @param iterator - 
      *  @return Int
      */
-    public function count (?key : KeyType, ?iterator : IteratorType) : Int {
+    public function count (?key : KeyType, ?iterator : Dynamic) : Int {
         // TODO: iterators
         return 0;
     }
