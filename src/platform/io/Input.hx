@@ -19,33 +19,27 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import chocolate.Chocolate.App;
-import chocolate.Request;
-import chocolate.response.Response;
-import zephyr.HtmlBuilder.*;
+package platform.io;
 
-import tarantool.box.Box;
-import lua.Table;
-import tarantool.util.Convert;
-import tarantool.types.query.UpdateQuery;
-import tarantool.types.query.UpdateQueryBuilder;
-import tarantool.crypto.Digest;
-import tarantool.clock.Clock;
-import tarantool.clock.native.ClockNative;
-import tarantool.types.UInt64;
-import tarantool.fiber.native.ChannelNative;
-import tarantool.uuid.Uuid;
-import platform.io.ByteArray;
+/**
+ *  Abstract data input
+ */
+class Input {
 
-class Test {
-    static function main() {
-        var arr = ByteArray.fromString ("Good");
-        var arr2 = ByteArray.fromString ("shit");
-        var arr = arr.concat (arr2);
+    /**
+     *  Read byte
+     *  @return Int
+     */
+    public function read () : Int {
+        throw "Not implemented";
+    }
 
-        for (b in arr) {
-            trace (b);
-        }
-        Sys.stdin().read (1);        
-    }    
+    /**
+     *  Read bytes
+     *  @param size - size of block
+     *  @return Int
+     */
+    public function readBytes (size : Int) : Int {
+        throw "Not implemented";
+    }
 }

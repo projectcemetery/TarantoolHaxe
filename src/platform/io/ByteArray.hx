@@ -26,7 +26,7 @@ import platform.ffi.Ffi;
 /**
  *  Iterator for uint8 array
  */
-class UInt8ArrayIterator {
+class ByteArrayIterator {
     
     /**
      *  Current position
@@ -36,13 +36,13 @@ class UInt8ArrayIterator {
     /**
      *  Uint8 array
      */
-    var owner : UInt8Array;
+    var owner : ByteArray;
 
     /**
      *  Constructor
      *  @param owner - 
      */
-    public function new (owner : UInt8Array) {
+    public function new (owner : ByteArray) {
         this.owner = owner;
         pos = 0;
     }
@@ -70,7 +70,7 @@ class UInt8ArrayIterator {
  *  Array of unsigned byte based on luajit ffi.
  *  For small memory footprint.
  */
-class UInt8Array {
+class ByteArray {
 
     /**
      *  Native uint8_t* data
@@ -86,8 +86,8 @@ class UInt8Array {
      *  Convert string to uint8 array
      *  @param s - 
      */
-    public static function fromString (s : String) : UInt8Array {
-        var arr = new UInt8Array (s.length);
+    public static function fromString (s : String) : ByteArray {
+        var arr = new ByteArray (s.length);
         lua.Ffi.copy (arr.data, s, s.length);
         return arr;
     }
@@ -123,18 +123,18 @@ class UInt8Array {
      *  Return iterator for array
      *  @return Iterator<Int>
      */
-    public function iterator () : UInt8ArrayIterator {
-        return new UInt8ArrayIterator (this);
+    public function iterator () : ByteArrayIterator {
+        return new ByteArrayIterator (this);
     }
 
     /**
      *  Concat two array
      *  @param array - 
-     *  @return UInt8Array
+     *  @return ByteArray
      */
-    public function concat (array : UInt8Array) : UInt8Array {
+    public function concat (array : ByteArray) : ByteArray {
         var len = length + array.length;
-        var arr = new UInt8Array (len);
+        var arr = new ByteArray (len);
         lua.Ffi.copy (arr.data, data, length);
         lua.Ffi.copy (arr.data + length, array.data, array.length);
         return arr;
