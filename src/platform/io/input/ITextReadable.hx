@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (c) 2017 Grabli66
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,11 +19,16 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package platform.io;
+package platform.io.input;
 
 /**
- *  Read text data from Input
+ *  Can read text
  */
-class TextReader {
-
+interface ITextReadable {
+    
+    /**
+     *  Read line from stream
+     *  @return String
+     */
+    public function readLine () : String;
 }

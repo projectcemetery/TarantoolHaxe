@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2017 Grabli66
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -22,24 +22,8 @@
 package platform.io;
 
 /**
- *  Abstract data input
+ *  For working with serial port
  */
-class Input {
+class SerialPort {
 
-    /**
-     *  Read byte
-     *  @return Int
-     */
-    public function read () : Int {
-        throw "Not implemented";
-    }
-
-    /**
-     *  Read bytes
-     *  @param size - size of block
-     *  @return Int
-     */
-    public function readBytes (size : Int) : Int {
-        throw "Not implemented";
-    }
 }

@@ -93,6 +93,30 @@ class ByteArray {
     }
 
     /**
+     *  Copy data of one array to another
+     *  @param dst - destinstion array
+     *  @param src - source array
+     *  @param dstPos - start position in destination array
+     *  @param srcPos - start position in source array
+     *  @param len - length bytes copy
+     */
+    public static function copy (dst : ByteArray, src : ByteArray, dstPos : Int, srcPos : Int, len : Int) {
+        // TODO: check ranges
+        lua.Ffi.copy (dst.data + dstPos, src.data + srcPos, len);
+    }
+
+    /**
+     *  Copy data from string to array
+     *  @param dst - 
+     *  @param src - 
+     *  @param pos - 
+     *  @param len - 
+     */
+    public static function copyString (dst : ByteArray, src : String, pos : Int, len : Int) {
+        lua.Ffi.copy (dst.data + pos, src, len);
+    }
+
+    /**
      *  Constructor
      *  @param size - 
      */
@@ -138,5 +162,32 @@ class ByteArray {
         lua.Ffi.copy (arr.data, data, length);
         lua.Ffi.copy (arr.data + length, array.data, array.length);
         return arr;
+    }    
+
+    /**
+     *  Get slice of array
+     *  @param pos - start pos
+     *  @param size - length of chunk
+     *  @return ByteArray
+     */
+    public function slice (pos : Int, size : Int) : ByteArray {
+        var cnt = pos + size;
+        if (cnt >= length) {
+            cnt = cnt - length;
+        }
+
+        if (cnt < 1) return null;
+
+        var bytes = new ByteArray (cnt);
+        ByteArray.copy (bytes, this, 0, 0, cnt);
+        return bytes;
+    }
+
+    /**
+     *  Return data of byte array as string
+     *  @return String
+     */
+    public function toString () : String {
+		return [for (i in 0...length) String.fromCharCode(get (i))].join("");
     }
 }

@@ -22,7 +22,8 @@
 package platform.http;
 
 import platform.net.TcpSocket;
-import haxe.io.Bytes;
+import platform.io.input.TextReader;
+import platform.io.input.LimitedReader;
 import tink.Url;
 using StringTools;
 
@@ -30,7 +31,12 @@ using StringTools;
  *  Request from client
  */
 class HttpRequest {
-    
+
+    /**
+     *  For text reading from input
+     */
+    var textReader : TextReader;
+
     /**
      *  Version
      */
@@ -54,14 +60,13 @@ class HttpRequest {
     /**
      *  Request body
      */
-    public var body : Bytes;
+    public var body : LimitedReader;
 
     /**
         Read all headers
     **/
     private function readHeaders (channel : TcpSocket) : Void {
-
-        var text = channel.input.readLine ();
+        var text = textReader.readLine ();
         if (text == null) throw "Connection closed";    // TODO: create internal error class to catch them
         var line = text.trim ();
         var parts = line.split (" ");
@@ -71,12 +76,12 @@ class HttpRequest {
 
         headers = new Map<String, String> ();
 
-        line = channel.input.readLine ().trim ();
+        line = textReader.readLine ().trim ();
         while (line.length > 0) {
             var head = line.split (": ");
             if (head.length < 2) throw HttpStatus.BadRequest;
             headers[head[0]] = head[1];
-            line = channel.input.readLine ().trim ();
+            line = textReader.readLine ().trim ();
         }
     }
 
@@ -91,7 +96,7 @@ class HttpRequest {
         if (headers.exists ("Content-Length")) {
             var len = Std.parseInt (headers ["Content-Length"]);
             if (len < 1) return;
-            body = channel.input.read (len);            
+            body = new LimitedReader (channel.input, len);
         } else if (headers["Transfer-Encoding"] == "chunked") {
             
         }
@@ -101,7 +106,8 @@ class HttpRequest {
      *  Constructor
      *  @param channel - 
      */
-    public function new (channel : TcpSocket) {        
+    public function new (channel : TcpSocket) {
+        textReader = new TextReader (channel.input);
         readHeaders (channel);        
         readBody (channel);        
     }

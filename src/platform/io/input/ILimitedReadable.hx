@@ -19,31 +19,25 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package platform.io;
+package platform.io.input;
 
 /**
- *  Read binary data from input
+ *  Has size limit
  */
-class BinaryReader {
+interface ILimitedReadable extends IByteReadable {
 
     /**
-     *  Data input
+     *  Size
      */
-    var input : Input;
+    public var length (default, null) : Int;
 
     /**
-     *  Constructor
-     *  @param input - data input
+     *  Current pos
      */
-    public function new (input : Input) {
-        this.input = input;
-    }
+    public var position (default, null) : Int;
 
     /**
-     *  Read byte
-     *  @return Int
+     *  Read all data from current position to end
      */
-    public function read () : Int {
-        return input.read ();
-    }
+    public function readToEnd () : ByteArray;
 }

@@ -19,28 +19,36 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package platform.net;
-
-import tarantool.socket.native.NativeSocketObject;
-import platform.io.input.IByteReadable;
-import platform.io.ByteArray;
+package platform.io.input;
 
 /**
- *  Output for socket
+ *  Reader with size limit
  */
-class SocketInput implements IByteReadable {
-    
+class LimitedReader implements ILimitedReadable {
+
     /**
-     *  Native socket object
+     *  Data input
      */
-    var sock : NativeSocketObject;
+    var input : IByteReadable;
+
+    /**
+     *  Size
+     */
+    public var length (default, null) : Int;
+
+    /**
+     *  Current pos
+     */
+    public var position (default, null) : Int; 
 
     /**
      *  Constructor
-     *  @param s - native socket object
+     *  @param input - data input
      */
-    public function new (s : NativeSocketObject) {
-        sock = s;
+    public function new (input : IByteReadable, length : Int) {
+        this.input = input;
+        this.length = length;
+        position = 0;
     }
 
     /**
@@ -48,9 +56,10 @@ class SocketInput implements IByteReadable {
      *  @return Int
      */
     public function readByte () : Int {
-        var dat = sock.read (1);
-        if (dat == null || dat.length < 1) throw SocketError.Disconnect;
-        return StringTools.fastCodeAt (dat, 0);
+        if (position + 1 >= length) throw IoError.Eof;
+        var data = input.readByte ();
+        position += 1;
+        return data;
     }
 
     /**
@@ -59,9 +68,15 @@ class SocketInput implements IByteReadable {
      *  @return ByteArray
      */
     public function readBytes (count : Int) : ByteArray {
-        var dat = sock.read (count);
-        if (dat == null || dat.length < 1) throw SocketError.Disconnect;
-        return ByteArray.fromString (dat);
+        var cnt = position + count;
+        if (cnt >= length) {
+            cnt = cnt - length;
+        }
+
+        if (cnt < 1) throw IoError.Eof;
+        var data = input.readBytes (cnt);
+        position += data.length;
+        return data;
     }
 
     /**
@@ -72,9 +87,28 @@ class SocketInput implements IByteReadable {
      *  @return Read count
      */
     public function readToBuffer (buffer : ByteArray, pos : Int, size : Int) : Int {
-        var dat = sock.read (size);
-        if (dat == null || dat.length < 1) throw SocketError.Disconnect;
-        ByteArray.copyString (buffer, dat, pos, size);
-        return dat.length;
+        var cnt = pos + size;
+        if (cnt >= length) {
+            cnt = length - cnt;
+        }
+
+        if (cnt < 1) throw IoError.Eof;
+
+        var count = input.readToBuffer (buffer, pos, cnt);
+        position = pos;
+        position += count;
+        return count;
+    }
+
+    /**
+     *  Read all data from current position to end
+     */
+    public function readToEnd () : ByteArray {
+        var cnt = length - position;
+        if (cnt < 1) throw IoError.Eof;
+        var data = new ByteArray (cnt);
+        // TODO: check all is read
+        readToBuffer (data, position, cnt);
+        return data;
     }
 }

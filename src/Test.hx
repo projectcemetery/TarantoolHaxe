@@ -36,16 +36,28 @@ import tarantool.types.UInt64;
 import tarantool.fiber.native.ChannelNative;
 import tarantool.uuid.Uuid;
 import platform.io.ByteArray;
+import platform.io.input.TextReader;
+import platform.net.TcpSocket;
 
 class Test {
     static function main() {
-        var arr = ByteArray.fromString ("Good");
-        var arr2 = ByteArray.fromString ("shit");
-        var arr = arr.concat (arr2);
+        /*var sock = new TcpSocket ();
+        sock.bind ("localhost", 8881, function (s : TcpSocket) {
+            var textReader = new TextReader (s.input);
+            trace (textReader.readLine ());
+        });        */
 
-        for (b in arr) {
-            trace (b);
-        }
-        Sys.stdin().read (1);        
+        var ffi = untyped require ('ffi');
+        untyped __lua__ ('ffi.cdef [[
+            void* malloc (size_t sizemem);
+            void free (void* ptr);
+        ]]');
+
+        var ptr = untyped ffi.C["malloc"] (33);
+        var data = untyped __lua__ ('ffi.cast ("uint8_t*", ptr)');
+        data[0] = 33;
+
+        trace (data[0]);
+        //untyped test ();
     }    
 }

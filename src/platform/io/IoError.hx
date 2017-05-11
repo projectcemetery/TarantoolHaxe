@@ -21,63 +21,13 @@
 
 package platform.io;
 
-import platform.io.input.IByteReadable;
-
 /**
- *  For working with binary data in memory
+ *  Io errors
  */
-class BinaryData {
+enum IoError {
 
     /**
-     *  Get byte by position
-     *  @param pos - 
-     *  @return Int
+     *  End of stream
      */
-    public function get (pos : Int) : Int {
-        return 0;
-    }
-
-    /**
-     *  Set byte at position
-     *  @param byte - 
-     */
-    public function set (pos : Int, byte : Int) {
-        
-    }
-
-    /**
-     *  Append byte
-     *  @param data - 
-     */
-    public function addByte (data : Int) {
-
-    }    
-
-    /**
-     *  Append byte array
-     *  @param data - 
-     */
-    public function addArray (data : ByteArray) {
-
-    }
-    
-    /**
-     *  Write array
-     *  @param data - array data
-     *  @param dstPos - start pos in binary data
-     *  @param srcPos - start pos in byte array
-     *  @param size - size of write data
-     *  @param autoResize - auto resize binary data
-     */
-    public function writeArray (data : ByteArray, dstPos : Int, srcPos : Int, size : Int, autoResize : Bool = true) {
-
-    }
-
-    /**
-     *  Append some IByteReadable
-     *  @param data - 
-     */
-    public function addReadable (data : IByteReadable) {
-
-    }
+    Eof;
 }

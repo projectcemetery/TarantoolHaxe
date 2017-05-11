@@ -21,7 +21,7 @@
 
 package platform.net;
 
-import haxe.io.Input;
+import platform.io.input.IByteReadable;
 import haxe.io.Output;
 import tarantool.socket.native.NativeSocket;
 import tarantool.socket.native.NativeSocketObject;
@@ -39,7 +39,7 @@ class TcpSocket {
     /**
      *  For reading data
      */
-    public var input (default, null) : Input;
+    public var input (default, null) : IByteReadable;
 
     /**
      *  For writing data

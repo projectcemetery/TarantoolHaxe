@@ -19,48 +19,51 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
-
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+package platform.io.input;
 
 /**
- *  Request from client
+ *  Read binary data from input
  */
-class Request {
+class BinaryReader implements IByteReadable {
 
     /**
-     *  Request headers
+     *  Data input
      */
-    public var headers (default, null) : Map<String, String>;
+    var input : IByteReadable;
 
     /**
-     *  Query parameters
+     *  Constructor
+     *  @param input - data input
      */
-    public var query (default, null) : Map<String, String>;
+    public function new (input : IByteReadable) {
+        this.input = input;
+    }
 
     /**
-     *  Form parameters
+     *  Read one byte
+     *  @return Int
      */
-    public var form (default, null) : Map<String, String>;
+    public inline function readByte () : Int {
+        return input.readByte ();
+    }
 
     /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
+     *  Read bytes
+     *  @param count - byte count to read
+     *  @return ByteArray
      */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
+    public inline function readBytes (count : Int) : ByteArray {
+        return input.readBytes (count);
+    }
 
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var bytes = request.body.readToEnd ();
-                var body = bytes.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
-        }
+    /**
+     *  Read bytes to buffer
+     *  @param buffer - buffer to read
+     *  @param pos - position to add bytes
+     *  @param size - length of read
+     *  @return Read count
+     */
+    public inline function readToBuffer (buffer : ByteArray, pos : Int, size : Int) : Int {
+        return input.readToBuffer (buffer, pos, size);
     }
 }

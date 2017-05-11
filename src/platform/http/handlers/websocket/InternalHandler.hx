@@ -180,7 +180,7 @@ class InternalHandler extends Output {
      *  Process frame type, opcode, mask, len part
     **/
     private function processFrame () : Void {
-        var binaryData = channel.input.read (2);
+        var binaryData = channel.input.readBytes (2);
         var frame = binaryData.get (0);
 
         frameType = frame & 0x0F;
@@ -202,7 +202,7 @@ class InternalHandler extends Output {
     **/
     private function processLength () : Void {
         if (packLen == TWO_BYTE_BODY_SIZE) {
-            var binaryData = channel.input.read (2);
+            var binaryData = channel.input.readBytes (2);
             packLen += binaryData.get (0);            
         } else if (packLen == EIGHT_BYTE_BODY_SIZE) {
             //var binaryData = BinaryData.FromBytes (_socket.input.read (8));            
@@ -217,7 +217,7 @@ class InternalHandler extends Output {
      *  Process data
     **/
     private function processData () : Void {
-        var binaryData = channel.input.read (packLen + MASK_SIZE);
+        var binaryData = channel.input.readBytes (packLen + MASK_SIZE);
 
         switch (frameType) {
             case FrameType.Close: {
@@ -228,8 +228,8 @@ class InternalHandler extends Output {
             case FrameType.Text |
                  FrameType.Binary:
             {
-                var mask = binaryData.sub (0, MASK_SIZE);
-                var data = binaryData.sub (MASK_SIZE, binaryData.length - MASK_SIZE);                
+                var mask = binaryData.slice (0, MASK_SIZE);
+                var data = binaryData.slice (MASK_SIZE, binaryData.length - MASK_SIZE);                
                 var res = Bytes.alloc (data.length);
 
                 for (i in 0...data.length) {

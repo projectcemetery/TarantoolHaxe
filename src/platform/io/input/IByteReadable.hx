@@ -19,26 +19,32 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package platform.io;
+package platform.io.input;
 
 /**
- *  Data output
+ *  Can read bytes
  */
-class Output {
+interface IByteReadable {
 
     /**
-     *  Write byte
-     *  @param b - 
+     *  Read one byte
+     *  @return Int
      */
-    public function write (b : Int) {
-        throw "Not implemented";
-    }
+    public function readByte () : Int;
 
     /**
-     *  Write bytes
-     *  @param bytes - 
+     *  Read bytes
+     *  @param count - byte count to read
+     *  @return ByteArray
      */
-    public function writeBytes (bytes : ByteArray) {
-        throw "Not implemented";
-    }
+    public function readBytes (count : Int) : ByteArray;
+
+    /**
+     *  Read bytes to buffer
+     *  @param buffer - buffer to read
+     *  @param pos - position to add bytes
+     *  @param size - length of read
+     *  @return Read count
+     */
+    public function readToBuffer (buffer : ByteArray, pos : Int, size : Int) : Int;
 }

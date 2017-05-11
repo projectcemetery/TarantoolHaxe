@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2017 Grabli66
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,48 +19,44 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package chocolate;
+package platform.io.input;
 
-import platform.http.HttpRequest;
-import platform.http.HttpHeaderType;
-import platform.mime.MimeTypes;
+import platform.io.input.IByteReadable;
 
 /**
- *  Request from client
+ *  Read text data from Input
  */
-class Request {
+class TextReader implements ITextReadable {
 
     /**
-     *  Request headers
+     *  Data input
      */
-    public var headers (default, null) : Map<String, String>;
+    var input : IByteReadable;
 
     /**
-     *  Query parameters
+     *  Constructor
+     *  @param input - Data input
      */
-    public var query (default, null) : Map<String, String>;
+    public function new (input : IByteReadable) {
+        this.input = input;
+    }
 
     /**
-     *  Form parameters
+     *  Read line from stream
+     *  @return String
      */
-    public var form (default, null) : Map<String, String>;
+    public function readLine () : String {
+        // TODO: create own BytesBuffer
+        var buf = new haxe.io.BytesBuffer();
+		var last : Int;
+		var s : String;
 
-    /**
-     *  Constructor. Converts http request to app request
-     *  @param request - Http request from http server
-     */
-    public function new (request : HttpRequest) {
-        headers = request.headers;
-        query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
-
-        var contentType = request.headers[HttpHeaderType.ContentType];
-        if (contentType == MimeTypes.application.x_www_form_urlencoded) {
-            if (request.body != null) {
-                var bytes = request.body.readToEnd ();
-                var body = bytes.toString ();
-                var query : tink.url.Query = body;
-                form = [for (p in query.iterator()) p.name.toString() => p.value.toString ()];
-            }
+        while ((last = input.readByte ()) != 0x0A) {
+            buf.addByte (last);
         }
+
+        s = buf.getBytes ().toString ();
+        if( s.charCodeAt (s.length - 1) == 0x0D ) s = s.substr (0,-1);
+		return s;
     }
 }
