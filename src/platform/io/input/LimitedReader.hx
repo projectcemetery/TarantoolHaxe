@@ -80,35 +80,12 @@ class LimitedReader implements ILimitedReadable {
     }
 
     /**
-     *  Read bytes to buffer
-     *  @param buffer - buffer to read
-     *  @param pos - position to add bytes
-     *  @param size - length of read
-     *  @return Read count
-     */
-    public function readToBuffer (buffer : ByteArray, pos : Int, size : Int) : Int {
-        var cnt = pos + size;
-        if (cnt >= length) {
-            cnt = length - cnt;
-        }
-
-        if (cnt < 1) throw IoError.Eof;
-
-        var count = input.readToBuffer (buffer, pos, cnt);
-        position = pos;
-        position += count;
-        return count;
-    }
-
-    /**
      *  Read all data from current position to end
      */
     public function readToEnd () : ByteArray {
         var cnt = length - position;
-        if (cnt < 1) throw IoError.Eof;
-        var data = new ByteArray (cnt);
+        if (cnt < 1) throw IoError.Eof;        
         // TODO: check all is read
-        readToBuffer (data, position, cnt);
-        return data;
+        return readBytes (cnt);
     }
 }

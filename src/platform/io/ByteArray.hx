@@ -21,7 +21,7 @@
 
 package platform.io;
 
-import platform.ffi.Ffi;
+import platform.ffi.Unsafe;
 
 /**
  *  Iterator for uint8 array
@@ -122,7 +122,7 @@ class ByteArray {
      */
     public function new (size : Int) {
         this.length = size;
-        data = Ffi.create ("uint8_t[?]", size);
+        data = Unsafe.create ("uint8_t[?]", size);
     }
 
     /**

@@ -46,8 +46,7 @@ class TextReader implements ITextReadable {
      *  @return String
      */
     public function readLine () : String {
-        // TODO: create own BytesBuffer
-        var buf = new haxe.io.BytesBuffer();
+        var buf = new BinaryData ();
 		var last : Int;
 		var s : String;
 
@@ -55,8 +54,8 @@ class TextReader implements ITextReadable {
             buf.addByte (last);
         }
 
-        s = buf.getBytes ().toString ();
+        s = buf.toString ();
         if( s.charCodeAt (s.length - 1) == 0x0D ) s = s.substr (0,-1);
-		return s;
+		return s;        
     }
 }

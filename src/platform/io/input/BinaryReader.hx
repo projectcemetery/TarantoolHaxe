@@ -55,15 +55,4 @@ class BinaryReader implements IByteReadable {
     public inline function readBytes (count : Int) : ByteArray {
         return input.readBytes (count);
     }
-
-    /**
-     *  Read bytes to buffer
-     *  @param buffer - buffer to read
-     *  @param pos - position to add bytes
-     *  @param size - length of read
-     *  @return Read count
-     */
-    public inline function readToBuffer (buffer : ByteArray, pos : Int, size : Int) : Int {
-        return input.readToBuffer (buffer, pos, size);
-    }
 }

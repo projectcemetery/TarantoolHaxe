@@ -21,7 +21,7 @@
 
 package platform.io;
 
-import platform.io.input.IByteReadable;
+import platform.ffi.Unsafe;
 
 /**
  *  For working with binary data in memory
@@ -29,55 +29,114 @@ import platform.io.input.IByteReadable;
 class BinaryData {
 
     /**
-     *  Get byte by position
-     *  @param pos - 
-     *  @return Int
+     *  Size for buffer incement
      */
-    public function get (pos : Int) : Int {
-        return 0;
+    var incrementSize : Int = 100;
+    
+    /**
+     *  Total size of allocated memory
+     */
+    var size : Int;
+
+    /**
+     *  Memory for data
+     */
+    var buffer : Dynamic;
+
+    /**
+     *  Length of buffer
+     */
+    public var length (default, null) : Int;
+
+    /**
+     *  Resize buffer
+     *  @param newsize - 
+     */
+    function resize (newsize : Int) {
+        var newbuffer = Unsafe.castObj ("uint8_t*", Unsafe.malloc (newsize));
+        if (buffer != null) {        
+            lua.Ffi.copy (newbuffer, buffer, newsize);
+            Unsafe.free (buffer);
+        }
+        buffer = newbuffer;
+        size = newsize;
     }
 
     /**
-     *  Set byte at position
-     *  @param byte - 
+     *  Add size of buffer by incrementSize
      */
-    public function set (pos : Int, byte : Int) {
-        
+    function incSize () {
+        resize (size + incrementSize);
+    }
+    
+    /**
+     *  Insert hole in buffer for data
+     *  @param pos - position
+     *  @param len - length
+     */
+    function insertSize (pos : Int, len : Int) {
+        var ln = length + len;
+        if (ln > size) resize (ln + incrementSize);
+        var sz = length - pos;                
+        Unsafe.memmove (buffer + pos + len, buffer + pos, sz);
+        length += len;
+    }
+
+    /**
+     *  Constructor
+     */
+    public function new (?startSize : Int, ?increment : Int) {
+        size = 0;
+        length = 0;
+        if (increment != null && increment > 0) incrementSize = increment;
+        if (startSize != null) {
+            resize (startSize);
+        } else {
+            incSize ();
+        }
+    }
+
+    /**
+     *  Get byte by position
+     *  @param pos - position of byte
+     *  @return Int
+     */
+    public function getByte (pos : Int) : Int {
+        return buffer[pos];
     }
 
     /**
      *  Append byte
-     *  @param data - 
+     *  @param data - byte
      */
     public function addByte (data : Int) {
+        if (length >= size) incSize ();
+        buffer[length] = data;
+        length += 1;
+    }
 
+    /**
+     *  Insert byte
+     *  @param data - byte
+     */
+    public function insertByte (pos : Int, data : Int) {
+        insertSize (pos, 1);
+        buffer[pos] = data;
     }    
 
     /**
-     *  Append byte array
-     *  @param data - 
+     *  Set byte at position
+     *  @param data - byte
      */
-    public function addArray (data : ByteArray) {
-
-    }
-    
-    /**
-     *  Write array
-     *  @param data - array data
-     *  @param dstPos - start pos in binary data
-     *  @param srcPos - start pos in byte array
-     *  @param size - size of write data
-     *  @param autoResize - auto resize binary data
-     */
-    public function writeArray (data : ByteArray, dstPos : Int, srcPos : Int, size : Int, autoResize : Bool = true) {
-
+    public function setByte (pos : Int, data : Int) {
+        buffer[pos] = data;
     }
 
     /**
-     *  Append some IByteReadable
-     *  @param data - 
+     *  Return data of byte array as string
+     *  @return String
      */
-    public function addReadable (data : IByteReadable) {
-
+    public function toString () : String {
+		return [for (i in 0...length) String.fromCharCode(getByte (i))].join("");
     }
 }

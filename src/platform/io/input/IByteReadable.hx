@@ -38,13 +38,4 @@ interface IByteReadable {
      *  @return ByteArray
      */
     public function readBytes (count : Int) : ByteArray;
-
-    /**
-     *  Read bytes to buffer
-     *  @param buffer - buffer to read
-     *  @param pos - position to add bytes
-     *  @param size - length of read
-     *  @return Read count
-     */
-    public function readToBuffer (buffer : ByteArray, pos : Int, size : Int) : Int;
 }

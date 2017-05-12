@@ -38,6 +38,8 @@ import tarantool.uuid.Uuid;
 import platform.io.ByteArray;
 import platform.io.input.TextReader;
 import platform.net.TcpSocket;
+import platform.ffi.Unsafe;
+import platform.io.BinaryData;
 
 class Test {
     static function main() {
@@ -47,17 +49,15 @@ class Test {
             trace (textReader.readLine ());
         });        */
 
-        var ffi = untyped require ('ffi');
-        untyped __lua__ ('ffi.cdef [[
-            void* malloc (size_t sizemem);
-            void free (void* ptr);
-        ]]');
-
-        var ptr = untyped ffi.C["malloc"] (33);
-        var data = untyped __lua__ ('ffi.cast ("uint8_t*", ptr)');
-        data[0] = 33;
-
-        trace (data[0]);
-        //untyped test ();
+        var data = new BinaryData ();
+        data.addByte (33);        
+        data.addByte (22);
+        data.addByte (66);
+        data.insertByte (3, 4);
+        trace (data.getByte (0));
+        trace (data.getByte (1));
+        trace (data.getByte (2));
+        trace (data.getByte (3));
+        trace (data.length);
     }    
 }
