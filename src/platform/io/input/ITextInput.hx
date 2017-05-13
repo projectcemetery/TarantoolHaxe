@@ -24,7 +24,7 @@ package platform.io.input;
 /**
  *  Can read text
  */
-interface ITextReadable {
+interface ITextInput {
     
     /**
      *  Read line from stream

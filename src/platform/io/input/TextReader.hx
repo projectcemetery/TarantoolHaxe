@@ -21,23 +21,23 @@
 
 package platform.io.input;
 
-import platform.io.input.IByteReadable;
+import platform.io.input.IByteInput;
 
 /**
- *  Read text data from Input
+ *  Read text data from byte input
  */
-class TextReader implements ITextReadable {
+class TextReader implements ITextInput {
 
     /**
      *  Data input
      */
-    var input : IByteReadable;
+    var input : IByteInput;
 
     /**
      *  Constructor
      *  @param input - Data input
      */
-    public function new (input : IByteReadable) {
+    public function new (input : IByteInput) {
         this.input = input;
     }
 

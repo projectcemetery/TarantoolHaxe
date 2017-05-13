@@ -1,19 +1,20 @@
 package platform.http;
 
-import haxe.io.Output;
-import haxe.io.Bytes;
-import haxe.io.BytesBuffer;
 import platform.net.TcpSocket;
 import platform.http.HttpHeaderType;
+import platform.io.ByteArray;
+import platform.io.BinaryData;
+import platform.io.output.ISocketOutput;
 
 /**
-    Response to client
+ *  Response to client
 **/
-class HttpResponse extends Output {
+class HttpResponse implements ISocketOutput {
+
     /**
-        Buffer for response
+     *  Buffer for response
     **/
-    var buffer : BytesBuffer;
+    var buffer : BinaryData;
 
     /**
      *  Raw channel for write/read data
@@ -21,7 +22,7 @@ class HttpResponse extends Output {
     public var channel (default, null) : TcpSocket;
 
     /**
-        Response headers
+     *  Response headers
     **/
     public var headers (default, null) : Map<String, String>;
 
@@ -59,34 +60,42 @@ class HttpResponse extends Output {
      *  Reset response
      */
     public function reset () {
-        buffer = new BytesBuffer ();
+        buffer = new BinaryData ();
     }
 
     /**
-     *  Write data
-     *  @param data - bytes
-     *  @return Int
+     *  Write byte to stream
+     *  @param data - byte
      */
-    public override function write (data: Bytes) : Void {
-        buffer.addBytes (data, 0, data.length);        
+    public function writeByte (data : Int) : Void {
+        buffer.addByte (data);
     }
 
     /**
-     *  Write string
-     *  @param data - string
-     *  @return Int
+     *  Write bytes to stream
+     *  @param data - byte array
+     *  @return Number of bytes written
      */
-    public override function writeString (data: String) : Void {
-        buffer.addString (data);        
+    public function writeBytes (data : ByteArray) : Int {
+        buffer.addBytes (data);
+        return data.length;
+    }
+
+    /**
+     *  Write string to stream
+     *  @param data - some string
+     */
+    public function writeString (data : String) {
+        buffer.addString (data);
     }
 
     /**
      *  Write http response
      */
-    public override function close () : Void {
+    public function close () : Void {
         var descr = status.getDescription ();
         channel.output.writeString ('HTTP/1.1 ${status} ${descr}\n');
         writeHeaders ();        
-        channel.output.write (buffer.getBytes ());
+        channel.output.writeBytes (buffer.getBytes ());
     }
 }

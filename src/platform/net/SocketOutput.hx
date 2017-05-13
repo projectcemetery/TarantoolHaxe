@@ -21,53 +21,59 @@
 
 package platform.net;
 
-import haxe.io.Output;
-import haxe.io.Bytes;
+import platform.io.ByteArray;
+import platform.io.output.ISocketOutput;
 import tarantool.socket.native.NativeSocketObject;
 
 /**
  *  Output for socket
  */
-class SocketOutput extends Output {
+class SocketOutput implements ISocketOutput {
+
     /**
      *  Native socket object
      */
-    private var _sock : NativeSocketObject;
+    private var sock : NativeSocketObject;
 
     /**
      *  Constructor
      *  @param s - native socket object
      */
     public function new (s : NativeSocketObject) {
-        _sock = s;
+        sock = s;
     }
 
     /**
      *  Write one byte
-     *  @param c - 
+     *  @param data - byte
      */
-    public override function writeByte(c : Int) : Void {
-        var s = haxe.Utf8.char (c);
-        _sock.write (s);
+    public function writeByte (data : Int) : Void {
+        var s = String.fromCharCode (data);
+        sock.write (s);
     }
 
     /**
-     *  Write string
-     *  @param s - string to write
+     *  Write bytes to stream
+     *  @param data - byte array
+     *  @return Number of bytes written
      */
-    public override function writeString( s : String ) {
-        _sock.write (s);
+    public function writeBytes (data : ByteArray) : Int {
+        var str = data.toString ();
+        return sock.write (str);
     }
 
     /**
-     *  Write bytes
-     *  @param s - bytes to write
-     *  @param pos - position
-     *  @param len - length
-     *  @return Int
+     *  Write string to stream
+     *  @param data - some string
      */
-    public override function writeBytes( s : Bytes, pos : Int, len : Int ) : Int {
-        var str = s.getString(pos, len);
-        return _sock.write (str);
+    public function writeString (data : String) {
+        sock.write (data);
+    }
+
+    /**
+     *  Close stream
+     */
+    public function close () : Void {
+        sock.close ();
     }
 }

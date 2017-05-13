@@ -21,13 +21,13 @@
 
 package platform.http.handlers.websocket;
 
-import haxe.io.Output;
-import haxe.io.Bytes;
+import platform.io.ByteArray;
+import platform.io.output.IByteWriteable;
 import platform.net.Peer;
 
 interface IWSHandler {
-    public function onConnect (p : Peer, c : Output) : Void;
-    public function onData (p : Peer, b : Bytes, c : Output) : Void;
+    public function onConnect (p : Peer, c : IByteWriteable) : Void;
+    public function onData (p : Peer, b : ByteArray, c : IByteWriteable) : Void;
     public function onClose (p : Peer) : Void;
     public function onError (p : Peer, e : Dynamic) : Void;
 }

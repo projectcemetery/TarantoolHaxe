@@ -19,25 +19,16 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package platform.io.input;
+package platform.io.output;
 
 /**
- *  Has size limit
+ *  Can write text
  */
-interface ILimitedReadable extends IByteReadable {
+interface ITextWriteable {
 
     /**
-     *  Size
+     *  Write string to stream
+     *  @param data - some string
      */
-    public var length (default, null) : Int;
-
-    /**
-     *  Current pos
-     */
-    public var position (default, null) : Int;
-
-    /**
-     *  Read all data from current position to end
-     */
-    public function readToEnd () : ByteArray;
+    public function writeString (data : String) : Void;
 }

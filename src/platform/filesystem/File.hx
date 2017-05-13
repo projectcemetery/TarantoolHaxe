@@ -19,52 +19,11 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.fio;
-
-import platform.io.ByteArray;
-import tarantool.fio.native.NativeFio;
-import tarantool.fio.native.NativeFileHandle;
+package platform.filesystem;
 
 /**
- *  File
+ *  For operations on files
  */
 class File {
     
-    /**
-     *  Native file handle
-     */
-    var file : NativeFileHandle;
-
-    /**
-     *  Get file extension
-     *  @param path - 
-     *  @return String
-     */
-    public inline static function getExtension (path : String) : String {
-        var lind = path.lastIndexOf (".");
-        if (lind < 0) return "";
-        lind++;
-        return path.substr (lind, path.length - lind);
-    }
-
-    /**
-     *  Constructor
-     *  @param path - 
-     */
-    public function new  (path : String) {
-        file = NativeFio.open (path);
-    }
-
-    /**
-     *  Read all file bytes
-     *  @param path - file path
-     *  @return Bytes
-     */
-    public function readAllBytes (path : String) : ByteArray {
-        var s = file.stat ();
-        var size = untyped s["size"];
-        var data = file.read (size);
-        file.close ();
-        return ByteArray.fromString (data);
-    }
 }

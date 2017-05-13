@@ -48,16 +48,26 @@ class Test {
             var textReader = new TextReader (s.input);
             trace (textReader.readLine ());
         });        */
+       
+       //var data1 = new BinaryData ();
+       //var data2 = new BinaryData ();              
 
-        var data = new BinaryData ();
-        data.addByte (33);        
-        data.addByte (22);
-        data.addByte (66);
-        data.insertByte (3, 4);
-        trace (data.getByte (0));
-        trace (data.getByte (1));
-        trace (data.getByte (2));
-        trace (data.getByte (3));
-        trace (data.length);
+       //var dat = new BinaryData ();
+       var bb = new haxe.io.BytesBuffer ();
+
+       var clock = tarantool.clock.Clock.thread64 ();
+       for (i in 0...100000) {           
+           //dat.addByte (1);
+           
+           bb.addByte (33);
+       }
+
+       var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
+
+       trace (clock);       
+       Sys.stdin ().read (1);
+       trace (bb.length);
+       //trace (data1.length);
+       //trace (data2.length);
     }    
 }

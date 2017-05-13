@@ -31,7 +31,7 @@ class BinaryData {
     /**
      *  Size for buffer incement
      */
-    var incrementSize : Int = 100;
+    var incrementSize : Int = 10000;
     
     /**
      *  Total size of allocated memory
@@ -53,20 +53,20 @@ class BinaryData {
      *  @param newsize - 
      */
     function resize (newsize : Int) {
-        var newbuffer = Unsafe.castObj ("uint8_t*", Unsafe.malloc (newsize));
-        if (buffer != null) {        
-            lua.Ffi.copy (newbuffer, buffer, newsize);
-            Unsafe.free (buffer);
+        if (buffer == null) {
+            buffer = Unsafe.castObj ("uint8_t*", Unsafe.malloc (newsize));
+        } else {
+            buffer = Unsafe.castObj ("uint8_t*", Unsafe.realloc (buffer, newsize));
         }
-        buffer = newbuffer;
+                
         size = newsize;
     }
 
     /**
      *  Add size of buffer by incrementSize
      */
-    function incSize () {
-        resize (size + incrementSize);
+    function incSize (?incement : Int) {
+        resize (if (incement != null) incement else incrementSize);
     }
     
     /**
@@ -95,6 +95,8 @@ class BinaryData {
             incSize ();
         }
     }
+
+// BYTE
 
     /**
      *  Get byte by position
@@ -131,6 +133,40 @@ class BinaryData {
     public function setByte (pos : Int, data : Int) {
         buffer[pos] = data;
     }
+    
+// BYTES
+
+    /**
+     *  Get all bytes from binary data
+     *  @return ByteArray
+     */
+    public function getBytes () : ByteArray {
+        var data = new ByteArray (length);
+        return data;
+    }
+
+    /**
+     *  Add bytes
+     *  @param data - byte array
+     */
+    public function addBytes (data : ByteArray) {
+        incSize (data.length);
+        lua.Ffi.copy (buffer + length, data.data, data.length);
+        length += data.length;
+    }
+
+// STRING
+
+    /**
+     *  Write string to stream
+     *  @param data - some string
+     */
+    public function addString (data : String) {
+        incSize (data.length);
+        lua.Ffi.copy (buffer + length, data, data.length);
+        length += data.length;
+    }
+
 
     /**
      *  Return data of byte array as string

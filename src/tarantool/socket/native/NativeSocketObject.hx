@@ -50,6 +50,11 @@ extern class NativeSocketObject {
     public function read (limit : haxe.extern.EitherType<Int,String>, ?timeout : Int) : String;
 
     /**
+     *  Close socket
+     */
+    public function close () : Void;
+
+    /**
      *  Read string
      *  @param limit - limit
      *  @param timeout - timeout of read

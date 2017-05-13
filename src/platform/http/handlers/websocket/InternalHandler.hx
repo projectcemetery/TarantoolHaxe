@@ -21,8 +21,9 @@
 
 package platform.http.handlers.websocket;
 
-import haxe.io.Output;
-import haxe.io.Bytes;
+import platform.io.ByteArray;
+import platform.io.output.IByteWriteable;
+// TODO: replace
 import haxe.crypto.Base64;
 import haxe.crypto.Sha1;
 import haxe.crypto.BaseCode;
@@ -59,7 +60,7 @@ enum WorkState {
 /**
  *  Handle websocket data
 **/
-class InternalHandler extends Output {
+class InternalHandler implements IByteWriteable {
 
     /**
      *  Message mask size
@@ -145,8 +146,9 @@ class InternalHandler extends Output {
      *  Decode hex string to Bytes
     **/
     private function decode (str : String) {
-        var base = Bytes.ofString("0123456789abcdef");
-        return new BaseCode(base).decodeBytes(Bytes.ofString(str.toLowerCase()));
+        // TODO: remove Bytes
+        var base = haxe.io.Bytes.ofString("0123456789abcdef");
+        return new BaseCode(base).decodeBytes(haxe.io.Bytes.ofString(str.toLowerCase()));
     }
 
     /**
@@ -230,7 +232,7 @@ class InternalHandler extends Output {
             {
                 var mask = binaryData.slice (0, MASK_SIZE);
                 var data = binaryData.slice (MASK_SIZE, binaryData.length - MASK_SIZE);                
-                var res = Bytes.alloc (data.length);
+                var res = new ByteArray (data.length);
 
                 for (i in 0...data.length) {
                     var j = i % 4;
@@ -290,32 +292,38 @@ class InternalHandler extends Output {
     }    
 
     /**
-     *  Write bunary data
-    **/
-    override public function write (data: Bytes) : Void {
-         var frame = Bytes.alloc (2 + data.length);
+     *  Write one byte
+     *  @param data - byte
+     */
+    public function writeByte (data : Int) : Void {
+        return channel.output.writeByte (data);
+    }
+
+    /**
+     *  Write bytes to stream
+     *  @param data - byte array
+     *  @return Number of bytes written
+     */
+    public function writeBytes (data : ByteArray) : Int {
+        var frame = new ByteArray (2 + data.length);
         frame.set (0, 0x80 + FrameType.Binary);  // FIN, BINARY
         frame.set (1, data.length);
-        frame.blit (2, data, 0, data.length);
-        channel.output.write (frame);
+        ByteArray.copy (frame, data, 2, 0, data.length);
+        return channel.output.writeBytes (frame);
     }
 
     /**
      *  Write string
     **/
-    override public function writeString (data: String) : Void {
-        var frame = Bytes.alloc (2 + data.length);
-        frame.set (0, 0x80 + FrameType.Text);  // FIN, BINARY
-        frame.set (1, data.length);
-        var dat = Bytes.ofString (data);        
-        frame.blit (2, dat, 0, dat.length);
-        channel.output.write (frame);
+    public function writeString (data: String) : Void {
+        var dat = ByteArray.fromString (data);
+        writeBytes (dat);
     }
 
     /**
      *  Close socket
     **/
-    override public function close () : Void {
+    public function close () : Void {
         channel.output.close ();
     }
 }

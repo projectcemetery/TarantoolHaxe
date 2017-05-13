@@ -24,12 +24,12 @@ package platform.io.input;
 /**
  *  Reader with size limit
  */
-class LimitedReader implements ILimitedReadable {
+class LimitedReader implements ILimitedInput {
 
     /**
      *  Data input
      */
-    var input : IByteReadable;
+    var input : IByteInput;
 
     /**
      *  Size
@@ -45,7 +45,7 @@ class LimitedReader implements ILimitedReadable {
      *  Constructor
      *  @param input - data input
      */
-    public function new (input : IByteReadable, length : Int) {
+    public function new (input : IByteInput, length : Int) {
         this.input = input;
         this.length = length;
         position = 0;

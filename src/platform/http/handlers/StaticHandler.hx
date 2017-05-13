@@ -74,7 +74,7 @@ class StaticHandler extends Handler {
 
                 var file = new File (fl);
                 var data = file.readAllBytes (fl);
-                context.response.write (data);
+                context.response.writeBytes (data);
                 context.response.close ();
             } else {
                 throw HttpStatus.NotFound;

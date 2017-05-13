@@ -75,6 +75,7 @@ class ByteArray {
     /**
      *  Native uint8_t* data
      */
+    @:allow(platform.io.BinaryData)
     var data : Dynamic;
 
     /**

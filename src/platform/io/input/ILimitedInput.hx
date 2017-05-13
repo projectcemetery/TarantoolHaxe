@@ -22,20 +22,14 @@
 package platform.io.input;
 
 /**
- *  Can read bytes
+ *  Has size limit
  */
-interface IByteReadable {
+interface ILimitedInput extends IByteInput
+                        extends ILimited
+{
 
     /**
-     *  Read one byte
-     *  @return Int
+     *  Read all data from current position to end
      */
-    public function readByte () : Int;
-
-    /**
-     *  Read bytes
-     *  @param count - byte count to read
-     *  @return ByteArray
-     */
-    public function readBytes (count : Int) : ByteArray;
+    public function readToEnd () : ByteArray;
 }

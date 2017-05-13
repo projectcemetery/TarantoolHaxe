@@ -28,6 +28,7 @@ import platform.http.handlers.websocket.WebSocketHandler;
 import platform.http.handlers.ErrorHandler;
 import platform.http.handlers.HttpHandler;
 import platform.http.handlers.StaticHandler;
+import platform.io.ByteArray;
 import chocolate.response.Response;
 
 /**
@@ -97,7 +98,8 @@ class Chocolate {
      *  @param response - response from server
      */
     private function writeResponse (c : HttpContext, response : Response) {
-        c.response.writeString (response.toString ());
+        // TODO: writeLine
+        c.response.writeBytes (ByteArray.fromString (response.toString ()));
     }
 
     /**

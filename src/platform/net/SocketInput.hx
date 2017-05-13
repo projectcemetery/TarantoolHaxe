@@ -22,13 +22,13 @@
 package platform.net;
 
 import tarantool.socket.native.NativeSocketObject;
-import platform.io.input.IByteReadable;
+import platform.io.input.ISocketInput;
 import platform.io.ByteArray;
 
 /**
  *  Output for socket
  */
-class SocketInput implements IByteReadable {
+class SocketInput implements ISocketInput {
     
     /**
      *  Native socket object
@@ -65,16 +65,19 @@ class SocketInput implements IByteReadable {
     }
 
     /**
-     *  Read bytes to buffer
-     *  @param buffer - buffer to read
-     *  @param pos - position to add bytes
-     *  @param size - length of read
-     *  @return Read count
+     *  Read line from stream
+     *  @return String
      */
-    public function readToBuffer (buffer : ByteArray, pos : Int, size : Int) : Int {
-        var dat = sock.read (size);
+    public function readLine () : String {
+        var dat = sock.read ("\n");
         if (dat == null || dat.length < 1) throw SocketError.Disconnect;
-        ByteArray.copyString (buffer, dat, pos, size);
-        return dat.length;
+        return dat;
+    }
+
+    /**
+     *  Close stream
+     */
+    public function close () : Void {
+        sock.close ();
     }
 }

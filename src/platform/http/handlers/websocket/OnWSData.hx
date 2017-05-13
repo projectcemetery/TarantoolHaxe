@@ -21,11 +21,11 @@
 
 package platform.http.handlers.websocket;
 
-import haxe.io.Bytes;
-import haxe.io.Output;
+import platform.io.ByteArray;
 import platform.net.Peer;
+import platform.io.output.IByteWriteable;
 
 /**
  *  Callback for websocket data
  */
-typedef OnWSData = Peer -> Bytes -> Output -> Void;
+typedef OnWSData = Peer -> ByteArray -> IByteWriteable -> Void;

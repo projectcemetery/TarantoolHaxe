@@ -19,52 +19,23 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.fio;
-
-import platform.io.ByteArray;
-import tarantool.fio.native.NativeFio;
-import tarantool.fio.native.NativeFileHandle;
+package platform.io.output;
 
 /**
- *  File
+ *  Can write bytes
  */
-class File {
-    
-    /**
-     *  Native file handle
-     */
-    var file : NativeFileHandle;
+interface IByteWriteable {
 
     /**
-     *  Get file extension
-     *  @param path - 
-     *  @return String
+     *  Write byte to stream
+     *  @param data - byte
      */
-    public inline static function getExtension (path : String) : String {
-        var lind = path.lastIndexOf (".");
-        if (lind < 0) return "";
-        lind++;
-        return path.substr (lind, path.length - lind);
-    }
+    public function writeByte (data : Int) : Void;
 
     /**
-     *  Constructor
-     *  @param path - 
+     *  Write bytes to stream
+     *  @param data - byte array
+     *  @return Number of bytes written
      */
-    public function new  (path : String) {
-        file = NativeFio.open (path);
-    }
-
-    /**
-     *  Read all file bytes
-     *  @param path - file path
-     *  @return Bytes
-     */
-    public function readAllBytes (path : String) : ByteArray {
-        var s = file.stat ();
-        var size = untyped s["size"];
-        var data = file.read (size);
-        file.close ();
-        return ByteArray.fromString (data);
-    }
+    public function writeBytes (data : ByteArray) : Int;
 }

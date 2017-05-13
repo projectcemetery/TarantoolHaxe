@@ -21,9 +21,9 @@
 
 package chocolate;
 
-import haxe.io.Output;
-import haxe.io.Bytes;
+import platform.io.ByteArray;
 import platform.net.Peer;
+import platform.io.output.IByteWriteable;
 import platform.http.handlers.websocket.OnWSConnect;
 import platform.http.handlers.websocket.OnWSData;
 import platform.http.handlers.websocket.OnWSClose;
@@ -65,7 +65,7 @@ class InternalWebSocketHandle implements IWSHandler {
      *  @param p - 
      *  @param c - 
      */
-    public function onConnect (p : Peer, c : Output) : Void {
+    public function onConnect (p : Peer, c : IByteWriteable) : Void {
         if (ConnectHandle != null) ConnectHandle (p, c);
     }
 
@@ -75,7 +75,7 @@ class InternalWebSocketHandle implements IWSHandler {
      *  @param b - 
      *  @param c - 
      */
-    public function onData (p : Peer, b : Bytes, c : Output) : Void {
+    public function onData (p : Peer, b : ByteArray, c : IByteWriteable) : Void {
         if (DataHandle != null) DataHandle (p, b, c);
     }
 

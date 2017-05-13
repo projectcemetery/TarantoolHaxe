@@ -22,9 +22,9 @@
 package platform.http.handlers.websocket;
 
 import platform.net.Peer;
-import haxe.io.Output;
+import platform.io.output.IByteWriteable;
 
 /**
  *  Callback for websocket connect
  */
-typedef OnWSConnect = Peer -> Output -> Void;
+typedef OnWSConnect = Peer -> IByteWriteable -> Void;
