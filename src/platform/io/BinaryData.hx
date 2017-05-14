@@ -47,7 +47,7 @@ class BinaryData {
      *  Length of buffer
      */
     public var length (default, null) : Int;
-
+    
     /**
      *  Resize buffer
      *  @param newsize - 
@@ -58,7 +58,7 @@ class BinaryData {
         } else {
             buffer = Unsafe.castObj ("uint8_t*", Unsafe.realloc (buffer, newsize));
         }
-                
+        
         size = newsize;
     }
 
@@ -66,7 +66,8 @@ class BinaryData {
      *  Add size of buffer by incrementSize
      */
     function incSize (?incement : Int) {
-        resize (if (incement != null) incement else incrementSize);
+        var inc = if (incement != null) incement else incrementSize;
+        resize (size + inc);
     }
     
     /**
@@ -83,12 +84,21 @@ class BinaryData {
     }
 
     /**
+     *  Prepare byte array size
+     */
+    inline function prepareSize (needSize : Int) {
+        if (length + needSize >= size) {                        
+            incSize (if (needSize >= incrementSize) needSize else incrementSize);
+        }
+    }
+
+    /**
      *  Constructor
      */
     public function new (?startSize : Int, ?increment : Int) {
         size = 0;
         length = 0;
-        if (increment != null && increment > 0) incrementSize = increment;
+        if (increment != null && increment > 0) incrementSize = increment;        
         if (startSize != null) {
             resize (startSize);
         } else {
@@ -113,7 +123,7 @@ class BinaryData {
      */
     public function addByte (data : Int) {
         if (length >= size) incSize ();
-        buffer[length] = data;
+        setByte (length, data);
         length += 1;
     }
 
@@ -123,14 +133,14 @@ class BinaryData {
      */
     public function insertByte (pos : Int, data : Int) {
         insertSize (pos, 1);
-        buffer[pos] = data;
+        setByte (pos, data);
     }    
 
     /**
      *  Set byte at position
      *  @param data - byte
      */
-    public function setByte (pos : Int, data : Int) {
+    public inline function setByte (pos : Int, data : Int) {
         buffer[pos] = data;
     }
     
@@ -141,7 +151,9 @@ class BinaryData {
      *  @return ByteArray
      */
     public function getBytes () : ByteArray {
+        // TODO: remove copy. Do better
         var data = new ByteArray (length);
+        lua.Ffi.copy (data.data, buffer, length);
         return data;
     }
 
@@ -150,7 +162,7 @@ class BinaryData {
      *  @param data - byte array
      */
     public function addBytes (data : ByteArray) {
-        incSize (data.length);
+        prepareSize (data.length);
         lua.Ffi.copy (buffer + length, data.data, data.length);
         length += data.length;
     }
@@ -162,7 +174,7 @@ class BinaryData {
      *  @param data - some string
      */
     public function addString (data : String) {
-        incSize (data.length);
+        incSize (data.length);        
         lua.Ffi.copy (buffer + length, data, data.length);
         length += data.length;
     }

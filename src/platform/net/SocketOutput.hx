@@ -57,8 +57,8 @@ class SocketOutput implements ISocketOutput {
      *  @param data - byte array
      *  @return Number of bytes written
      */
-    public function writeBytes (data : ByteArray) : Int {
-        var str = data.toString ();
+    public function writeBytes (data : ByteArray) : Int {        
+        var str = data.toString ();           
         return sock.write (str);
     }
 

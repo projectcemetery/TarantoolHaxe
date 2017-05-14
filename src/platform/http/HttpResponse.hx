@@ -76,7 +76,7 @@ class HttpResponse implements ISocketOutput {
      *  @param data - byte array
      *  @return Number of bytes written
      */
-    public function writeBytes (data : ByteArray) : Int {
+    public function writeBytes (data : ByteArray) : Int {        
         buffer.addBytes (data);
         return data.length;
     }

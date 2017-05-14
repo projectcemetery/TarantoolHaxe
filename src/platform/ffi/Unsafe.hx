@@ -22,6 +22,40 @@
 package platform.ffi;
 
 /**
+ *  Some missing methods for lua.Ffi
+ */
+
+@:luaRequire("ffi")
+extern class Ffi {
+
+    /**
+     *  Create some object
+     *  @param q - query. Example uint8_t[?]
+     *  @param p - params
+     *  @return Dynamic
+     */
+    @:native("new")
+    public static function create (q : String, p : Dynamic) : Dynamic;
+
+    /**
+     *  Cast object to type
+     *  @param s - type. Example uint8_t*
+     *  @param d - object to cast
+     *  @return Dynamic
+     */
+
+    @:native("cast")
+    public static function castObj (s : String, d : Dynamic) : Dynamic;
+
+    /**
+     *  Create type
+     *  @param s - type. Example: uint8_t*
+     *  @return Dynamic
+     */
+    public static function typeof (s : String) : Dynamic;
+}
+
+/**
  *  Unsafe functions: memory manipulation
  */
 @:native("p.Unsafe")
@@ -53,7 +87,7 @@ class Unsafe {
      *  @return Dynamic
      */
     public inline static function create (q : String, p : Dynamic) : Dynamic {
-        return untyped __lua__ ("ffi.new (q , p)");
+        return Ffi.create (q, p);
     }
 
     /**
@@ -106,7 +140,16 @@ class Unsafe {
      *  @param d - object to cast
      *  @return Dynamic
      */
-    public static function castObj (s : String, d : Dynamic) : Dynamic {
-        return untyped __lua__ ("p.Unsafe.ffi.cast (s, d)");
+    public inline static function castObj (s : String, d : Dynamic) : Dynamic {
+        return Ffi.castObj (s, d);
+    }
+
+    /**
+     *  Create type
+     *  @param s - type. Example: uint8_t*
+     *  @return Dynamic
+     */
+    public inline static function typeof (s : String) : Dynamic {
+        return Ffi.typeof (s);
     }
 }

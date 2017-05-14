@@ -100,7 +100,7 @@ class ByteArray {
      *  @param dstPos - start position in destination array
      *  @param srcPos - start position in source array
      *  @param len - length bytes copy
-     */
+     */    
     public static function copy (dst : ByteArray, src : ByteArray, dstPos : Int, srcPos : Int, len : Int) {
         // TODO: check ranges
         lua.Ffi.copy (dst.data + dstPos, src.data + srcPos, len);
@@ -112,10 +112,10 @@ class ByteArray {
      *  @param src - 
      *  @param pos - 
      *  @param len - 
-     */
-    public static function copyString (dst : ByteArray, src : String, pos : Int, len : Int) {
-        lua.Ffi.copy (dst.data + pos, src, len);
-    }
+     */    
+    public static function copyString (dst : ByteArray, src : String, pos : Int) {
+        lua.Ffi.copy (dst.data + pos, src);
+    }    
 
     /**
      *  Constructor
@@ -189,6 +189,7 @@ class ByteArray {
      *  @return String
      */
     public function toString () : String {
+        //return lua.Ffi.string (data, length);
 		return [for (i in 0...length) String.fromCharCode(get (i))].join("");
     }
 }

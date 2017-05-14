@@ -52,21 +52,21 @@ class Test {
        //var data1 = new BinaryData ();
        //var data2 = new BinaryData ();              
 
-       //var dat = new BinaryData ();
-       var bb = new haxe.io.BytesBuffer ();
+       var dat = new BinaryData (0, 1000000);
+       //var bb = new haxe.io.BytesBuffer ();
 
        var clock = tarantool.clock.Clock.thread64 ();
-       for (i in 0...100000) {           
-           //dat.addByte (1);
+       for (i in 0...10000000) {           
+           dat.addByte (1);
            
-           bb.addByte (33);
+         //  bb.addByte (33);
        }
 
        var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
 
        trace (clock);       
        Sys.stdin ().read (1);
-       trace (bb.length);
+       trace (dat.length);
        //trace (data1.length);
        //trace (data2.length);
     }    

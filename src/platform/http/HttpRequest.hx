@@ -33,11 +33,6 @@ using StringTools;
 class HttpRequest {
 
     /**
-     *  For text reading from input
-     */
-    var textReader : TextReader;
-
-    /**
      *  Version
      */
     public var version : HttpVersion;
@@ -65,8 +60,8 @@ class HttpRequest {
     /**
         Read all headers
     **/
-    private function readHeaders (channel : TcpSocket) : Void {
-        var text = textReader.readLine ();
+    private function readHeaders (channel : TcpSocket) : Void {        
+        var text = channel.input.readLine ();        
         if (text == null) throw "Connection closed";    // TODO: create internal error class to catch them
         var line = text.trim ();
         var parts = line.split (" ");
@@ -76,12 +71,12 @@ class HttpRequest {
 
         headers = new Map<String, String> ();
 
-        line = textReader.readLine ().trim ();
+        line = channel.input.readLine ().trim ();
         while (line.length > 0) {
             var head = line.split (": ");
             if (head.length < 2) throw HttpStatus.BadRequest;
             headers[head[0]] = head[1];
-            line = textReader.readLine ().trim ();
+            line = channel.input.readLine ().trim ();
         }
     }
 
@@ -106,8 +101,7 @@ class HttpRequest {
      *  Constructor
      *  @param channel - 
      */
-    public function new (channel : TcpSocket) {
-        textReader = new TextReader (channel.input);
+    public function new (channel : TcpSocket) {        
         readHeaders (channel);        
         readBody (channel);        
     }
