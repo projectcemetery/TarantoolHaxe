@@ -19,10 +19,10 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import chocolate.Chocolate.App;
+/*import chocolate.Chocolate.App;
 import chocolate.Request;
 import chocolate.response.Response;
-import zephyr.HtmlBuilder.*;
+import zephyr.HtmlBuilder.*;*/
 
 import tarantool.box.Box;
 import lua.Table;
@@ -40,8 +40,25 @@ import platform.io.input.TextReader;
 import platform.net.TcpSocket;
 import platform.ffi.Unsafe;
 import platform.io.BinaryData;
+import platform.ffi.Unsafe;
 
 class Test {
+
+    static function tst () {        
+        var clock = tarantool.clock.Clock.thread64 ();
+        for (i in 0...1) {
+            var dat = new BinaryData (0, 100000);
+            for (d in 0...100) {
+                dat.addByte (41);
+            }
+            trace (dat.toString ());
+        }
+
+       var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
+
+       trace (clock); 
+    }
+
     static function main() {
         /*var sock = new TcpSocket ();
         sock.bind ("localhost", 8881, function (s : TcpSocket) {
@@ -50,24 +67,13 @@ class Test {
         });        */
        
        //var data1 = new BinaryData ();
-       //var data2 = new BinaryData ();              
-
-       var dat = new BinaryData (0, 1000000);
-       //var bb = new haxe.io.BytesBuffer ();
-
-       var clock = tarantool.clock.Clock.thread64 ();
-       for (i in 0...10000000) {           
-           dat.addByte (1);
-           
-         //  bb.addByte (33);
-       }
-
-       var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
-
-       trace (clock);       
+       //var data2 = new BinaryData ();                     
+       tst ();
+       
        Sys.stdin ().read (1);
-       trace (dat.length);
+//       trace (dat.length);
        //trace (data1.length);
-       //trace (data2.length);
+       //trace (data2.length);              
+       Unsafe.collect ();
     }    
 }

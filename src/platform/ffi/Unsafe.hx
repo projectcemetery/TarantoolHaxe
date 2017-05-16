@@ -35,7 +35,7 @@ extern class Ffi {
      *  @return Dynamic
      */
     @:native("new")
-    public static function create (q : String, p : Dynamic) : Dynamic;
+    public static function create (q : String, ?p : Dynamic) : Dynamic;
 
     /**
      *  Cast object to type
@@ -53,6 +53,14 @@ extern class Ffi {
      *  @return Dynamic
      */
     public static function typeof (s : String) : Dynamic;
+
+    /**
+     *  Add object to garbage collector
+     *  @param ptr - 
+     *  @param call - 
+     *  @return Dynamic
+     */
+    public static function gc (ptr : Dynamic, call : Void -> Void) : Dynamic;
 }
 
 /**
@@ -86,8 +94,9 @@ class Unsafe {
      *  @param p - params
      *  @return Dynamic
      */
-    public inline static function create (q : String, p : Dynamic) : Dynamic {
-        return Ffi.create (q, p);
+    public inline static function create (q : String, ?p : Dynamic) : Dynamic {
+        if (p != null) return Ffi.create (q, p);
+        return Ffi.create (q);
     }
 
     /**
@@ -126,15 +135,6 @@ class Unsafe {
     }
 
     /**
-     *  Add __gc function to object and bind it to onCollect
-     *  @param object - some object
-     *  @param onCollect - function that fires on __gc
-     */
-    public static function bindCollect (object : Dynamic, onCollect : Void -> Void) {
-
-    }
-
-    /**
      *  Cast object to type
      *  @param s - type. Example uint8_t*
      *  @param d - object to cast
@@ -151,5 +151,40 @@ class Unsafe {
      */
     public inline static function typeof (s : String) : Dynamic {
         return Ffi.typeof (s);
+    }
+
+    /**
+     *  Add on garbage collect callback
+     *  @param object - 
+     *  @param onCollect - 
+     */
+    public inline static function onCollect (object : Dynamic, onCollect : Void -> Void) {
+        var object = object;
+        var onCollect = onCollect;
+        untyped __lua__ ('
+    local mt = { __gc = onCollect } 
+    local prox = newproxy(true)
+    getmetatable(prox).__gc = function ()
+       mt.__gc(object)
+    end 
+    object[prox] = true
+        ');
+    }
+
+    /**
+     *  Add pointer to garbage collector
+     *  @param ptr - 
+     *  @param call - 
+     *  @return Dynamic
+     */
+    public inline static function gc (ptr : Dynamic, call : Void -> Void) : Dynamic {
+        return Ffi.gc (ptr, call);
+    }
+
+    /**
+     *  Collect garbage
+     */
+    public static function collect () {
+        untyped collectgarbage ("collect");
     }
 }

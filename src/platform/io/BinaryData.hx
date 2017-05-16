@@ -46,11 +46,11 @@ class BinaryData {
     /**
      *  Length of buffer
      */
-    public var length (default, null) : Int;
-    
+    public var length (default, null) : Int;    
+
     /**
      *  Resize buffer
-     *  @param newsize - 
+     *  @param newsize - new binary data size
      */
     function resize (newsize : Int) {
         if (buffer == null) {
@@ -92,6 +92,10 @@ class BinaryData {
         }
     }
 
+    function onCollect () {
+        if (buffer != null) Unsafe.free (buffer);
+    }
+
     /**
      *  Constructor
      */
@@ -104,7 +108,9 @@ class BinaryData {
         } else {
             incSize ();
         }
-    }
+
+        Unsafe.onCollect (this, onCollect);
+    }    
 
 // BYTE
 
@@ -185,6 +191,6 @@ class BinaryData {
      *  @return String
      */
     public function toString () : String {
-		return [for (i in 0...length) String.fromCharCode(getByte (i))].join("");
+		return lua.Ffi.string (buffer, length);
     }
 }
