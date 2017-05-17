@@ -69,11 +69,11 @@ class LimitedReader implements ILimitedInput {
      */
     public function readBytes (count : Int) : ByteArray {
         var cnt = position + count;
-        if (cnt >= length) {
+        if (cnt > length) {
             cnt = cnt - length;
         }
 
-        if (cnt < 1) throw IoError.Eof;
+        if (cnt < 1) throw IoError.Eof;        
         var data = input.readBytes (cnt);
         position += data.length;
         return data;
@@ -83,8 +83,8 @@ class LimitedReader implements ILimitedInput {
      *  Read all data from current position to end
      */
     public function readToEnd () : ByteArray {
-        var cnt = length - position;
-        if (cnt < 1) throw IoError.Eof;        
+        var cnt = length - position;        
+        if (cnt < 1) throw IoError.Eof;
         // TODO: check all is read
         return readBytes (cnt);
     }

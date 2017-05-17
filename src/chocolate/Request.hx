@@ -49,7 +49,7 @@ class Request {
      *  Constructor. Converts http request to app request
      *  @param request - Http request from http server
      */
-    public function new (request : HttpRequest) {
+    public function new (request : HttpRequest) {        
         headers = request.headers;
         query = [for (p in request.url.query.iterator()) p.name.toString() => p.value.toString ()];
 

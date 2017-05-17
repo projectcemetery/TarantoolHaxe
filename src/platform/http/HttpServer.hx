@@ -55,7 +55,7 @@ class HttpServer {
                 var request = new HttpRequest (channel);
                 var response = new HttpResponse (channel);
                 var context = new HttpContext (request, response);
-                firstHandler.process (context);
+                firstHandler.process (context);                
             }
         } catch (e : SocketError) {
             // TODO: process error

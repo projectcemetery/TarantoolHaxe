@@ -105,7 +105,7 @@ class Chocolate {
     /**
      *  Process http request
      */     
-    private function onHttpRequest (c : HttpContext) : Void {
+    private function onHttpRequest (c : HttpContext) : Void {        
         var found = false;
         for (kv in _routes) {
             if (kv.isMatch (c.request.url.path)) {
