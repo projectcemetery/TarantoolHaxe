@@ -29,7 +29,7 @@ import lua.Table;
 import tarantool.util.Convert;
 import tarantool.types.query.UpdateQuery;
 import tarantool.types.query.UpdateQueryBuilder;
-import tarantool.crypto.Digest;
+//import tarantool.crypto.Digest;
 import tarantool.clock.Clock;
 import tarantool.clock.native.ClockNative;
 import tarantool.types.UInt64;
@@ -41,10 +41,12 @@ import platform.net.TcpSocket;
 import platform.ffi.Unsafe;
 import platform.io.BinaryData;
 import platform.ffi.Unsafe;
+import platform.crypto.*;
+import tarantool.digest.Digest;
 
 class Test {
 
-    static function tst () {        
+    static function tstBinaryData () {        
         var clock = tarantool.clock.Clock.thread64 ();
         for (i in 0...1) {
             var dat = new BinaryData (0, 100000);
@@ -59,21 +61,27 @@ class Test {
        trace (clock); 
     }
 
-    static function main() {
-        /*var sock = new TcpSocket ();
-        sock.bind ("localhost", 8881, function (s : TcpSocket) {
-            var textReader = new TextReader (s.input);
-            trace (textReader.readLine ());
-        });        */
-       
-       //var data1 = new BinaryData ();
-       //var data2 = new BinaryData ();                     
-       tst ();
-       
+    static function tstDigest () {        
+        /*var clock = tarantool.clock.Clock.thread64 ();
+        for (i in 0...1000) {
+            tarantool.crypto.Digest.sha512 ("12");            
+        }
+        var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
+        trace (clock); */
+
+        var clock = tarantool.clock.Clock.thread64 ();        
+        var base64 = Base64.create ();
+
+        for (i in 0...10) {
+            trace (base64.decodeString ("R09PT0Q="));
+        }
+        var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
+        trace (clock);
+    }
+
+    static function main() {        
+       tstDigest ();       
        Sys.stdin ().read (1);
-//       trace (dat.length);
-       //trace (data1.length);
-       //trace (data2.length);              
        Unsafe.collect ();
     }    
 }

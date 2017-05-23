@@ -190,6 +190,5 @@ class ByteArray {
      */
     public function toString () : String {
         return lua.Ffi.string (data, length);
-		//return [for (i in 0...length) String.fromCharCode(get (i))].join("");
     }
 }

@@ -49,6 +49,17 @@ class BinaryData {
     public var length (default, null) : Int;    
 
     /**
+     *  Convert UInt32 to ByteArray
+     *  @return ByteArray
+     */
+    public inline static function SetUInt32 (data : Int, array : ByteArray) {        
+        array.set (0, ((data & 0xFF000000) >> 24));
+        array.set (1, ((data & 0xFF0000) >> 16));
+        array.set (2, ((data & 0xFF000) >> 8));
+        array.set (3, ((data & 0xFF)));
+    }
+
+    /**
      *  Resize buffer
      *  @param newsize - new binary data size
      */
@@ -157,7 +168,7 @@ class BinaryData {
      *  @return ByteArray
      */
     public function getBytes () : ByteArray {
-        // TODO: remove copy. Do better
+        // TODO: pos and length
         var data = new ByteArray (length);
         lua.Ffi.copy (data.data, buffer, length);
         return data;
@@ -173,6 +184,20 @@ class BinaryData {
         length += data.length;
     }
 
+// UInt32
+
+    /**
+     *  Add UInt32
+     *  @param data - UInt32 data
+     */
+    public function addUInt32 (data : Int) {
+        prepareSize (4);
+        addByte ((data & 0xFF000000) >> 24);                
+        addByte ((data & 0xFF0000) >> 16);
+        addByte ((data & 0xFF000) >> 8);
+        addByte ((data & 0xFF));
+    }
+
 // STRING
 
     /**
@@ -185,6 +210,15 @@ class BinaryData {
         length += data.length;
     }
 
+
+    /**
+     *  Get all bytes from binary data
+     */
+    public function toBytes () : ByteArray {
+        var data = new ByteArray (length);
+        lua.Ffi.copy (data.data, buffer, length);
+        return data;
+    }
 
     /**
      *  Return data of byte array as string

@@ -44,7 +44,7 @@ class Digest {
      *  @param s - 
      *  @return String
      */
-    public static function dss (s : String) : String {
+    public inline static function dss (s : String) : String {
         return untyped module.digest["dss"] (s);
     }
 
@@ -53,7 +53,7 @@ class Digest {
      *  @param s - some string
      *  @return String
      */
-    public static function dss1 (s : String) : String {
+    public inline static function dss1 (s : String) : String {
         return untyped module.digest["dss1"] (s);
     }
 
@@ -62,7 +62,7 @@ class Digest {
      *  @param s - some string
      *  @return String
      */
-    public static function md4 (s : String) : String {
+    public inline static function md4 (s : String) : String {
         return untyped module.digest["md4"] (s);
     }
 
@@ -71,7 +71,7 @@ class Digest {
      *  @param s - some string
      *  @return String
      */
-    public static function md5 (s : String) : String {
+    public inline static function md5 (s : String) : String {
         return untyped module.digest["md5"] (s);
     }
 
@@ -80,7 +80,7 @@ class Digest {
      *  @param s - some string
      *  @return String
      */
-    public static function mdc2 (s : String) : String {
+    public inline static function mdc2 (s : String) : String {
         return untyped module.digest["mdc2"] (s);
     }
 
@@ -89,7 +89,62 @@ class Digest {
      *  @param s - some string
      *  @return String
      */
-    public static function ripemd160 (s : String) : String {
+    public inline static function ripemd160 (s : String) : String {
         return untyped module.digest["ripemd160"] (s);
+    }
+
+
+    /**
+     *  Sha0
+     *  @param s - some string
+     *  @return String
+     */
+    public inline static function sha (s : String) : String {
+        return untyped module.digest["sha"] (s);
+    }
+
+    /**
+     *  Sha1
+     *  @param s - some string
+     *  @return String
+     */
+    public inline static function sha1 (s : String) : String {
+        return untyped module.digest["sha1"] (s);
+    }
+
+    /**
+     *  Sha224
+     *  @param s - some string
+     *  @return String
+     */
+    public inline static function sha224 (s : String) : String {
+        return untyped module.digest["sha224"] (s);
+    }
+
+    /**
+     *  Sha256
+     *  @param s - some string
+     *  @return String
+     */
+    public inline static function sha256 (s : String) : String {
+        return untyped module.digest["sha256"] (s);
+    }
+
+    /**
+     *  Sha384
+     *  @param s - some string
+     *  @return String
+     */
+    public inline static function sha384 (s : String) : String {
+        return untyped module.digest["sha384"] (s);
+    }    
+
+    /**
+     *  Sha512
+     *  @param s - some string
+     *  @return String
+     */
+    public inline static function sha512 (s : String) : String {
+        return untyped module.digest["sha512"] (s);
     }
 }
