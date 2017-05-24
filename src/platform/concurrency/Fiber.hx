@@ -19,28 +19,37 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.fiber.native;
+package platform.concurrency;
+
+import tarantool.fiber.native.FiberNative;
+import tarantool.fiber.native.FiberObjectNative;
 
 /**
- *  Extern for tarantool fiber
+ *  Fiber for cooperative multitasking
  */
- @:luaRequire("fiber")
-extern class FiberNative {
+@:native("p.Fiber")
+class Fiber {
 
     /**
-     *  Create new fiber
+     *  Native fiber object
      */
-    public static function create (call : Dynamic -> Void, ?params : Dynamic) : FiberObjectNative;
+    var fiberObject : FiberObjectNative;
+
+    public inline static function sleep (time : Int) {
+        FiberNative.sleep (time);
+    }
 
     /**
-     *  Create condition object
-     *  @return ConditionObjectNative
+     *  Constructor
      */
-    public static function cond () : ConditionObjectNative;
+    public function new (call : Dynamic -> Void, ?params : Dynamic) {
+        fiberObject = FiberNative.create (call, params);
+    }
 
     /**
-     *  Fiber sleep
-     *  @param time - 
+     *  Cancel fiber execution
      */
-    public static function sleep (time : Int) : Void;
+    public inline function cancel () {
+        fiberObject.cancel ();
+    }
 }

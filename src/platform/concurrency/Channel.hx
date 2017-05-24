@@ -19,7 +19,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.fiber;
+package platform.concurrency;
 
 import tarantool.fiber.native.ChannelNative;
 import tarantool.fiber.native.ChannelObjectNative;
@@ -27,7 +27,7 @@ import tarantool.fiber.native.ChannelObjectNative;
 /**
  *  IPC for fibers
  */
-@:native("t.Channel")
+@:native("p.Channel")
 class Channel {
 
     /**

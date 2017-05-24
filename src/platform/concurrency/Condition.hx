@@ -19,28 +19,52 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.fiber.native;
+package platform.concurrency;
+
+import tarantool.fiber.native.FiberNative;
+import tarantool.fiber.native.ConditionObjectNative;
 
 /**
- *  Extern for tarantool fiber
+ *  Object for wait
  */
- @:luaRequire("fiber")
-extern class FiberNative {
+@:native("p.Condition")
+class Condition {
 
     /**
-     *  Create new fiber
+     *  Native condition object
      */
-    public static function create (call : Dynamic -> Void, ?params : Dynamic) : FiberObjectNative;
+    var conditionObject : ConditionObjectNative;
 
     /**
-     *  Create condition object
-     *  @return ConditionObjectNative
+     *  Constructor
      */
-    public static function cond () : ConditionObjectNative;
+    public function new () {
+        conditionObject = FiberNative.cond ();
+    }
 
     /**
-     *  Fiber sleep
-     *  @param time - 
+     *  Wait for fiber execution
+     *  @param timeout - 
+     *  @return Bool
      */
-    public static function sleep (time : Int) : Void;
+    public inline function wait (?timeout : Int) : Bool {
+        if (timeout != null) {
+            return conditionObject.wait (timeout);
+        }
+        return conditionObject.wait ();
+    }
+
+    /**
+     *  Wake up a single fiber that has executed wait() for the same variable
+     */
+    public inline function signal () {
+        conditionObject.signal ();
+    }
+
+    /**
+     *  Wake up all fibers that have executed wait() for the same variable.
+     */
+    public inline function broadcast () {
+        conditionObject.broadcast ();
+    }
 }

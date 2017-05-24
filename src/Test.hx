@@ -43,6 +43,8 @@ import platform.io.BinaryData;
 import platform.ffi.Unsafe;
 import platform.crypto.*;
 import tarantool.digest.Digest;
+import platform.concurrency.Async.*;
+import platform.concurrency.Fiber;
 
 class Test {
 
@@ -61,26 +63,35 @@ class Test {
        trace (clock); 
     }
 
-    static function tstDigest () {        
-        /*var clock = tarantool.clock.Clock.thread64 ();
-        for (i in 0...1000) {
-            tarantool.crypto.Digest.sha512 ("12");            
-        }
-        var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
-        trace (clock); */
-
+    static function tstDigest () {
         var clock = tarantool.clock.Clock.thread64 ();        
         var base64 = Base64.create ();
 
         for (i in 0...10) {
             trace (base64.decodeString ("R09PT0Q="));
         }
+
         var clock = (tarantool.clock.Clock.thread64 () - clock) / 1000;
         trace (clock);
     }
 
+    static function tstAsync () {        
+        async (function () {
+            for (i in 0...100) {
+                trace ("GOOD");
+                yield ();
+            }
+        });
+
+        trace ("TEST");
+    }
+
     static function main() {        
-       tstDigest ();       
+       //tstDigest ();       
+       tstAsync ();
+       trace ("GOOD");
+
+       Fiber.sleep (1000);
        Sys.stdin ().read (1);
        Unsafe.collect ();
     }    

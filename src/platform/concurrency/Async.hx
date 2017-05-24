@@ -19,28 +19,41 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.fiber.native;
+package platform.concurrency;
 
 /**
- *  Extern for tarantool fiber
+ *  Helper for fibers
  */
- @:luaRequire("fiber")
-extern class FiberNative {
+class Async {
 
     /**
-     *  Create new fiber
+     *  Execute function on fiber, wait for execution
      */
-    public static function create (call : Dynamic -> Void, ?params : Dynamic) : FiberObjectNative;
+    public static function await (call : Void -> Void) {
+        var flag = new Condition ();
+        var fiber = new Fiber (function (data : Dynamic) {
+            var cond : Condition = cast (data, Condition);                        
+            cond.wait ();
+            call ();            
+            cond.signal ();
+        }, flag);        
+        flag.signal ();
+        flag.wait ();
+    }
 
     /**
-     *  Create condition object
-     *  @return ConditionObjectNative
+     *  Execute function on fiber, dont wait for execution
      */
-    public static function cond () : ConditionObjectNative;
+    public static function async (call : Void -> Void) {        
+        var fiber = new Fiber (function (data : Dynamic) {            
+            call ();            
+        });        
+    }
 
     /**
-     *  Fiber sleep
-     *  @param time - 
+     *  Fiber.yield ()
      */
-    public static function sleep (time : Int) : Void;
+    public static function yield () {
+        Fiber.sleep (0);
+    }
 }

@@ -19,32 +19,28 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.fiber;
-
-import tarantool.fiber.native.FiberNative;
-import tarantool.fiber.native.FiberObjectNative;
+package tarantool.fiber.native;
 
 /**
- *  Fiber for cooperative multitasking
+ *  Condition object
  */
-class Fiber {
+extern class ConditionObjectNative {
 
     /**
-     *  Native fiber object
+     *  Make the current fiber go to sleep, waiting until until another fiber invokes the signal() or broadcast() method on the cond object. 
+     *  The sleep causes an implicit fiber.yield()
+     *  @param timeout - timeout to wait
+     *  @return Bool
      */
-    var fiberObject : FiberObjectNative;
+    public function wait (?timeout : Int) : Bool;
 
     /**
-     *  Constructor
+     *  Wake up a single fiber that has executed wait() for the same variable.
      */
-    public function new (call : Void -> Void) {
-        fiberObject = FiberNative.create (call);
-    }
+    public function signal () : Void;
 
     /**
-     *  Cancel fiber execution
+     *  Wake up all fibers that have executed wait() for the same variable.
      */
-    public inline function cancel () {
-        fiberObject.cancel ();
-    }
+    public function broadcast () : Void;
 }
