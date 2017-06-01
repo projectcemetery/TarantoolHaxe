@@ -1,20 +1,12 @@
-local crypto = require ('crypto')
-local clock = require ('clock')
-local time = clock.thread64 ()
-local f = crypto.digest.sha512;
+package.path = package.path .. ";./src/platform/net/SecureSocket.lua"
 
-local i = 1
-for i = 1,1000000 do
-  local s = "12"
-  if (type (s) == "string") then
-    --print ("GOOD")
-    i = i + 1
-  end
+local ssl = require ("SecureSocket")
+
+local function on_accept (self, sock, from)
+    print ("GOOD")
+    --self:write ("GOOD")
+    print (self:read (10))
 end
 
---for i = 1,1000000 do
-    --local s = f ("12342342")
---end
-time = (clock.thread64 () - time) / 1000
 
-print (time)
+local sock = ssl.tcp_server("localhost", 9090, "61640450_127.0.0.1.cert", "61640450_127.0.0.1.key", on_accept)

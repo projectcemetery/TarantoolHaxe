@@ -21,9 +21,40 @@
 
 package platform.filesystem;
 
+import platform.io.input.IFileInput;
+import tarantool.fio.native.NativeFio;
+import tarantool.fio.native.NativeFileHandle;
+
 /**
- *  For operations on files
+ *  For read file
  */
-class File {
+class ReadAccessFile {
     
+    /**
+     *  Native tarantool file object
+     */
+    var fileObject : NativeFileHandle;
+
+    /**
+     *  Path for file
+     */
+    var path : String;
+
+    /**
+     *  Constructor
+     *  @param path - 
+     */
+    public function new (path : String) {        
+        this.path = path;
+    }
+
+    /**
+     *  Get file input
+     *  @return IFileInput
+     */
+    public function getInput () : IFileInput {
+        // TODO check exists
+        fileObject = NativeFio.open (path, untyped { 'O_RDONLY' });
+        return new FileInput (fileObject);
+    }
 }
