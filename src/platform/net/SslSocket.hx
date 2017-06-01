@@ -21,15 +21,52 @@
 
 package platform.net;
 
+import tarantool.socket.NativeSslSocket;
+import tarantool.socket.NativeSslSocketObject;
+
 /**
  *  For working with ssl socket client and server
  */
-class SslSocket {    
+class SslSocket extends AbstractTcpSocket {    
+
+    /**
+     *  Native ssl socket object
+     */
+    var sock : NativeSslSocketObject;
+
+    /**
+     *  Bind native socket object
+     */
+    private function assignSocket (s : NativeSslSocketObject) : Void {
+        sock = s;
+        /*var nameTable = sock.name ();
+        var host = untyped nameTable["host"];
+        var port = untyped nameTable["port"];*/
+        //peer = new Peer (host, port);
+        input = new SocketInput (sock);
+        output = new SocketOutput (sock);        
+    }
 
     /**
      *  Constructor
      */
     public function new () {
         
+    }
+
+    /**
+     *  Bind to socket
+     *  @param host - host or ip 
+     *  @param port - port
+     *  @param cert - certificate
+     *  @param key - private key
+     *  @param handler - handler for incoming connection
+     */
+    public function bind (host : String, port : Int, cert : String, key : String, handler : SslSocket -> Void) : Void {
+        NativeSslSocket.tcp_server (host, port, cert, key, function (s : NativeSslSocketObject) {
+            var socket = new SslSocket ();
+            socket.assignSocket (s);
+            handler (socket);
+        });
     }
 }

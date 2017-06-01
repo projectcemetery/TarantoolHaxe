@@ -23,7 +23,14 @@ package platform.net;
 
 import platform.io.ByteArray;
 import platform.io.output.ISocketOutput;
-import tarantool.socket.native.NativeSocketObject;
+
+/**
+ *  Native object must have these functions
+ */
+typedef NativeWriteSocket = {
+    public function write (s : String) : Int;
+    public function close () : Void;
+}
 
 /**
  *  Output for socket
@@ -33,13 +40,13 @@ class SocketOutput implements ISocketOutput {
     /**
      *  Native socket object
      */
-    private var sock : NativeSocketObject;
+    private var sock : NativeWriteSocket;
 
     /**
      *  Constructor
      *  @param s - native socket object
      */
-    public function new (s : NativeSocketObject) {
+    public function new (s : NativeWriteSocket) {
         sock = s;
     }
 

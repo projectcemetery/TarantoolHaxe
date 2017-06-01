@@ -22,8 +22,19 @@
 package tarantool.socket;
 
 /**
- *  Ssl socket object
+ *  Bindings for SslSocket through tarantoolssl
  */
-class SslSocketObject {
-    
+@:luaRequire("tarantoolssl")
+extern class NativeSslSocket {
+
+    /**
+     *  Open ssl server
+     *  @param host - 
+     *  @param port - 
+     *  @param cert - 
+     *  @param key - 
+     *  @param handler - 
+     *  @return NativeSslSocketObject
+     */
+    public static function tcp_server (host : String, port : Int, cert : String, key : String, handler : Dynamic -> Void) : NativeSslSocketObject;
 }

@@ -21,9 +21,16 @@
 
 package platform.net;
 
-import tarantool.socket.native.NativeSocketObject;
 import platform.io.input.ISocketInput;
 import platform.io.ByteArray;
+
+/**
+ *  Native object must have these functions
+ */
+typedef NativeReadSocket = {
+    public function read (limit : haxe.extern.EitherType<Int,String>, ?timeout : Int) : String;
+    public function close () : Void;
+}
 
 /**
  *  Output for socket
@@ -33,13 +40,13 @@ class SocketInput implements ISocketInput {
     /**
      *  Native socket object
      */
-    var sock : NativeSocketObject;
+    var sock : NativeReadSocket;
 
     /**
      *  Constructor
      *  @param s - native socket object
      */
-    public function new (s : NativeSocketObject) {
+    public function new (s : NativeReadSocket) {
         sock = s;
     }
 
@@ -77,7 +84,7 @@ class SocketInput implements ISocketInput {
     /**
      *  Close stream
      */
-    public function close () : Void {
+    public inline function close () : Void {
         sock.close ();
     }
 }

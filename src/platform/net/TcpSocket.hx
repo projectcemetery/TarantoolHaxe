@@ -27,27 +27,12 @@ import tarantool.socket.native.NativeSocketObject;
 /**
  *  Tcp socket
  */
-class TcpSocket {
+class TcpSocket extends AbstractTcpSocket {
 
     /**
      *  Tarantool socket object
      */
-    var sock : NativeSocketObject;
-
-    /**
-     *  For reading data
-     */
-    public var input (default, null) : SocketInput;
-
-    /**
-     *  For writing data
-     */
-    public var output (default, null) : SocketOutput;
-
-    /**
-     *  Socket address
-     */
-    public var peer (default, null) : Peer;
+    var sock : NativeSocketObject;    
 
     /**
      *  Constructor     
@@ -65,7 +50,7 @@ class TcpSocket {
         var port = untyped nameTable["port"];        
         peer = new Peer (host, port);
         input = new SocketInput (sock);
-        output = new SocketOutput (sock);        
+        output = new SocketOutput (sock);
     }
 
     /**

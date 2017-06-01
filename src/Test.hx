@@ -89,6 +89,11 @@ class Test {
 
     static function main() {
         var ssl = new SslSocket ();
+        ssl.bind ("localhost", 9090, "61640450_127.0.0.1.cert", "61640450_127.0.0.1.key", function (sock : SslSocket) {
+            trace (sock.input.readLine ());
+            sock.output.writeString ("Hi!");
+        });
+
        //tstDigest ();       
        //tstAsync ();
        //trace ("GOOD");       

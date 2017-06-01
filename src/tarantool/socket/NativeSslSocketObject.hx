@@ -19,20 +19,12 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.socket.native;
-
-import lua.Table;
+package tarantool.socket;
 
 /**
- *  Native tarantool socket object
+ *  Ssl socket object
  */
-extern class NativeSocketObject {
-    
-    /**
-     *  Get socket name
-     *  @return String
-     */
-    public function name () : AnyTable;
+extern class NativeSslSocketObject {
 
     /**
      *  Write string

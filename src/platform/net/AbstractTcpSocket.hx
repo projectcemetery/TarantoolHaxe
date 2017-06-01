@@ -19,22 +19,26 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package tarantool.socket;
+package platform.net;
 
 /**
- *  Bindings for SslSocket through tarantoolssl
+ *  Abstract tcp socket
  */
-@:luaRequire("tarantoolssl")
-extern class SslSocket {
+class AbstractTcpSocket {
 
     /**
-     *  Open ssl server
-     *  @param host - 
-     *  @param port - 
-     *  @param cert - 
-     *  @param key - 
-     *  @param handler - 
-     *  @return SslSocketObject
+     *  For reading data
      */
-    public static function tcp_server (host : String, port : Int, cert : String, key : String, handler : Dynamic -> Void) : SslSocketObject;
+    public var input (default, null) : SocketInput;
+
+    /**
+     *  For writing data
+     */
+    public var output (default, null) : SocketOutput;
+
+    /**
+     *  Socket address
+     */
+    public var peer (default, null) : Peer;
+    
 }
