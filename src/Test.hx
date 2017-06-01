@@ -45,6 +45,7 @@ import platform.crypto.*;
 import tarantool.digest.Digest;
 import platform.concurrency.Async.*;
 import platform.concurrency.Fiber;
+import platform.net.SslSocket;
 
 class Test {
 
@@ -86,13 +87,10 @@ class Test {
         trace ("TEST");
     }
 
-    static function main() {        
+    static function main() {
+        var ssl = new SslSocket ();
        //tstDigest ();       
-       tstAsync ();
-       trace ("GOOD");
-
-       Fiber.sleep (1000);
-       Sys.stdin ().read (1);
-       Unsafe.collect ();
+       //tstAsync ();
+       //trace ("GOOD");       
     }    
 }
