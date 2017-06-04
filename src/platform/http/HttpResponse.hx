@@ -1,6 +1,6 @@
 package platform.http;
 
-import platform.net.TcpSocket;
+import platform.net.AbstractTcpSocket;
 import platform.http.HttpHeaderType;
 import platform.io.ByteArray;
 import platform.io.BinaryData;
@@ -19,7 +19,7 @@ class HttpResponse implements ISocketOutput {
     /**
      *  Raw channel for write/read data
      */
-    public var channel (default, null) : TcpSocket;
+    public var channel (default, null) : AbstractTcpSocket;
 
     /**
      *  Response headers
@@ -50,7 +50,7 @@ class HttpResponse implements ISocketOutput {
      *  Constructor
      *  @param channel - 
      */
-    public function new (channel : TcpSocket) {
+    public function new (channel : AbstractTcpSocket) {
         this.channel = channel;
         headers = new Map<String, String> ();
         reset ();

@@ -167,6 +167,11 @@ class Chocolate {
 
         var httpHandler = new HttpHandler (onHttpRequest);
         _httpServer.addHandler (httpHandler);
-        _httpServer.bind ("*", options.Port);
+
+        if (options.Ssl == null) {
+            _httpServer.bind ("*", options.Port);
+        } else {
+            _httpServer.bindSsl ("*", options.Port, options.Ssl.Certificate, options.Ssl.PrivateKey);
+        }
     }
 }

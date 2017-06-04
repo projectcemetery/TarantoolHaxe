@@ -28,7 +28,7 @@ import haxe.crypto.Base64;
 import haxe.crypto.Sha1;
 import haxe.crypto.BaseCode;
 import platform.net.Peer;
-import platform.net.TcpSocket;
+import platform.net.AbstractTcpSocket;
 
 /**
  *  State of work
@@ -100,7 +100,7 @@ class InternalHandler implements IByteWriteable {
     /**
      *  Channel for data IO
     **/
-    var channel : TcpSocket;
+    var channel : AbstractTcpSocket;
 
     /**
      *  State of handler

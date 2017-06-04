@@ -22,6 +22,22 @@
 package chocolate;
 
 /**
+ *  Options for secure connections
+ */
+typedef SslOptions = {
+
+    /**
+     *  Path to certificate file
+     */
+    Certificate : String,
+
+    /**
+     *  Path to private key path
+     */
+    PrivateKey : String
+}
+
+/**
  *  Options for Chocolate app
  */
 typedef AppOptions = {
@@ -29,6 +45,11 @@ typedef AppOptions = {
      *  Port to listen
      */
     Port : Int,
+
+    /**
+     *  Options for secure connections
+     */
+    ?Ssl : SslOptions,
 
     /**
      *  Dir for static content

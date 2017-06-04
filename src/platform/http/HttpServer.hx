@@ -22,7 +22,9 @@
 package platform.http;
 
 import platform.net.SocketError;
+import platform.net.AbstractTcpSocket;
 import platform.net.TcpSocket;
+import platform.net.SslSocket;
 import platform.http.handlers.Handler;
 
 /**
@@ -32,7 +34,7 @@ class HttpServer {
     /**
      *  Server socket
      */
-    var socket : TcpSocket;
+    var socket : AbstractTcpSocket;
 
     /**
      *  First handler
@@ -49,7 +51,7 @@ class HttpServer {
      *  @param peer - client peer
      *  @param channel - read write channel
      */
-    function processClient (channel : TcpSocket) {        
+    function processClient (channel : AbstractTcpSocket) {        
         try {
             while (true) {                
                 var request = new HttpRequest (channel);
@@ -71,7 +73,6 @@ class HttpServer {
      *  Constructor
      */
     public function new () {
-        socket = new TcpSocket ();        
     }
 
     /**
@@ -95,8 +96,27 @@ class HttpServer {
      */
     public function bind (host : String, port : Int) : Void {
         if (firstHandler == null) throw "No handlers";
+        var sock = new TcpSocket ();
+        this.socket = sock;
 
-        socket.bind (host, port, function (c : TcpSocket) {
+        sock.bind (host, port, function (c : TcpSocket) {
+            processClient (c);
+        });
+    }
+
+    /**
+     *  Bind ssl socket
+     *  @param host - 
+     *  @param port - 
+     *  @param cert - 
+     *  @param key - 
+     */
+    public function bindSsl (host : String, port : Int, cert : String, key : String) {
+        if (firstHandler == null) throw "No handlers";
+
+        var sock = new SslSocket ();
+        this.socket = sock;
+        sock.bind (host, port, cert, key, function (c : SslSocket) {
             processClient (c);
         });
     }

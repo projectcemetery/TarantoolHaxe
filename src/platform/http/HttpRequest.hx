@@ -21,8 +21,7 @@
 
 package platform.http;
 
-import platform.net.TcpSocket;
-import platform.io.input.TextReader;
+import platform.net.AbstractTcpSocket;
 import platform.io.input.LimitedReader;
 import tink.Url;
 using StringTools;
@@ -60,7 +59,7 @@ class HttpRequest {
     /**
         Read all headers
     **/
-    private function readHeaders (channel : TcpSocket) : Void {        
+    private function readHeaders (channel : AbstractTcpSocket) : Void {        
         var text = channel.input.readLine ();        
         if (text == null) throw "Connection closed";    // TODO: create internal error class to catch them
         var line = text.trim ();
@@ -84,7 +83,7 @@ class HttpRequest {
      *  Read body
      *  @param channel - 
      */
-    private function readBody (channel : TcpSocket) : Void {
+    private function readBody (channel : AbstractTcpSocket) : Void {
         body = null;
         if (method == HttpMethod.Get) return;
 
@@ -101,7 +100,7 @@ class HttpRequest {
      *  Constructor
      *  @param channel - 
      */
-    public function new (channel : TcpSocket) {        
+    public function new (channel : AbstractTcpSocket) {        
         readHeaders (channel);        
         readBody (channel);        
     }

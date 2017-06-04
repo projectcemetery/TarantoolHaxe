@@ -46,6 +46,9 @@ import tarantool.digest.Digest;
 import platform.concurrency.Async.*;
 import platform.concurrency.Fiber;
 import platform.net.SslSocket;
+import chocolate.Chocolate.App;
+import chocolate.AppOptions;
+import chocolate.Request;
 
 class Test {
 
@@ -88,11 +91,23 @@ class Test {
     }
 
     static function main() {
-        var ssl = new SslSocket ();
+        App.get ("/test", function (r : Request) {
+            return "Hello world";
+        });
+
+        App.listen ({
+            Port : 9090,
+            Ssl : {
+                Certificate : "61640450_127.0.0.1.cert",
+                PrivateKey : "61640450_127.0.0.1.key"
+            }
+        });
+
+        /*var ssl = new SslSocket ();
         ssl.bind ("localhost", 9090, "61640450_127.0.0.1.cert", "61640450_127.0.0.1.key", function (sock : SslSocket) {
             trace (sock.input.readLine ());
             sock.output.writeString ("Hi!");
-        });
+        });*/
 
        //tstDigest ();       
        //tstAsync ();
